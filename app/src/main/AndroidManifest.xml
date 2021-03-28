@@ -12,8 +12,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyWeather">
-        <activity android:name=".activities.MenuActivity"
+       <activity android:name=".activities.WeatherListActivity"></activity>
+        <activity
+            android:name=".activities.MenuActivity"
             tools:ignore="Instantiatable">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
