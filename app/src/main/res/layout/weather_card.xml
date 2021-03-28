@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+    <androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="8dp"
+    android:elevation="24dp">
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="20dp">
+
+    <ImageView
+        android:id="@+id/imageIcon"
+        android:contentDescription="Weather_Image"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="16dp"/>
+
+    <TextView
+        android:id="@+id/locationDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/imageIcon"
+        android:textSize="22dp"
+        android:text="Ireland,Tipperary,Cahir" />
+
+    <TextView
+        android:id="@+id/temperatureDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/imageIcon"
+        android:layout_below="@+id/locationDescription"
+        android:textSize="20dp"
+        android:text="20*" />
+</RelativeLayout>
+
+</androidx.cardview.widget.CardView>
