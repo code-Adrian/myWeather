@@ -7,6 +7,7 @@ import kotlinx.android.synthetic.main.mainmenu_activity.*
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.startActivityForResult
 import org.wit.myweather.R
+import org.wit.myweather.main.Main
 
 class MenuActivity : AppCompatActivity(){
 

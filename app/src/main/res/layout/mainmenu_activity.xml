@@ -110,7 +110,7 @@ android:layout_marginTop="30dp"
             android:id="@+id/menu_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="All Weather"
+            android:text="View Weather List"
             android:background="@drawable/round"
 
             />
