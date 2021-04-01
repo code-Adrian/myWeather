@@ -9,7 +9,7 @@
 
 
     <EditText
-        android:id="@+id/Add_Country"
+        android:id="@+id/Edit_Country"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginTop="16dp"
@@ -26,7 +26,7 @@
 
 
     <EditText
-        android:id="@+id/Add_County"
+        android:id="@+id/Edit_County"
         android:layout_width="0dp"
         android:layout_height="42dp"
         android:layout_marginTop="72dp"
@@ -41,7 +41,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/Add_City"
+        android:id="@+id/Edit_City"
         android:layout_width="0dp"
         android:layout_height="42dp"
         android:layout_marginTop="128dp"
@@ -57,41 +57,30 @@
 
 
     <Button
-        android:id="@+id/Add_Weather"
+        android:id="@+id/Edit_Weather"
         android:layout_width="0dp"
         android:layout_height="45dp"
-        android:layout_marginTop="188dp"
-        android:text="Add Weather"
         android:layout_marginLeft="25dp"
+        android:layout_marginTop="244dp"
         android:layout_marginRight="25dp"
+        android:text="Confirm Edit"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/Add_Weather_URL"
-        android:layout_width="0dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="308dp"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
-        android:text="Add by URL"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.36"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/Add_Link"
+        android:id="@+id/Edit_Link"
         android:layout_width="0dp"
         android:layout_height="42dp"
-        android:layout_marginTop="252dp"
         android:layout_marginLeft="18dp"
+        android:layout_marginTop="184dp"
         android:layout_marginRight="18dp"
         android:ems="10"
         android:hint="Link"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.47"
+        app:layout_constraintHorizontal_bias="0.285"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

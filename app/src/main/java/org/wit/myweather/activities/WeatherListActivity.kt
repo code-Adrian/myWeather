@@ -25,7 +25,7 @@ lateinit var app : Main
         recyclerView.layoutManager = layout
 loadWeather()
 
-//        setSupportActionBar(toolbar)
+
     }
 
 
@@ -37,6 +37,10 @@ loadWeather()
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.weather_add -> startActivityForResult<WeatherActivity>(0)
+        }
+
+        when(item.itemId){
+            R.id.weather_home -> {finish()}
         }
 
         return super.onOptionsItemSelected(item)

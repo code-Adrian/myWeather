@@ -7,4 +7,10 @@
         android:icon="@android:drawable/ic_menu_add"
         android:title="Add weather"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/weather_home"
+        android:icon="@drawable/ic_menu_home"
+        android:title="Home"
+        app:showAsAction="always" />
 </menu>
