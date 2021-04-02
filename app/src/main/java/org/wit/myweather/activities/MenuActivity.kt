@@ -10,9 +10,10 @@ import org.wit.myweather.R
 import org.wit.myweather.main.Main
 
 class MenuActivity : AppCompatActivity(){
-
+    lateinit var app : Main
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        app = application as Main
         supportActionBar?.hide();
         setContentView(R.layout.mainmenu_activity)
 onMenuButtonClick()

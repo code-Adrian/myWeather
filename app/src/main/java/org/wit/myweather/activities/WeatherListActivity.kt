@@ -1,5 +1,6 @@
 package org.wit.myweather.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -24,8 +25,6 @@ lateinit var app : Main
         val layout = LinearLayoutManager(this)
         recyclerView.layoutManager = layout
 loadWeather()
-
-
     }
 
 
@@ -48,7 +47,13 @@ loadWeather()
 
     override fun onWeatherClick(weather: WeatherModel) {
         startActivityForResult(intentFor<WeatherActivity>().putExtra("weather_edit",weather),0)
+finish()
+    }
 
+   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
 private fun loadWeather(){

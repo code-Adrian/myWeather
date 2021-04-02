@@ -4,7 +4,8 @@
     package="org.wit.myweather">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application
         android:name=".main.Main"
         android:allowBackup="true"
@@ -13,8 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyWeather">
-       <activity android:name=".activities.WeatherListActivity"></activity>
-        <activity android:name=".activities.WeatherActivity"></activity>
+        <activity android:name=".activities.WeatherListActivity" />
+        <activity android:name=".activities.WeatherActivity" />
         <activity
             android:name=".activities.MenuActivity"
             tools:ignore="Instantiatable">

@@ -30,7 +30,8 @@ class WeatherAdapter constructor(private val weather: MutableList<WeatherModel>,
     class MainHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView){
 
         fun bind(weathermodel: WeatherModel, listener: WeatherListener){
-itemView.locationDescription.text = weathermodel.County+","+weathermodel.County+","+weathermodel.City
+
+itemView.locationDescription.text = weathermodel.Country+", "+weathermodel.County+", "+weathermodel.City
             itemView.temperatureDetail.text = weathermodel.Temperature
             itemView.setOnClickListener{listener.onWeatherClick(weathermodel)}
 
@@ -38,9 +39,10 @@ itemView.locationDescription.text = weathermodel.County+","+weathermodel.County+
 
             if(temp >= 14){
                 itemView.imageIcon.setImageResource(R.drawable.sun)
-            }else if(temp <= 14){
+            }else if(temp < 14){
                 itemView.imageIcon.setImageResource(R.drawable.cloudysunny)
-            }else if(temp <= 8){
+            }
+            if(temp <= 8){
                 itemView.imageIcon.setImageResource(R.drawable.verycloudy)
             }else if(temp <= 5){
                 itemView.imageIcon.setImageResource(R.drawable.rain)

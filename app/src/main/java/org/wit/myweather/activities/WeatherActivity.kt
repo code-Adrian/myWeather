@@ -15,17 +15,16 @@ import org.wit.myweather.models.WeatherModel
 class WeatherActivity: AppCompatActivity() {
 
     var weather = WeatherModel()
-    lateinit var app : Main
-   var edit = false
+    lateinit var app: Main
+    var edit = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         app = application as Main
 
-        if(intent.hasExtra("weather_edit")){
+        if (intent.hasExtra("weather_edit")) {
             setContentView(R.layout.weather_activity_edit)
-         edit = true
+            edit = true
             weather = intent.extras?.getParcelable<WeatherModel>("weather_edit")!!
             Edit_Country.setText(weather.Country)
             Edit_County.setText(weather.County)
@@ -33,20 +32,35 @@ class WeatherActivity: AppCompatActivity() {
             Edit_Link.setText(weather.WebLink)
 
 
-        }else{
+        } else {
             setContentView(R.layout.weather_activity)
         }
 
-Add_Weather.setOnClickListener {
-    if(edit){
-        app.weather.update(weather.copy())
-    }else{
-        app.weather.create(weather.copy())
-    }
+        if (edit) {
+            Edit_Weather.setOnClickListener {
+                weather.Country = Edit_Country.text.toString()
+                weather.County = Edit_County.text.toString()
+                weather.City = Edit_City.text.toString()
 
-    setResult(AppCompatActivity.RESULT_OK)
-    finish()
-}
+                app.weather.update(weather.copy())
+                startActivityForResult<WeatherListActivity>(0)
+                setResult(AppCompatActivity.RESULT_OK)
+                finish()
+            }
+        } else  {
+            Add_Weather.setOnClickListener {
+                weather.Country = Add_Country.text.toString()
+                weather.County = Add_County.text.toString()
+                weather.City = Add_City.text.toString()
+
+                app.weather.create(weather.copy())
+                setResult(AppCompatActivity.RESULT_OK)
+                finish()
+            }
+        }
+
+
+
 
     }
 
@@ -58,7 +72,10 @@ Add_Weather.setOnClickListener {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
-            R.id.edit_cancel -> {finish()}
+            R.id.edit_cancel -> {
+                startActivityForResult<WeatherListActivity>(0)
+                finish()
+            }
         }
 
 

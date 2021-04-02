@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "205814785845",
+    "firebase_url": "https://weather-18a10-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "weather-18a10",
+    "storage_bucket": "weather-18a10.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:205814785845:android:feb0c1608230132d79ce7c",
+        "android_client_info": {
+          "package_name": "org.wit.myWeather"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "205814785845-mrp3vs9smddk1jlt918m91t3b2daogcr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxkC-VABnMy48lPv9PEoPjDMvhATNcEjI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "205814785845-mrp3vs9smddk1jlt918m91t3b2daogcr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

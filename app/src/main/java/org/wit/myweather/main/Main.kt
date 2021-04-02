@@ -9,7 +9,6 @@ class Main : Application() {
 lateinit var weather: WeatherStore
     override fun onCreate() {
         super.onCreate()
-
         weather = FireBase_Store()
     }
 }
