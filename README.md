@@ -1,2 +1,2 @@
 # myWeather
-The following app allows the user to monitor weather temperature in Countries and their cities.
+The following app web scrapes googles weather forecast and allows the user to add,remove,update and display weather of choice.
