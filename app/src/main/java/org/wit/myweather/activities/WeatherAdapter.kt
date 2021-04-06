@@ -5,8 +5,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.weather_card.view.*
+import kotlinx.android.synthetic.main.weatherlist_activity.*
 import org.wit.myweather.R
 import org.wit.myweather.models.WeatherModel
+import org.wit.myweather.webscraper.getLowestTemp
+import org.wit.myweather.webscraper.getPeakTemp
+import org.wit.myweather.webscraper.setImage
+import java.lang.Exception
+import kotlin.concurrent.thread
 
 interface WeatherListener{
     fun onWeatherClick(weather: WeatherModel)
@@ -21,7 +27,6 @@ class WeatherAdapter constructor(private val weather: MutableList<WeatherModel>,
     override fun getItemCount(): Int = weather.size
 
 
-
     override fun onBindViewHolder(holder: WeatherAdapter.MainHolder, position: Int) {
         val weathers = weather[holder.adapterPosition]
         holder.bind(weathers,listener)
@@ -30,25 +35,30 @@ class WeatherAdapter constructor(private val weather: MutableList<WeatherModel>,
     class MainHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView){
 
         fun bind(weathermodel: WeatherModel, listener: WeatherListener){
+                if (!weathermodel.County.equals("")) {
+                    itemView.locationDescription.text = weathermodel.Country + ", " + weathermodel.County + ", " + weathermodel.City
+                } else {
+                    itemView.locationDescription.text = weathermodel.Country + ", " + weathermodel.City
+                }
 
-itemView.locationDescription.text = weathermodel.Country+", "+weathermodel.County+", "+weathermodel.City
-            itemView.temperatureDetail.text = weathermodel.Temperature
-            itemView.setOnClickListener{listener.onWeatherClick(weathermodel)}
+                weathermodel.Temperature = getPeakTemp(weathermodel.Country, weathermodel.County, weathermodel.City)
+                weathermodel.TemperatureLow = getLowestTemp(weathermodel.Country, weathermodel.County, weathermodel.City)
 
-            val temp : Int = weathermodel.Temperature.toInt()
+                if (weathermodel.TemperatureLow.equals("1000")) {
+                    itemView.temperaturelowDetail.text = "null"
+                } else {
+                    itemView.temperaturelowDetail.text = weathermodel.TemperatureLow + "°C"
+                }
 
-            if(temp >= 14){
-                itemView.imageIcon.setImageResource(R.drawable.sun)
-            }else if(temp < 14){
-                itemView.imageIcon.setImageResource(R.drawable.cloudysunny)
-            }
-            if(temp <= 8){
-                itemView.imageIcon.setImageResource(R.drawable.verycloudy)
-            }else if(temp <= 5){
-                itemView.imageIcon.setImageResource(R.drawable.rain)
-            }
+                if (weathermodel.Temperature.equals("1000")) {
+                    itemView.temperatureDetail.text = "null"
+                } else {
+                    itemView.temperatureDetail.text = weathermodel.Temperature + "°C"
+                }
+
+                itemView.setOnClickListener { listener.onWeatherClick(weathermodel) }
+                itemView.imageIcon.setImageResource(setImage(weathermodel.Country, weathermodel.County, weathermodel.City, weathermodel.WebLink))
+
         }
-
     }
-
 }

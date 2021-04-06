@@ -12,6 +12,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="20dp"
+    android:background="#50add8e6"
     >
 
     <ImageView
@@ -37,8 +38,21 @@
         android:layout_height="wrap_content"
         android:layout_toEndOf="@+id/imageIcon"
         android:layout_below="@+id/locationDescription"
+        android:layout_marginTop="2dp"
         android:textSize="20dp"
         android:text="20*" />
+
+    <TextView
+        android:id="@+id/temperaturelowDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/locationDescription"
+        android:layout_toRightOf="@+id/temperatureDetail"
+        android:layout_marginTop="1dp"
+        android:textSize="17dp"
+        android:text="12*"
+        android:layout_marginLeft="6dp"
+        />
 </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

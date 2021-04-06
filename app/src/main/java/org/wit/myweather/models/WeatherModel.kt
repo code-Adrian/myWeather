@@ -9,5 +9,6 @@ import kotlinx.android.parcel.Parcelize
                             var Country: String = "",
                             var County: String = "",
                             var City: String = "",
-                            var Temperature: String = "7",
+                            var Temperature: String = "0",
+                            var TemperatureLow: String = "0",
                             var WebLink: String = "") : Parcelable

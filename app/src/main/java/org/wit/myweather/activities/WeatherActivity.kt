@@ -7,10 +7,13 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.weather_activity.*
 import kotlinx.android.synthetic.main.weather_activity_edit.*
+import kotlinx.android.synthetic.main.weatherlist_activity.*
 import org.jetbrains.anko.startActivityForResult
+import org.jetbrains.anko.toast
 import org.wit.myweather.R
 import org.wit.myweather.main.Main
 import org.wit.myweather.models.WeatherModel
+import org.wit.myweather.webscraper.getLocationByWebLink
 
 class WeatherActivity: AppCompatActivity() {
 
@@ -43,7 +46,7 @@ class WeatherActivity: AppCompatActivity() {
                 weather.City = Edit_City.text.toString()
 
                 app.weather.update(weather.copy())
-                startActivityForResult<WeatherListActivity>(0)
+              //  startActivityForResult<WeatherListActivity>(0)
                 setResult(AppCompatActivity.RESULT_OK)
                 finish()
             }
@@ -54,6 +57,21 @@ class WeatherActivity: AppCompatActivity() {
                 weather.City = Add_City.text.toString()
 
                 app.weather.create(weather.copy())
+              //  startActivityForResult<WeatherListActivity>(0)
+                setResult(AppCompatActivity.RESULT_OK)
+                finish()
+
+            }
+
+            Add_Weather_URL.setOnClickListener{
+
+var location = getLocationByWebLink(Add_Link.text.toString())
+             var list = location.split(",")
+                weather.Country = list[1]
+                weather.City = list[0]
+                weather.WebLink = Add_Link.text.toString()
+                app.weather.create(weather.copy())
+              //  startActivityForResult<WeatherListActivity>(0)
                 setResult(AppCompatActivity.RESULT_OK)
                 finish()
             }
@@ -66,18 +84,30 @@ class WeatherActivity: AppCompatActivity() {
 
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.weatheractivity_menu,menu)
+        if(edit) {
+            menuInflater.inflate(R.menu.weatheractivity_edit_menu, menu)
+        }else{
+            menuInflater.inflate(R.menu.weatheractivity_menu, menu)
+        }
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.edit_cancel -> {
-                startActivityForResult<WeatherListActivity>(0)
+                setResult(AppCompatActivity.RESULT_OK)
                 finish()
             }
         }
 
+        when(item.itemId){
+            R.id.edit_delete -> {
+                app.weather.delete(weather)
+                setResult(AppCompatActivity.RESULT_OK)
+                startActivityForResult<WeatherListActivity>(0)
+                finish()
+            }
+        }
 
         return super.onOptionsItemSelected(item)
     }

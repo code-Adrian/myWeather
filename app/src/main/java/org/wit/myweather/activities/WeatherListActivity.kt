@@ -35,11 +35,17 @@ loadWeather()
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
-            R.id.weather_add -> startActivityForResult<WeatherActivity>(0)
+
+            R.id.weather_add -> {
+                startActivityForResult<WeatherActivity>(0)
+               // finish()
+            }
         }
 
         when(item.itemId){
-            R.id.weather_home -> {finish()}
+            R.id.weather_home -> {
+                startActivityForResult<MenuActivity>(0)
+                finish()}
         }
 
         return super.onOptionsItemSelected(item)
@@ -47,7 +53,7 @@ loadWeather()
 
     override fun onWeatherClick(weather: WeatherModel) {
         startActivityForResult(intentFor<WeatherActivity>().putExtra("weather_edit",weather),0)
-finish()
+//finish()
     }
 
    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -56,13 +62,12 @@ finish()
         super.onActivityResult(requestCode, resultCode, data)
     }
 
-private fun loadWeather(){
+ fun loadWeather(){
     showWeather(app.weather.getAll())
 }
 
    fun showWeather(weather: MutableList<WeatherModel>){
-        recyclerView.adapter = WeatherAdapter(weather,this)
+       recyclerView.adapter = WeatherAdapter(weather, this)
        recyclerView.adapter?.notifyDataSetChanged()
     }
-
 }

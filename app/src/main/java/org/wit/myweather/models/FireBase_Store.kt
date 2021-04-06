@@ -4,6 +4,8 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import kotlinx.android.synthetic.main.weatherlist_activity.*
+import kotlin.concurrent.thread
 
 var Id = 0L
 val uniqueFirebaseID: String = (android.os.Build.MODEL.toString() + " " + android.os.Build.ID+ " " + android.os.Build.USER + " --WeatherModel").replace(".","")
@@ -17,8 +19,7 @@ class FireBase_Store: WeatherStore {
     val weather = ArrayList<WeatherModel>()
 
     override fun getAll(): MutableList<WeatherModel> {
-        cloudPull()
-        return weather
+            return cloudPull()
     }
 
     override fun create(weathers: WeatherModel) {
@@ -28,7 +29,11 @@ class FireBase_Store: WeatherStore {
     }
 
     override fun delete(weathers: WeatherModel) {
-
+        val foundWeather: WeatherModel? = weather.find { id -> id.id == weathers.id }
+        if(foundWeather !=null){
+            weather.remove(foundWeather)
+        }
+        cloudSave()
     }
 
     override fun update(weathers: WeatherModel) {
@@ -37,8 +42,8 @@ class FireBase_Store: WeatherStore {
             foundWeather.Country = weathers.Country
             foundWeather.County = weathers.County
             foundWeather.City = weathers.City
-cloudSave()
         }
+        cloudSave()
     }
 
 private fun cloudSave(){
@@ -47,12 +52,14 @@ ref.setValue(weather)
 
 }
 
-  fun cloudPull(){
+private fun cloudPull() : ArrayList<WeatherModel> {
+
         var ref = FirebaseDatabase.getInstance("https://weather-18a10-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child(uniqueFirebaseID)
-        ref.addListenerForSingleValueEvent(object: ValueEventListener {
+        ref.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {}
 
             override fun onDataChange(p0: DataSnapshot) {
+                thread {
                 weather.clear()
                 for (p0: DataSnapshot in p0.children) {
 
@@ -61,18 +68,19 @@ ref.setValue(weather)
                         val county = (p0.child("county").getValue().toString())
                         val city = (p0.child("city").getValue().toString())
                         val temperature = (p0.child("temperature").getValue().toString())
-                        val weblink =  (p0.child("webLink").getValue().toString())
-                       val id = (p0.child("id").getValue().toString().toLong())
+                        val weblink = (p0.child("webLink").getValue().toString())
+                        val id = (p0.child("id").getValue().toString().toLong())
 
-                        val weatherModel = WeatherModel(id,country,county,city,temperature,weblink)
+                        val weatherModel = WeatherModel(id, country, county, city, temperature, weblink)
 
                         weather.add(weatherModel)
-
+                    }
                     }
 
                 }
             }
         })
+        return weather
     }
 
 }
