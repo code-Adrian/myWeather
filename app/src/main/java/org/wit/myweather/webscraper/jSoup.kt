@@ -5,7 +5,10 @@ import android.widget.Toast
 import org.jsoup.Jsoup
 import org.wit.myweather.R
 import java.lang.Exception
+import java.time.LocalDate
+import java.util.*
 import kotlin.concurrent.thread
+import kotlin.time.days
 
 
 fun getLocationByWebLink(weblink : String) : String{
@@ -132,7 +135,7 @@ if(weblink.equals("")){
     if(status.equals("Mostly cloudy") || status.equals("Partly cloudy") || status.equals("Mostly sunny")){
         image = R.drawable.cloudysunny
     }
-    if(status.equals("Sunny") || status.equals("Clear")){
+    if(status.equals("Sunny") || status.equals("Clear") || status.equals("Clear with periodic clouds")) {
         image = R.drawable.sun
     }
 }else {
@@ -147,13 +150,68 @@ if(weblink.equals("")){
     if(status.equals("Mostly cloudy") || status.equals("Partly cloudy") || status.equals("Mostly sunny")){
         image = R.drawable.cloudysunny
     }
-    if(status.equals("Sunny") || status.equals("Clear")){
+    if(status.equals("Sunny") || status.equals("Clear") || status.equals("Clear with periodic clouds")){
         image = R.drawable.sun
     }
 }
     return image
 }
 
+
+fun getLocation() : String{
+    var Location = ""
+
+    var getWeather = Jsoup.connect("https://www.google.com/search?q=weather+forecast").ignoreContentType(true).get()
+    var location = getWeather.getElementById("wob_loc").text()
+
+    if(location.contains(",")){
+       var loc = location.split(",")
+
+        if(loc.size == 1){
+            Location = loc[1].replace("County ","")
+        }else if(loc.size == 2){
+            Location = loc[1].replace("County ","")
+        }
+    }
+    return Location
+}
+
+fun getDateDay() : String{
+
+    val day = LocalDate.now().dayOfWeek.name.toLowerCase()
+
+    return day.capitalize()
+}
+
+fun getPeakTemp() : String{
+    var getWeather = Jsoup.connect("https://www.google.com/search?q=weather+forecast").ignoreContentType(true).get()
+    var temp = getWeather.getElementById("wob_tm").text()
+
+    return temp+"°C"
+}
+
+fun getWeatherStatus() : Int {
+
+    var image : Int = 0
+
+    var getWeather = Jsoup.connect("https://www.google.com/search?q=weather+forecast").ignoreContentType(true).get()
+    var status = getWeather.getElementById("wob_dc").text()
+
+        if(status.equals("Rain") || status.equals("Scattered showers") || status.equals("Rain and snow") || status.equals("Scattered thunderstorms") || status.equals("Showers")){
+            image = R.drawable.rain
+        }
+        if(status.equals("Cloudy")){
+            image = R.drawable.verycloudy
+        }
+        if(status.equals("Mostly cloudy") || status.equals("Partly cloudy") || status.equals("Mostly sunny")){
+            image = R.drawable.cloudysunny
+        }
+        if(status.equals("Sunny") || status.equals("Clear") || status.equals("Clear with periodic clouds")){
+            image = R.drawable.sun
+        }
+
+    return image
+}
 
 private fun allowNetwork(){
     var policy = StrictMode.ThreadPolicy.Builder().permitAll().build();

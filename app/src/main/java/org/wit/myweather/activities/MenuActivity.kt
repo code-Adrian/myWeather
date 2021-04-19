@@ -2,15 +2,20 @@ package org.wit.myweather.activities
 
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.os.StrictMode
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.mainmenu_activity.*
+import kotlinx.android.synthetic.main.weather_card.view.*
 import kotlinx.android.synthetic.main.weatherlist_activity.*
+import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.startActivityForResult
+import org.jetbrains.anko.uiThread
 import org.wit.myweather.R
 import org.wit.myweather.main.Main
 import org.wit.myweather.models.WeatherModel
+import org.wit.myweather.webscraper.*
 import kotlin.concurrent.thread
 
 class MenuActivity : AppCompatActivity(){
@@ -21,6 +26,7 @@ class MenuActivity : AppCompatActivity(){
         app = application as Main
         supportActionBar?.hide();
         setContentView(R.layout.mainmenu_activity)
+        loadDetails()
 onMenuButtonClick()
         preloadWeather()
         progressBar.visibility = View.INVISIBLE
@@ -39,6 +45,17 @@ progressBar.visibility = View.VISIBLE
        app.weather.getAll()
     }
 
-
+private fun loadDetails(){
+    doAsync {
+        uiThread {
+            var policy = StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+            menu_county.text=getLocation()
+            menu_dayofweek.text = getDateDay()
+            menu_temp.text = getPeakTemp()
+            weatherIcon.setBackgroundResource(getWeatherStatus())
+        }
+    }
+}
 
 }

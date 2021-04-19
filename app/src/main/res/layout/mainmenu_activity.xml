@@ -42,10 +42,10 @@ android:layout_marginTop="30dp"
 
 
         <TextView
-            android:id="@+id/menu_countryname"
-            android:layout_width="150dp"
+            android:id="@+id/menu_county"
+            android:layout_width="400dp"
             android:layout_height="wrap_content"
-            android:text="Dublin"
+            android:text="Loading..."
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="45sp" />
@@ -55,7 +55,7 @@ android:layout_marginTop="30dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="4dp"
-        android:text="Wednesday"
+        android:text="Loading..."
         android:textAlignment="center"
         android:textSize="19.5sp"
         />
@@ -71,7 +71,7 @@ android:layout_marginTop="30dp"
             android:id="@+id/menu_temp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="20°C"
+            android:text="....."
             android:textAlignment="center"
             android:textSize="40sp"
             android:textColor="@color/white"
@@ -91,10 +91,12 @@ android:layout_marginTop="30dp"
     android:layout_marginTop="0dp"
     >
         <ImageView
+            android:layout_marginTop="28dp"
+            android:layout_marginBottom="28dp"
             android:id="@+id/weatherIcon"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/sun" />
+             />
 
 </LinearLayout>
 
