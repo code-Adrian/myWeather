@@ -23,7 +23,7 @@ class FireBase_Store: WeatherStore {
     }
 
     override fun create(weathers: WeatherModel) {
-        weathers.id = ID()
+        weathers.id = ID()+weather.size+1
         weather.add(weathers)
         cloudSave()
     }
@@ -43,6 +43,7 @@ class FireBase_Store: WeatherStore {
             foundWeather.County = weathers.County
             foundWeather.City = weathers.City
         }
+        println(weather)
         cloudSave()
     }
 
