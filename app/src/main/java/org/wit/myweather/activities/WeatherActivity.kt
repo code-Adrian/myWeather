@@ -25,6 +25,7 @@ class WeatherActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         app = application as Main
+
         if (intent.hasExtra("weather_edit")) {
             setContentView(R.layout.weather_activity_edit)
             edit = true
@@ -37,6 +38,7 @@ class WeatherActivity: AppCompatActivity() {
 
         } else {
             setContentView(R.layout.weather_activity)
+
         }
 
         if (edit) {
@@ -77,8 +79,13 @@ var location = getLocationByWebLink(Add_Link.text.toString())
             }
         }
 
-
-
+if(edit){
+    toolbarEdit.setTitle("Edit Weather")
+    setSupportActionBar(toolbarEdit)
+}else{
+    toolbarAdd.setTitle("Add Weather")
+    setSupportActionBar(toolbarAdd)
+}
 
     }
 

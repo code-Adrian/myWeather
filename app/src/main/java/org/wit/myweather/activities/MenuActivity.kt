@@ -1,5 +1,6 @@
 package org.wit.myweather.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.os.StrictMode
@@ -24,7 +25,7 @@ class MenuActivity : AppCompatActivity(){
 
         super.onCreate(savedInstanceState)
         app = application as Main
-        supportActionBar?.hide();
+        setSupportActionBar(toolbar)
         setContentView(R.layout.mainmenu_activity)
         loadDetails()
 onMenuButtonClick()
@@ -36,9 +37,20 @@ onMenuButtonClick()
         menu_button.setOnClickListener {
             startActivityForResult(intentFor<WeatherListActivity>(),0)
 progressBar.visibility = View.VISIBLE
-            finish()
+
         }
 
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == 0) {
+            if (resultCode == RESULT_OK) {
+loadDetails()
+                progressBar.visibility = View.INVISIBLE
+            }
+        }
     }
 
     private fun preloadWeather(){

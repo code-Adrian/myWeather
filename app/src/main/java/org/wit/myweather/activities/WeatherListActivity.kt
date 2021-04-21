@@ -27,6 +27,9 @@ lateinit var app : Main
         app = application as Main
         val layout = LinearLayoutManager(this)
         recyclerView.layoutManager = layout
+        toolbar.setTitle("myWeather")
+        setSupportActionBar(toolbar)
+
 loadWeather()
     }
 
@@ -41,14 +44,15 @@ loadWeather()
 
             R.id.weather_add -> {
                 startActivityForResult<WeatherActivity>(0)
-               // finish()
             }
         }
 
         when(item.itemId){
             R.id.weather_home -> {
                 startActivityForResult<MenuActivity>(0)
-                finish()}
+                finish()
+            setResult(Activity.RESULT_OK)
+            }
         }
 
         return super.onOptionsItemSelected(item)

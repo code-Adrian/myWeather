@@ -7,6 +7,7 @@ import org.wit.myweather.R
 import java.lang.Exception
 import java.time.LocalDate
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.concurrent.thread
 import kotlin.time.days
 
@@ -212,6 +213,151 @@ fun getWeatherStatus() : Int {
 
     return image
 }
+
+fun getWeeklyPeakTemp(country: String, county: String,city:String) : ArrayList<String>{
+
+    val list : ArrayList<String> = ArrayList()
+    try {
+        if (county.equals("")) {
+            var getWeather = Jsoup.connect("https://www.google.com/search?q=weather+forecast+" + country + "+" + city + "").ignoreContentType(true).get()
+            for(i in 0..7){
+                var weekly = (getWeather.getElementsByClass("vk_gy gNCp2e").get(i).getElementsByClass("wob_t")
+                        .get(0).text())
+                list.add(weekly+"°C")
+            }
+        } else {
+            var getWeather = Jsoup.connect("https://www.google.com/search?q=weather+forecast+" + country + "+" + county.replace(" ", "+") + "+" + city + "")
+                    .ignoreContentType(true).get()
+            for(i in 0..7){
+                var weekly = (getWeather.getElementsByClass("vk_gy gNCp2e").get(i).getElementsByClass("wob_t")
+                        .get(0).text())
+                list.add(weekly+"°C")
+            }
+
+        }
+    }catch (e:Exception){
+        println(e)
+    }
+
+    return list
+}
+
+fun getWeeklylowTemp(country: String, county: String,city:String) : ArrayList<String>{
+
+    val list : ArrayList<String> = ArrayList()
+    try {
+        if (county.equals("")) {
+            var getWeather = Jsoup.connect("https://www.google.com/search?q=weather+forecast+" + country + "+" + city + "").ignoreContentType(true).get()
+            for(i in 0..7){
+                var weekly = (getWeather.getElementsByClass("QrNVmd ZXCv8e").get(i).getElementsByClass("wob_t")
+                        .get(0).text())
+                list.add(weekly+"°C")
+
+            }
+        } else {
+            var getWeather = Jsoup.connect("https://www.google.com/search?q=weather+forecast+" + country + "+" + county.replace(" ", "+") + "+" + city + "")
+                    .ignoreContentType(true).get()
+            for(i in 0..7){
+                var weekly = (getWeather.getElementsByClass("QrNVmd ZXCv8e").get(i).getElementsByClass("wob_t")
+                        .get(0).text())
+                list.add(weekly+"°C")
+
+            }
+
+        }
+    }catch (e:Exception){
+        println(e)
+    }
+
+    return list
+}
+
+fun getWeekDays(country: String, county: String,city:String) : ArrayList<String>{
+
+    val list : ArrayList<String> = ArrayList()
+    try {
+        if (county.equals("")) {
+            var getWeather = Jsoup.connect("https://www.google.com/search?q=weather+forecast+" + country + "+" + city + "").ignoreContentType(true).get()
+            for(i in 0..7){
+                var weekly = (getWeather.getElementsByClass("QrNVmd Z1VzSb").get(i).text())
+                list.add(weekly)
+            }
+        } else {
+            var getWeather = Jsoup.connect("https://www.google.com/search?q=weather+forecast+" + country + "+" + county.replace(" ", "+") + "+" + city + "")
+                    .ignoreContentType(true).get()
+            for(i in 0..7){
+                var weekly = (getWeather.getElementsByClass("QrNVmd Z1VzSb").get(i).text())
+                list.add(weekly)
+            }
+
+        }
+    }catch (e:Exception){
+        println(e)
+    }
+
+    return list
+}
+
+fun getWeeklyWeather(country: String, county: String,city:String) : ArrayList<Int>{
+
+    val list : ArrayList<Int> = ArrayList()
+    try {
+        if (county.equals("")) {
+            var getWeather = Jsoup.connect("https://www.google.com/search?q=weather+forecast+" + country + "+" + city + "").ignoreContentType(true).get()
+            for(i in 0..7){
+                var status = (getWeather.getElementsByClass("vk_gy gNCp2e").get(i).getElementsByClass("wob_t")
+                        .get(0).text())
+
+                if(status.toInt() <= 1){
+                    list.add(R.drawable.snowflake)
+                }
+                if(status.toInt() >= 2){
+                    list.add(R.drawable.verycloudy)
+                }
+                if(status.toInt() >= 14){
+                    list.add(R.drawable.cloudysunny)
+                }
+                if(status.toInt() >= 18){
+                    list.add(R.drawable.sun)
+                }
+            }
+        } else {
+            var getWeather = Jsoup.connect("https://www.google.com/search?q=weather+forecast+" + country + "+" + county.replace(" ", "+") + "+" + city + "")
+                    .ignoreContentType(true).get()
+            for(i in 0..7) {
+                var status = (getWeather.getElementsByClass("vk_gy gNCp2e").get(i).getElementsByClass("wob_t")
+                        .get(0).text())
+
+                if (status.toInt() <= 1) {
+                    list.add(R.drawable.snowflake)
+                }
+                if (status.toInt() >= 2) {
+                    list.add(R.drawable.verycloudy)
+                }
+                if (status.toInt() >= 14) {
+                    list.add(R.drawable.cloudysunny)
+                }
+                if(status.toInt() >= 18){
+                    list.add(R.drawable.sun)
+                }
+            }
+        }
+    }catch (e:Exception){
+        println(e)
+    }
+
+    return list
+}
+
+
+
+
+
+
+
+
+
+
 
 private fun allowNetwork(){
     var policy = StrictMode.ThreadPolicy.Builder().permitAll().build();

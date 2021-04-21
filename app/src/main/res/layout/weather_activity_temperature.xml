@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/background_image"
     >
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        app:elevation="0dip"
+        app:theme="@style/MyToolbar">
 
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarTemperature"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.appbar.AppBarLayout>
 
     <GridLayout
         android:layout_width="match_parent"
@@ -16,7 +27,7 @@
         android:alignmentMode="alignMargins"
         android:columnOrderPreserved="false"
         android:padding="0dp"
-
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         >
 
         <androidx.cardview.widget.CardView
@@ -55,7 +66,9 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"
+                    >
                     <TextView
                         android:id="@+id/card1_peakTemp"
                         android:textSize="16sp"
@@ -76,15 +89,13 @@
                     </TextView>
                 </LinearLayout>
 
-
-
                 <ImageView
                     android:id="@+id/card1_image"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="0dp"
                     android:layout_marginBottom="4dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="60sp"
-                    android:src="@drawable/sun"/>
+                    android:layout_width="70dp"
+                    android:layout_height="60dp"
+                    />
 
             </LinearLayout>
 
@@ -125,7 +136,9 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal" >
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"
+                    >
                     <TextView
                         android:id="@+id/card2_peakTemp"
                         android:textSize="16sp"
@@ -150,11 +163,11 @@
 
                 <ImageView
                     android:id="@+id/card2_image"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="0dp"
                     android:layout_marginBottom="4dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="60sp"
-                    android:src="@drawable/sun"/>
+                    android:layout_width="70dp"
+                    android:layout_height="60dp"
+                    />
 
 
             </LinearLayout>
@@ -197,7 +210,9 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal" >
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"
+                    >
                     <TextView
                         android:id="@+id/card3_peakTemp"
                         android:textSize="16sp"
@@ -222,11 +237,11 @@
 
                 <ImageView
                     android:id="@+id/card3_image"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="0dp"
                     android:layout_marginBottom="4dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="60sp"
-                    android:src="@drawable/sun"/>
+                    android:layout_width="70dp"
+                    android:layout_height="60dp"
+                    />
 
             </LinearLayout>
 
@@ -267,7 +282,9 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal" >
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"
+                    >
                     <TextView
                         android:id="@+id/card4_peakTemp"
                         android:textSize="16dp"
@@ -292,11 +309,11 @@
 
                 <ImageView
                     android:id="@+id/card4_image"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="0dp"
                     android:layout_marginBottom="4dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="60sp"
-                    android:src="@drawable/sun"/>
+                    android:layout_width="70dp"
+                    android:layout_height="60dp"
+                    />
 
             </LinearLayout>
 
@@ -337,7 +354,9 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal" >
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"
+                    >
                     <TextView
                         android:id="@+id/card6_peakTemp"
                         android:textSize="16sp"
@@ -362,11 +381,11 @@
 
                 <ImageView
                     android:id="@+id/card6_image"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="0dp"
                     android:layout_marginBottom="4dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="60sp"
-                    android:src="@drawable/sun"/>
+                    android:layout_width="70dp"
+                    android:layout_height="60dp"
+                    />
 
             </LinearLayout>
 
@@ -407,7 +426,9 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal" >
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"
+                    >
                     <TextView
                         android:id="@+id/card5_peakTemp"
                         android:textSize="16sp"
@@ -432,11 +453,11 @@
 
                 <ImageView
                     android:id="@+id/card5_image"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="0dp"
                     android:layout_marginBottom="4dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="60sp"
-                    android:src="@drawable/sun"
+                    android:layout_width="70dp"
+                    android:layout_height="60dp"
+
                 />
 
             </LinearLayout>
@@ -478,7 +499,9 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal" >
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"
+                    >
                     <TextView
                         android:id="@+id/card7_peakTemp"
                         android:textSize="16sp"
@@ -503,11 +526,11 @@
 
                 <ImageView
                     android:id="@+id/card7_image"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="0dp"
                     android:layout_marginBottom="4dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="60sp"
-                    android:src="@drawable/sun"/>
+                    android:layout_width="70dp"
+                    android:layout_height="60dp"
+                    />
 
             </LinearLayout>
 
@@ -547,7 +570,9 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"
+                    >
 
                     <TextView
                         android:id="@+id/card8_peakTemp"
@@ -570,11 +595,11 @@
 
                 <ImageView
                     android:id="@+id/card8_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="60sp"
-                    android:layout_marginTop="4dp"
+                    android:layout_width="70dp"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="0dp"
                     android:layout_marginBottom="4dp"
-                    android:src="@drawable/sun" />
+                     />
 
             </LinearLayout>
 
@@ -585,4 +610,4 @@
 
 
 
-</RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
