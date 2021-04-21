@@ -3,22 +3,26 @@ package org.wit.myweather.activities
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.weather_card.view.*
-import kotlinx.android.synthetic.main.weatherlist_activity.*
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 import org.wit.myweather.R
 import org.wit.myweather.models.WeatherModel
 import org.wit.myweather.webscraper.getLowestTemp
 import org.wit.myweather.webscraper.getPeakTemp
 import org.wit.myweather.webscraper.setImage
-import java.lang.Exception
-import kotlin.concurrent.thread
 
 interface WeatherListener{
     fun onWeatherClick(weather: WeatherModel)
 }
 
-class WeatherAdapter constructor(private val weather: MutableList<WeatherModel>, private val listener: WeatherListener) : RecyclerView.Adapter<WeatherAdapter.MainHolder>(){
+interface EditListener{
+    fun onEditClick(weather : WeatherModel)
+}
+
+class WeatherAdapter constructor(private val weather: MutableList<WeatherModel>, private val listener: WeatherListener, private val listener2: EditListener) : RecyclerView.Adapter<WeatherAdapter.MainHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherAdapter.MainHolder {
        return MainHolder(LayoutInflater.from(parent?.context).inflate(R.layout.weather_card,parent,false))
@@ -29,17 +33,18 @@ class WeatherAdapter constructor(private val weather: MutableList<WeatherModel>,
 
     override fun onBindViewHolder(holder: WeatherAdapter.MainHolder, position: Int) {
         val weathers = weather[holder.adapterPosition]
-        holder.bind(weathers,listener)
+        holder.bind(weathers,listener,listener2)
     }
 
     class MainHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView){
 
-        fun bind(weathermodel: WeatherModel, listener: WeatherListener){
+        fun bind(weathermodel: WeatherModel, listener: WeatherListener, listener2: EditListener){
                 if (!weathermodel.County.equals("")) {
                     itemView.locationDescription.text = weathermodel.Country + ", " + weathermodel.County + ", " + weathermodel.City
                 } else {
                     itemView.locationDescription.text = weathermodel.Country + ", " + weathermodel.City
                 }
+doAsync { uiThread {
 
                 weathermodel.Temperature = getPeakTemp(weathermodel.Country, weathermodel.County, weathermodel.City)
                 weathermodel.TemperatureLow = getLowestTemp(weathermodel.Country, weathermodel.County, weathermodel.City)
@@ -57,8 +62,9 @@ class WeatherAdapter constructor(private val weather: MutableList<WeatherModel>,
                 }
 
                 itemView.setOnClickListener { listener.onWeatherClick(weathermodel) }
+                itemView.editImage.setOnClickListener{listener2.onEditClick(weathermodel)}
                 itemView.imageIcon.setImageResource(setImage(weathermodel.Country, weathermodel.County, weathermodel.City, weathermodel.WebLink))
-
+} }
         }
     }
 }

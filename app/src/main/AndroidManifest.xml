@@ -16,6 +16,7 @@
         android:theme="@style/Theme.MyWeather">
         <activity android:name=".activities.WeatherListActivity" />
         <activity android:name=".activities.WeatherActivity" />
+        <activity android:name=".activities.WeatherActivityTemperature" />
         <activity
             android:name=".activities.MenuActivity"
             tools:ignore="Instantiatable">

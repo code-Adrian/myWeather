@@ -55,7 +55,7 @@ android:layout_marginTop="30dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="4dp"
-        android:text="Loading..."
+        android:text="Please wait..."
         android:textAlignment="center"
         android:textSize="19.5sp"
         />
@@ -71,7 +71,7 @@ android:layout_marginTop="30dp"
             android:id="@+id/menu_temp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="....."
+            android:text=""
             android:textAlignment="center"
             android:textSize="40sp"
             android:textColor="@color/white"
@@ -91,11 +91,11 @@ android:layout_marginTop="30dp"
     android:layout_marginTop="0dp"
     >
         <ImageView
-            android:layout_marginTop="28dp"
-            android:layout_marginBottom="28dp"
+            android:layout_marginTop="35dp"
+            android:layout_marginBottom="35dp"
             android:id="@+id/weatherIcon"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="200dp"
              />
 
 </LinearLayout>
@@ -112,7 +112,7 @@ android:layout_marginTop="30dp"
             android:id="@+id/menu_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="View Weather List"
+            android:text="View Weather"
             android:background="@drawable/round"
 
             />

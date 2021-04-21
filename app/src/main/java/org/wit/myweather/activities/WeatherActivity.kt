@@ -5,6 +5,7 @@ import android.os.PersistableBundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.mainmenu_activity.*
 import kotlinx.android.synthetic.main.weather_activity.*
 import kotlinx.android.synthetic.main.weather_activity_edit.*
 import kotlinx.android.synthetic.main.weatherlist_activity.*
@@ -24,7 +25,6 @@ class WeatherActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         app = application as Main
-
         if (intent.hasExtra("weather_edit")) {
             setContentView(R.layout.weather_activity_edit)
             edit = true

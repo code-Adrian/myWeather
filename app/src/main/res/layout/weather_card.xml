@@ -40,7 +40,7 @@
         android:layout_below="@+id/locationDescription"
         android:layout_marginTop="2dp"
         android:textSize="20dp"
-        android:text="20*" />
+        android:text="" />
 
     <TextView
         android:id="@+id/temperaturelowDetail"
@@ -50,9 +50,18 @@
         android:layout_toRightOf="@+id/temperatureDetail"
         android:layout_marginTop="1dp"
         android:textSize="17dp"
-        android:text="12*"
+        android:text="Loading please wait..."
         android:layout_marginLeft="6dp"
         />
+
+    <ImageView
+        android:id="@+id/editImage"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/locationDescription"
+        android:src="@drawable/edit"
+   />
 </RelativeLayout>
 
 </androidx.cardview.widget.CardView>
