@@ -5,12 +5,12 @@
     <item
         android:id="@+id/weather_add"
         android:icon="@android:drawable/ic_menu_add"
-        android:title="Add weather"
+        android:title="@string/add_weather"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/weather_home"
         android:icon="@drawable/ic_menu_home"
-        android:title="Home"
-        app:showAsAction="always" />
+        android:title="@string/Home"
+        app:showAsAction="ifRoom" />
 </menu>

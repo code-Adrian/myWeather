@@ -6,6 +6,6 @@
     <item
         android:id="@+id/temperature_cancel"
         android:icon="@android:drawable/ic_menu_close_clear_cancel"
-        android:title="Home"
+        android:title="@string/Home"
         app:showAsAction="always" />
 </menu>

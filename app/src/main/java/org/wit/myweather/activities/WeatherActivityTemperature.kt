@@ -15,10 +15,7 @@ import org.jetbrains.anko.uiThread
 import org.wit.myweather.R
 import org.wit.myweather.main.Main
 import org.wit.myweather.models.WeatherModel
-import org.wit.myweather.webscraper.getWeekDays
-import org.wit.myweather.webscraper.getWeeklyPeakTemp
-import org.wit.myweather.webscraper.getWeeklyWeather
-import org.wit.myweather.webscraper.getWeeklylowTemp
+import org.wit.myweather.webscraper.*
 import kotlin.concurrent.thread
 
 class WeatherActivityTemperature : AppCompatActivity(){
@@ -82,7 +79,7 @@ setDetails()
                     card7_Day.text = weekDaylist.get(6)
                     card8_Day.text = weekDaylist.get(7)
 
-                    card1_image.setBackgroundResource(imagelist.get(0))
+                    card1_image.setImageResource(setImage(weather.Country, weather.County, weather.City, weather.WebLink))
                     card2_image.setImageResource(imagelist.get(1))
                     card3_image.setImageResource(imagelist.get(2))
                     card4_image.setImageResource(imagelist.get(3))

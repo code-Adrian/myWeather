@@ -17,7 +17,7 @@
 
     <ImageView
         android:id="@+id/imageIcon"
-        android:contentDescription="Weather_Image"
+        android:contentDescription="@string/weather_image"
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_alignParentStart="true"
@@ -29,8 +29,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@+id/imageIcon"
-        android:textSize="22dp"
-        android:text="Ireland,Tipperary,Cahir" />
+        android:textSize="22sp"
+        android:text="@string/ireland_tipperary_cahir" />
 
     <TextView
         android:id="@+id/temperatureDetail"
@@ -39,7 +39,7 @@
         android:layout_toEndOf="@+id/imageIcon"
         android:layout_below="@+id/locationDescription"
         android:layout_marginTop="2dp"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:text="" />
 
     <TextView
@@ -47,10 +47,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/locationDescription"
-        android:layout_toRightOf="@+id/temperatureDetail"
+        android:layout_toEndOf="@+id/temperatureDetail"
         android:layout_marginTop="1dp"
         android:textSize="17dp"
-        android:text="Loading please wait..."
+        android:text="@string/card_loading"
         android:layout_marginLeft="6dp"
         />
 
@@ -58,10 +58,10 @@
         android:id="@+id/editImage"
         android:layout_width="35dp"
         android:layout_height="35dp"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_below="@+id/locationDescription"
         android:src="@drawable/edit"
-   />
+        android:contentDescription="@string/card_edit" />
 </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

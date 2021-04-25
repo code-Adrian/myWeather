@@ -16,8 +16,8 @@ fun getLocationByWebLink(weblink : String) : String{
     allowNetwork()
     var location = ""
     try{
-        var getWeather = Jsoup.connect(weblink).ignoreContentType(true).get()
-        var weather = getWeather.getElementById("wob_loc").text()
+        val getWeather = Jsoup.connect(weblink).ignoreContentType(true).get()
+        val weather = getWeather.getElementById("wob_loc").text()
 location = weather
     }catch (e: Exception){
 
@@ -33,20 +33,20 @@ fun getPeakTemp(country: String, county: String,city:String) : String {
     try {
 
         if (county.equals("")) {
-            var getWeather =
+            val getWeather =
                     Jsoup.connect("https://www.google.com/search?q=weather+forecast+" + country + "+" + city + "")
                             .ignoreContentType(true).get()
-            var weather =
+            val weather =
                     (getWeather.getElementsByClass("vk_gy gNCp2e").get(0).getElementsByClass("wob_t")
                             .get(0).text())
             temperature = weather.replace("°C", "")
         } else {
 
-            var getWeather =
+            val getWeather =
                     Jsoup.connect("https://www.google.com/search?q=weather+forecast+" + country + "+" + county.replace(" ", "+") + "+" + city + "")
                             .ignoreContentType(true).get()
-            println("https://www.google.com/search?q=weather+forecast+" + country + "+" + county.replace(" ", "+") + "+" + city + "")
-            var weather =
+
+            val weather =
                     (getWeather.getElementsByClass("vk_gy gNCp2e").get(0).getElementsByClass("wob_t")
                             .get(0).text())
             temperature = weather.replace("°C", "")
@@ -65,19 +65,19 @@ fun getLowestTemp(country: String, county: String,city:String) : String{
     var temperature = ""
     try {
         if (county.equals("")) {
-            var getWeather =
+            val getWeather =
                 Jsoup.connect("https://www.google.com/search?q=weather+forecast+" + country + "+" + city + "")
                     .ignoreContentType(true).get()
-            var weather =
+            val weather =
                 (getWeather.getElementsByClass("QrNVmd ZXCv8e").get(0).getElementsByClass("wob_t")
                     .get(0).text())
             temperature = weather.replace("°C", "")
         } else {
 
-            var getWeather =
+            val getWeather =
                 Jsoup.connect("https://www.google.com/search?q=weather+forecast+" + country + "+" + county.replace(" ", "+") + "+" + city + "")
                     .ignoreContentType(true).get()
-            var weather =
+            val weather =
                 (getWeather.getElementsByClass("QrNVmd ZXCv8e").get(0).getElementsByClass("wob_t")
                     .get(0).text())
             temperature = weather.replace("°C", "")
@@ -91,9 +91,9 @@ fun getWeatherStatusByWebLink(weblink: String) : String{
 var weatherStatus = ""
 
 
-        var location =  getLocationByWebLink(weblink).split(",")
-        var getWeather = Jsoup.connect("https://www.google.com/search?q=weather+forecast+" + location[0] + "+" + location[1] + "").ignoreContentType(true).get()
-        var status = getWeather.getElementById("wob_dc").text()
+        val location =  getLocationByWebLink(weblink).split(",")
+        val getWeather = Jsoup.connect("https://www.google.com/search?q=weather+forecast+" + location[0] + "+" + location[1] + "").ignoreContentType(true).get()
+        val status = getWeather.getElementById("wob_dc").text()
 weatherStatus = status
 
     return weatherStatus
@@ -105,13 +105,13 @@ fun getWeatherStatus(country: String, county: String,city:String) : String{
 
 try {
     if (county.equals("")) {
-        var getWeather = Jsoup.connect("https://www.google.com/search?q=weather+forecast+" + country + "+" + city + "").ignoreContentType(true).get()
-        var status = getWeather.getElementById("wob_dc").text()
+        val getWeather = Jsoup.connect("https://www.google.com/search?q=weather+forecast+" + country + "+" + city + "").ignoreContentType(true).get()
+        val status = getWeather.getElementById("wob_dc").text()
         weatherStatus = status
     } else {
-        var getWeather = Jsoup.connect("https://www.google.com/search?q=weather+forecast+" + country + "+" + county.replace(" ", "+") + "+" + city + "")
+        val getWeather = Jsoup.connect("https://www.google.com/search?q=weather+forecast+" + country + "+" + county.replace(" ", "+") + "+" + city + "")
                 .ignoreContentType(true).get()
-        var status = getWeather.getElementById("wob_dc").text()
+        val status = getWeather.getElementById("wob_dc").text()
         weatherStatus = status
     }
 }catch (e:Exception){
@@ -126,7 +126,7 @@ fun setImage(country: String, county: String,city:String,weblink: String) : Int{
 
 if(weblink.equals("")){
 
-    var status = getWeatherStatus(country,county,city)
+    val status = getWeatherStatus(country,county,city)
     if(status.equals("Rain") || status.equals("Scattered showers") || status.equals("Rain and snow") || status.equals("Scattered thunderstorms") || status.equals("Showers")){
         image = R.drawable.rain
     }
@@ -141,7 +141,7 @@ if(weblink.equals("")){
     }
 }else {
 
-    var status = getWeatherStatusByWebLink(weblink)
+    val status = getWeatherStatusByWebLink(weblink)
     if(status.equals("Rain") || status.equals("Scattered showers") || status.equals("Rain and snow") || status.equals("Scattered thunderstorms") || status.equals("Showers")){
         image = R.drawable.rain
     }
@@ -162,15 +162,19 @@ if(weblink.equals("")){
 fun getLocation() : String{
     var Location = ""
 
-    var getWeather = Jsoup.connect("https://www.google.com/search?q=weather+forecast").ignoreContentType(true).get()
-    var location = getWeather.getElementById("wob_loc").text()
+    val getWeather = Jsoup.connect("https://www.google.com/search?q=weather+forecast").ignoreContentType(true).get()
+    val location = getWeather.getElementById("wob_loc").text()
 
     if(location.contains(",")){
-       var loc = location.split(",")
+       val loc = location.split(",")
+        if(loc.size <= 1){
 
-        if(loc.size == 1){
             Location = loc[1].replace("County ","")
         }else if(loc.size == 2){
+
+            Location = loc[1].replace("County ","")
+        }else if(loc.size == 3){
+
             Location = loc[1].replace("County ","")
         }
     }
@@ -185,8 +189,8 @@ fun getDateDay() : String{
 }
 
 fun getPeakTemp() : String{
-    var getWeather = Jsoup.connect("https://www.google.com/search?q=weather+forecast").ignoreContentType(true).get()
-    var temp = getWeather.getElementById("wob_tm").text()
+    val getWeather = Jsoup.connect("https://www.google.com/search?q=weather+forecast").ignoreContentType(true).get()
+    val temp = getWeather.getElementById("wob_tm").text()
 
     return temp+"°C"
 }
@@ -195,8 +199,8 @@ fun getWeatherStatus() : Int {
 
     var image : Int = 0
 
-    var getWeather = Jsoup.connect("https://www.google.com/search?q=weather+forecast").ignoreContentType(true).get()
-    var status = getWeather.getElementById("wob_dc").text()
+    val getWeather = Jsoup.connect("https://www.google.com/search?q=weather+forecast").ignoreContentType(true).get()
+    val status = getWeather.getElementById("wob_dc").text()
 
         if(status.equals("Rain") || status.equals("Scattered showers") || status.equals("Rain and snow") || status.equals("Scattered thunderstorms") || status.equals("Showers")){
             image = R.drawable.rain
@@ -219,14 +223,14 @@ fun getWeeklyPeakTemp(country: String, county: String,city:String) : ArrayList<S
     val list : ArrayList<String> = ArrayList()
     try {
         if (county.equals("")) {
-            var getWeather = Jsoup.connect("https://www.google.com/search?q=weather+forecast+" + country + "+" + city + "").ignoreContentType(true).get()
+            val getWeather = Jsoup.connect("https://www.google.com/search?q=weather+forecast+" + country + "+" + city + "").ignoreContentType(true).get()
             for(i in 0..7){
                 var weekly = (getWeather.getElementsByClass("vk_gy gNCp2e").get(i).getElementsByClass("wob_t")
                         .get(0).text())
                 list.add(weekly+"°C")
             }
         } else {
-            var getWeather = Jsoup.connect("https://www.google.com/search?q=weather+forecast+" + country + "+" + county.replace(" ", "+") + "+" + city + "")
+            val getWeather = Jsoup.connect("https://www.google.com/search?q=weather+forecast+" + country + "+" + county.replace(" ", "+") + "+" + city + "")
                     .ignoreContentType(true).get()
             for(i in 0..7){
                 var weekly = (getWeather.getElementsByClass("vk_gy gNCp2e").get(i).getElementsByClass("wob_t")
@@ -247,18 +251,18 @@ fun getWeeklylowTemp(country: String, county: String,city:String) : ArrayList<St
     val list : ArrayList<String> = ArrayList()
     try {
         if (county.equals("")) {
-            var getWeather = Jsoup.connect("https://www.google.com/search?q=weather+forecast+" + country + "+" + city + "").ignoreContentType(true).get()
+            val getWeather = Jsoup.connect("https://www.google.com/search?q=weather+forecast+" + country + "+" + city + "").ignoreContentType(true).get()
             for(i in 0..7){
-                var weekly = (getWeather.getElementsByClass("QrNVmd ZXCv8e").get(i).getElementsByClass("wob_t")
+                val weekly = (getWeather.getElementsByClass("QrNVmd ZXCv8e").get(i).getElementsByClass("wob_t")
                         .get(0).text())
                 list.add(weekly+"°C")
 
             }
         } else {
-            var getWeather = Jsoup.connect("https://www.google.com/search?q=weather+forecast+" + country + "+" + county.replace(" ", "+") + "+" + city + "")
+            val getWeather = Jsoup.connect("https://www.google.com/search?q=weather+forecast+" + country + "+" + county.replace(" ", "+") + "+" + city + "")
                     .ignoreContentType(true).get()
             for(i in 0..7){
-                var weekly = (getWeather.getElementsByClass("QrNVmd ZXCv8e").get(i).getElementsByClass("wob_t")
+                val weekly = (getWeather.getElementsByClass("QrNVmd ZXCv8e").get(i).getElementsByClass("wob_t")
                         .get(0).text())
                 list.add(weekly+"°C")
 
@@ -277,16 +281,16 @@ fun getWeekDays(country: String, county: String,city:String) : ArrayList<String>
     val list : ArrayList<String> = ArrayList()
     try {
         if (county.equals("")) {
-            var getWeather = Jsoup.connect("https://www.google.com/search?q=weather+forecast+" + country + "+" + city + "").ignoreContentType(true).get()
+            val getWeather = Jsoup.connect("https://www.google.com/search?q=weather+forecast+" + country + "+" + city + "").ignoreContentType(true).get()
             for(i in 0..7){
-                var weekly = (getWeather.getElementsByClass("QrNVmd Z1VzSb").get(i).text())
+                val weekly = (getWeather.getElementsByClass("QrNVmd Z1VzSb").get(i).text())
                 list.add(weekly)
             }
         } else {
-            var getWeather = Jsoup.connect("https://www.google.com/search?q=weather+forecast+" + country + "+" + county.replace(" ", "+") + "+" + city + "")
+            val getWeather = Jsoup.connect("https://www.google.com/search?q=weather+forecast+" + country + "+" + county.replace(" ", "+") + "+" + city + "")
                     .ignoreContentType(true).get()
             for(i in 0..7){
-                var weekly = (getWeather.getElementsByClass("QrNVmd Z1VzSb").get(i).text())
+                val weekly = (getWeather.getElementsByClass("QrNVmd Z1VzSb").get(i).text())
                 list.add(weekly)
             }
 
@@ -303,29 +307,32 @@ fun getWeeklyWeather(country: String, county: String,city:String) : ArrayList<In
     val list : ArrayList<Int> = ArrayList()
     try {
         if (county.equals("")) {
-            var getWeather = Jsoup.connect("https://www.google.com/search?q=weather+forecast+" + country + "+" + city + "").ignoreContentType(true).get()
+            val getWeather = Jsoup.connect("https://www.google.com/search?q=weather+forecast+" + country + "+" + city + "").ignoreContentType(true).get()
             for(i in 0..7){
-                var status = (getWeather.getElementsByClass("vk_gy gNCp2e").get(i).getElementsByClass("wob_t")
+                val status = (getWeather.getElementsByClass("vk_gy gNCp2e").get(i).getElementsByClass("wob_t")
                         .get(0).text())
 
+                if(status.toInt() >= 18){
+                    list.add(R.drawable.sun)
+                }else
+                if(status.toInt() >= 14){
+                    list.add(R.drawable.cloudysunny)
+                }else
+                if(status.toInt() >= 3){
+                    list.add(R.drawable.verycloudy)
+                }else
                 if(status.toInt() <= 1){
                     list.add(R.drawable.snowflake)
                 }
-                if(status.toInt() >= 2){
-                    list.add(R.drawable.verycloudy)
-                }
-                if(status.toInt() >= 14){
-                    list.add(R.drawable.cloudysunny)
-                }
-                if(status.toInt() >= 18){
-                    list.add(R.drawable.sun)
-                }
+
+
+
             }
         } else {
-            var getWeather = Jsoup.connect("https://www.google.com/search?q=weather+forecast+" + country + "+" + county.replace(" ", "+") + "+" + city + "")
+            val getWeather = Jsoup.connect("https://www.google.com/search?q=weather+forecast+" + country + "+" + county.replace(" ", "+") + "+" + city + "")
                     .ignoreContentType(true).get()
             for(i in 0..7) {
-                var status = (getWeather.getElementsByClass("vk_gy gNCp2e").get(i).getElementsByClass("wob_t")
+                val status = (getWeather.getElementsByClass("vk_gy gNCp2e").get(i).getElementsByClass("wob_t")
                         .get(0).text())
 
                 if (status.toInt() <= 1) {
@@ -360,6 +367,6 @@ fun getWeeklyWeather(country: String, county: String,city:String) : ArrayList<In
 
 
 private fun allowNetwork(){
-    var policy = StrictMode.ThreadPolicy.Builder().permitAll().build();
+    val policy = StrictMode.ThreadPolicy.Builder().permitAll().build();
     StrictMode.setThreadPolicy(policy);
 }

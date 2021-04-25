@@ -37,7 +37,7 @@ onMenuButtonClick()
         menu_button.setOnClickListener {
             startActivityForResult(intentFor<WeatherListActivity>(),0)
 progressBar.visibility = View.VISIBLE
-
+finish()
         }
 
     }

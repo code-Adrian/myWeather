@@ -58,10 +58,20 @@ class WeatherActivity: AppCompatActivity() {
                 weather.County = Add_County.text.toString()
                 weather.City = Add_City.text.toString()
 
-                app.weather.create(weather.copy())
+                if(Add_Country.text.isNotEmpty()){
+                    if(Add_City.text.isNotEmpty()) {
+                        app.weather.create(weather.copy())
+                        setResult(AppCompatActivity.RESULT_OK)
+                        finish()
+                    }else{
+                        toast("Please fill in the city field.")
+                    }
+                }else{
+                    toast("Please fill in the country field.")
+                }
+
               //  startActivityForResult<WeatherListActivity>(0)
-                setResult(AppCompatActivity.RESULT_OK)
-                finish()
+
 
             }
 

@@ -49,8 +49,8 @@ loadWeather()
 
         when(item.itemId){
             R.id.weather_home -> {
-                startActivityForResult<MenuActivity>(0)
                 finish()
+                startActivityForResult<MenuActivity>(0)
             setResult(Activity.RESULT_OK)
             }
         }

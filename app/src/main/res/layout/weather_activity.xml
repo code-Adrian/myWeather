@@ -48,12 +48,13 @@
             android:layout_marginTop="16dp"
             android:layout_marginRight="18dp"
             android:ems="10"
-            android:hint="Country"
+            android:hint="@string/country"
             android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.47"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:autofillHints="" />
 
 
         <EditText
@@ -64,12 +65,13 @@
             android:layout_marginTop="10dp"
             android:layout_marginRight="18dp"
             android:ems="10"
-            android:hint="County (Optional)"
+            android:hint="@string/county_optional"
             android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.47"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:autofillHints="" />
 
         <EditText
             android:id="@+id/Add_City"
@@ -79,12 +81,13 @@
             android:layout_marginTop="10dp"
             android:layout_marginRight="18dp"
             android:ems="10"
-            android:hint="City"
+            android:hint="@string/city"
             android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.47"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:autofillHints="" />
 
 
         <Button
@@ -94,37 +97,44 @@
             android:layout_marginLeft="25dp"
             android:layout_marginTop="20dp"
             android:layout_marginRight="25dp"
-            android:text="Add Weather"
+            android:text="@string/add_weather"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@color/button"
+            android:textColor="@color/white"
+            />
 
                 <EditText
                     android:id="@+id/Add_Link"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="18dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginRight="18dp"
                     android:ems="10"
-                    android:hint="Link"
+                    android:hint="@string/link"
                     android:inputType="textPersonName"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.47"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:autofillHints="" />
 
         <Button
             android:id="@+id/Add_Weather_URL"
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:layout_marginLeft="25dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:layout_marginRight="25dp"
-            android:text="Add by URL"
+            android:text="@string/add_by_url"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@color/button"
+            android:textColor="@color/white"
+            />
 
 
 
@@ -137,7 +147,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/Add_Weather_URL"
             android:layout_gravity="center|bottom"
-            app:srcCompat="@drawable/location" />
+            app:srcCompat="@drawable/location"
+            android:contentDescription="@string/editimage" />
 
             </LinearLayout>
         </ScrollView>

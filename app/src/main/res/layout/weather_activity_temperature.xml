@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
-        app:elevation="0dip"
+        app:elevation="0dp"
         app:theme="@style/MyToolbar">
 
         <androidx.appcompat.widget.Toolbar
@@ -54,12 +54,12 @@
 
                 <TextView
                     android:id="@+id/card1_Day"
-                    android:textSize="18dp"
+                    android:textSize="18sp"
                     android:textAlignment="center"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="15dp"
-                    android:text="Today">
+                    android:text="@string/today">
 
                 </TextView>
 
@@ -76,7 +76,7 @@
                         android:layout_marginTop="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="18°C">
+                        android:text="@string/_18_c">
                     </TextView>
 
                     <TextView
@@ -85,7 +85,7 @@
                         android:layout_marginTop="4dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="15°C">
+                        android:text="@string/_15_c">
                     </TextView>
                 </LinearLayout>
 
@@ -125,11 +125,11 @@
                 <TextView
                     android:id="@+id/card2_Day"
                     android:textAlignment="center"
-                    android:textSize="18dp"
+                    android:textSize="18sp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="15dp"
-                    android:text="Tue">
+                    android:text="@string/tue">
 
                 </TextView>
 
@@ -142,11 +142,11 @@
                     <TextView
                         android:id="@+id/card2_peakTemp"
                         android:textSize="16sp"
-                        android:layout_marginRight="4dp"
+                        android:layout_marginEnd="4dp"
                         android:layout_marginTop="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="18°C">
+                        android:text="@string/_18_c">
                     </TextView>
 
                     <TextView
@@ -155,7 +155,7 @@
                         android:layout_marginTop="4dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="15°C">
+                        android:text="@string/_15_c">
                     </TextView>
                 </LinearLayout>
 
@@ -199,11 +199,11 @@
                 <TextView
                     android:id="@+id/card3_Day"
                     android:textAlignment="center"
-                    android:textSize="18dp"
+                    android:textSize="18sp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="15dp"
-                    android:text="Wed">
+                    android:text="@string/wed">
 
                 </TextView>
 
@@ -216,11 +216,11 @@
                     <TextView
                         android:id="@+id/card3_peakTemp"
                         android:textSize="16sp"
-                        android:layout_marginRight="4dp"
+                        android:layout_marginEnd="4dp"
                         android:layout_marginTop="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="18°C">
+                        android:text="@string/_18_c">
                     </TextView>
 
                     <TextView
@@ -229,7 +229,7 @@
                         android:layout_marginTop="4dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="15°C">
+                        android:text="@string/_15_c">
                     </TextView>
                 </LinearLayout>
 
@@ -271,11 +271,11 @@
                 <TextView
                     android:id="@+id/card4_Day"
                     android:textAlignment="center"
-                    android:textSize="18dp"
+                    android:textSize="18sp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="15dp"
-                    android:text="Thur">
+                    android:text="@string/thur">
 
                 </TextView>
 
@@ -287,21 +287,21 @@
                     >
                     <TextView
                         android:id="@+id/card4_peakTemp"
-                        android:textSize="16dp"
+                        android:textSize="16sp"
                         android:layout_marginRight="4dp"
                         android:layout_marginTop="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="18°C">
+                        android:text="@string/_18_c">
                     </TextView>
 
                     <TextView
                         android:id="@+id/card4_lowTemp"
-                        android:textSize="15dp"
+                        android:textSize="15sp"
                         android:layout_marginTop="4dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="15°C">
+                        android:text="@string/_15_c">
                     </TextView>
                 </LinearLayout>
 
@@ -343,11 +343,11 @@
                 <TextView
                     android:id="@+id/card6_Day"
                     android:textAlignment="center"
-                    android:textSize="18dp"
+                    android:textSize="18sp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="15dp"
-                    android:text="Sat">
+                    android:text="@string/sat">
 
                 </TextView>
 
@@ -360,11 +360,11 @@
                     <TextView
                         android:id="@+id/card6_peakTemp"
                         android:textSize="16sp"
-                        android:layout_marginRight="4dp"
+                        android:layout_marginEnd="4dp"
                         android:layout_marginTop="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="18°C">
+                        android:text="@string/_18_c">
                     </TextView>
 
                     <TextView
@@ -373,7 +373,7 @@
                         android:layout_marginTop="4dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="15°C">
+                        android:text="@string/_15_c">
                     </TextView>
                 </LinearLayout>
 
@@ -415,11 +415,11 @@
                 <TextView
                     android:id="@+id/card5_Day"
                     android:textAlignment="center"
-                    android:textSize="18dp"
+                    android:textSize="18sp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="15dp"
-                    android:text="Fri">
+                    android:text="@string/fri">
 
                 </TextView>
 
@@ -432,11 +432,11 @@
                     <TextView
                         android:id="@+id/card5_peakTemp"
                         android:textSize="16sp"
-                        android:layout_marginRight="4dp"
+                        android:layout_marginEnd="4dp"
                         android:layout_marginTop="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="18°C">
+                        android:text="@string/_18_c">
                     </TextView>
 
                     <TextView
@@ -445,7 +445,7 @@
                         android:layout_marginTop="4dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="15°C">
+                        android:text="@string/_15_c">
                     </TextView>
                 </LinearLayout>
 
@@ -488,11 +488,11 @@
                 <TextView
                     android:id="@+id/card7_Day"
                     android:textAlignment="center"
-                    android:textSize="18dp"
+                    android:textSize="18sp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="15dp"
-                    android:text="Sun">
+                    android:text="@string/sun">
 
                 </TextView>
 
@@ -505,11 +505,11 @@
                     <TextView
                         android:id="@+id/card7_peakTemp"
                         android:textSize="16sp"
-                        android:layout_marginRight="4dp"
+                        android:layout_marginEnd="4dp"
                         android:layout_marginTop="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="18°C">
+                        android:text="@string/_18_c">
                     </TextView>
 
                     <TextView
@@ -518,7 +518,7 @@
                         android:layout_marginTop="4dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="15°C">
+                        android:text="@string/_15_c">
                     </TextView>
                 </LinearLayout>
 
@@ -561,9 +561,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="15dp"
-                    android:text="Mon"
+                    android:text="@string/mon"
                     android:textAlignment="center"
-                    android:textSize="18dp">
+                    android:textSize="18sp">
 
                 </TextView>
 
@@ -580,7 +580,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginTop="5dp"
                         android:layout_marginRight="4dp"
-                        android:text="18°C"
+                        android:text="@string/_18_c"
                         android:textSize="16sp" />
 
                     <TextView
@@ -588,7 +588,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="4dp"
-                        android:text="15°C"
+                        android:text="@string/_15_c"
                         android:textSize="15sp" />
                 </LinearLayout>
 

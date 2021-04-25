@@ -50,11 +50,12 @@
         android:layout_marginRight="18dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:hint="Country"
+        android:hint="@string/country"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.47"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:autofillHints="" />
 
 
 
@@ -67,11 +68,12 @@
         android:layout_marginRight="18dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:hint="County (Optional)"
+        android:hint="@string/county_optional"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.47"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:autofillHints="" />
 
     <EditText
         android:id="@+id/Edit_City"
@@ -80,13 +82,14 @@
         android:layout_marginTop="10dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:hint="City"
+        android:hint="@string/city"
         android:layout_marginLeft="18dp"
         android:layout_marginRight="18dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.47"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:autofillHints="" />
 
 
                 <EditText
@@ -97,12 +100,13 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="18dp"
                     android:ems="10"
-                    android:hint="Link"
+                    android:hint="@string/link"
                     android:inputType="textPersonName"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.285"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:autofillHints="" />
 
     <Button
         android:id="@+id/Edit_Weather"
@@ -111,11 +115,14 @@
         android:layout_marginLeft="25dp"
         android:layout_marginTop="15dp"
         android:layout_marginRight="25dp"
-        android:text="Confirm Edit"
+        android:text="@string/confirm_edit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.36"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/button"
+        android:textColor="@color/white"
+        />
 
 
     <ImageView
@@ -128,7 +135,7 @@
         app:layout_constraintTop_toBottomOf="@+id/Add_Weather_URL"
         app:srcCompat="@drawable/location"
         android:layout_gravity="center|bottom"
-        />
+        android:contentDescription="@string/editimage" />
             </LinearLayout>
         </ScrollView>
     </RelativeLayout>
