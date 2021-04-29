@@ -4,26 +4,23 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import kotlinx.android.synthetic.main.weatherlist_activity.*
+import org.wit.myweather.activities.WeatherActivity
 import kotlin.concurrent.thread
-
 var Id = 0L
 val uniqueFirebaseID: String = (android.os.Build.MODEL.toString() + " " + android.os.Build.ID+ " " + android.os.Build.USER + " --WeatherModel").replace(".","")
-
 internal fun ID():Long{
     return Id++;
 }
 
-class FireBase_Store: WeatherStore {
+class FireBase_Store: WeatherStore  {
 
     val weather = ArrayList<WeatherModel>()
-
     override fun getAll(): MutableList<WeatherModel> {
             return cloudPull()
     }
 
     override fun create(weathers: WeatherModel) {
-        weathers.id = ID()+weather.size+1
+        weathers.id = ID()
         weather.add(weathers)
         cloudSave()
     }
@@ -48,14 +45,13 @@ class FireBase_Store: WeatherStore {
     }
 
 private fun cloudSave(){
-    var ref = FirebaseDatabase.getInstance("https://weather-18a10-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child(uniqueFirebaseID)
+    var ref = FirebaseDatabase.getInstance("https://myweather-95318-default-rtdb.firebaseio.com/").getReference().child(uniqueFirebaseID)
 ref.setValue(weather)
-
 }
 
 private fun cloudPull() : ArrayList<WeatherModel> {
 
-        var ref = FirebaseDatabase.getInstance("https://weather-18a10-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child(uniqueFirebaseID)
+        var ref = FirebaseDatabase.getInstance("https://myweather-95318-default-rtdb.firebaseio.com/").getReference().child(uniqueFirebaseID)
         ref.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {}
 
@@ -73,7 +69,7 @@ private fun cloudPull() : ArrayList<WeatherModel> {
                         val id = (p0.child("id").getValue().toString().toLong())
 
                         val weatherModel = WeatherModel(id, country, county, city, temperature, weblink)
-
+                        Id+=id
                         weather.add(weatherModel)
                     }
                     }

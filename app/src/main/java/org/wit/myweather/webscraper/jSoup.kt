@@ -139,6 +139,9 @@ if(weblink.equals("")){
     if(status.equals("Sunny") || status.equals("Clear") || status.equals("Clear with periodic clouds")) {
         image = R.drawable.sun
     }
+    if(status.equals("Snow")){
+        image = R.drawable.snowflake
+    }
 }else {
 
     val status = getWeatherStatusByWebLink(weblink)
@@ -153,6 +156,9 @@ if(weblink.equals("")){
     }
     if(status.equals("Sunny") || status.equals("Clear") || status.equals("Clear with periodic clouds")){
         image = R.drawable.sun
+    }
+    if(status.equals("Snow")){
+        image = R.drawable.snowflake
     }
 }
     return image
@@ -214,6 +220,9 @@ fun getWeatherStatus() : Int {
         if(status.equals("Sunny") || status.equals("Clear") || status.equals("Clear with periodic clouds")){
             image = R.drawable.sun
         }
+    if(status.equals("Snow")){
+        image = R.drawable.snowflake
+    }
 
     return image
 }
