@@ -20,7 +20,7 @@ class FireBase_Store: WeatherStore  {
     }
 
     override fun create(weathers: WeatherModel) {
-        weathers.id = ID()
+        weathers.id = ID()+rand(500,1000000000)
         weather.add(weathers)
         cloudSave()
     }
@@ -80,4 +80,9 @@ private fun cloudPull() : ArrayList<WeatherModel> {
         return weather
     }
 
+
+    fun rand(start: Int, end: Int): Int {
+        require(start <= end) { "Error, Integer required" }
+        return (start..end).random()
+    }
 }
