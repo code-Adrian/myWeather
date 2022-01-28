@@ -14,6 +14,7 @@ import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.startActivityForResult
 import org.jetbrains.anko.uiThread
 import org.wit.myweather.R
+import org.wit.myweather.databinding.MainmenuActivityBinding
 import org.wit.myweather.main.Main
 import org.wit.myweather.models.WeatherModel
 import org.wit.myweather.webscraper.*
@@ -21,15 +22,17 @@ import kotlin.concurrent.thread
 
 class MenuActivity : AppCompatActivity(){
     lateinit var app : Main
+    private lateinit var binding: MainmenuActivityBinding
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
+        binding = MainmenuActivityBinding.inflate(layoutInflater)
         app = application as Main
         setSupportActionBar(toolbar)
-        setContentView(R.layout.mainmenu_activity)
+        setContentView(binding.root)
         loadDetails()
-onMenuButtonClick()
-        preloadWeather()
+        onMenuButtonClick()
+       preloadWeather()
         progressBar.visibility = View.INVISIBLE
     }
 
