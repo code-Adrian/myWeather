@@ -32,7 +32,7 @@ class MenuActivity : AppCompatActivity(){
         setContentView(binding.root)
         loadDetails()
         onMenuButtonClick()
-       preloadWeather()
+        preloadWeather()
         progressBar.visibility = View.INVISIBLE
     }
 

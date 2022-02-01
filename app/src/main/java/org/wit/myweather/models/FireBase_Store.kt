@@ -16,6 +16,7 @@ class FireBase_Store: WeatherStore  {
 
     val weather = ArrayList<WeatherModel>()
     override fun getAll(): MutableList<WeatherModel> {
+
             return cloudPull()
     }
 
@@ -40,13 +41,13 @@ class FireBase_Store: WeatherStore  {
             foundWeather.County = weathers.County
             foundWeather.City = weathers.City
         }
-        println(weather)
+        println(weathers.id)
         cloudSave()
     }
 
 private fun cloudSave(){
-    var ref = FirebaseDatabase.getInstance("https://myweather-95318-default-rtdb.firebaseio.com/").getReference().child(uniqueFirebaseID)
-ref.setValue(weather)
+    var ref = FirebaseDatabase.getInstance("https://myweather-95318-default-rtdb.firebaseio.com/").getReference().child(uniqueFirebaseID).
+    ref.setValue(weather)
 }
 
 private fun cloudPull() : ArrayList<WeatherModel> {

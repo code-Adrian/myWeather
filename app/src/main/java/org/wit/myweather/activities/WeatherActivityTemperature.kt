@@ -4,19 +4,16 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.mainmenu_activity.*
 import kotlinx.android.synthetic.main.weather_activity_edit.*
 import kotlinx.android.synthetic.main.weather_activity_temperature.*
 import kotlinx.android.synthetic.main.weatherlist_activity.*
 import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.startActivityForResult
 import org.jetbrains.anko.uiThread
 import org.wit.myweather.R
 import org.wit.myweather.main.Main
 import org.wit.myweather.models.WeatherModel
 import org.wit.myweather.webscraper.*
-import kotlin.concurrent.thread
 
 class WeatherActivityTemperature : AppCompatActivity(){
     var weather = WeatherModel()
@@ -92,13 +89,14 @@ setDetails()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.weatheractivity_temperature,menu)
+        menuInflater.inflate(R.menu.weather_temperature,menu)
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
-            R.id.temperature_cancel -> {
+            //not true
+            R.id.Add_City -> {
                 setResult(AppCompatActivity.RESULT_OK)
                 finish()
             }

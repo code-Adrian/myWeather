@@ -1,21 +1,19 @@
 package org.wit.myweather.activities
 
-import android.app.Activity
+
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
-import android.view.MenuItem
-import android.widget.ImageView
-import android.widget.LinearLayout
+
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.mainmenu_activity.*
-import kotlinx.android.synthetic.main.weather_card.*
+
 import kotlinx.android.synthetic.main.weatherlist_activity.*
 import org.jetbrains.anko.intentFor
-import org.jetbrains.anko.startActivityForResult
+
 import org.wit.myweather.R
 import org.wit.myweather.main.Main
+
 import org.wit.myweather.models.WeatherModel
 
 class WeatherListActivity : AppCompatActivity(),WeatherListener,EditListener {
@@ -30,7 +28,8 @@ lateinit var app : Main
         toolbar.setTitle("myWeather")
         setSupportActionBar(toolbar)
 
-loadWeather()
+
+        loadWeather()
     }
 
 
@@ -39,24 +38,24 @@ loadWeather()
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
+ //   override fun onOptionsItemSelected(item: MenuItem): Boolean {
+     //   when(item.itemId){
 
-            R.id.weather_add -> {
-                startActivityForResult<WeatherActivity>(0)
-            }
-        }
+          //  R.id.weather_add -> {
+              //  startActivityForResult<WeatherActivity>(0)
+          //  }
+      //  }
 
-        when(item.itemId){
-            R.id.weather_home -> {
-                finish()
-                startActivityForResult<MenuActivity>(0)
-            setResult(Activity.RESULT_OK)
-            }
-        }
+      //  when(item.itemId){
+          //  R.id.weather_home -> {
+           //     finish()
+          //      startActivityForResult<MenuActivity>(0)
+        //    setResult(Activity.RESULT_OK)
+         //   }
+     //   }
 
-        return super.onOptionsItemSelected(item)
-    }
+       // return super.onOptionsItemSelected(item)
+   // }
 
     override fun onWeatherClick(weather: WeatherModel) {
         startActivityForResult(intentFor<WeatherActivityTemperature>().putExtra("weather_temperature",weather),0)
@@ -65,7 +64,6 @@ loadWeather()
     override fun onEditClick(weather : WeatherModel) {
         startActivityForResult(intentFor<WeatherActivity>().putExtra("weather_edit",weather),0)
     }
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
        super.onActivityResult(requestCode, resultCode, data)

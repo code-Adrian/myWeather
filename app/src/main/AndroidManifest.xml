@@ -24,18 +24,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.WeatherListActivity" />
-        <activity android:name=".activities.WeatherActivity" />
-        <activity android:name=".activities.WeatherActivityTemperature" />
-        <activity
-            android:name=".activities.MenuActivity"
-            tools:ignore="Instantiatable">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+
     </application>
 
 </manifest>

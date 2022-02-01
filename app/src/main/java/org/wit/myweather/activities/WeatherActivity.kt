@@ -1,7 +1,6 @@
 package org.wit.myweather.activities
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -77,8 +76,8 @@ class WeatherActivity: AppCompatActivity() {
 
             Add_Weather_URL.setOnClickListener{
 
-var location = getLocationByWebLink(Add_Link.text.toString())
-             var list = location.split(",")
+                var location = getLocationByWebLink(Add_Link.text.toString())
+                var list = location.split(",")
                 weather.Country = list[1]
                 weather.City = list[0]
                 weather.WebLink = Add_Link.text.toString()
@@ -102,20 +101,20 @@ if(edit){
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         if(edit) {
-            menuInflater.inflate(R.menu.weatheractivity_edit_menu, menu)
+            menuInflater.inflate(R.menu.weather_edit_menu, menu)
         }else{
-            menuInflater.inflate(R.menu.weatheractivity_menu, menu)
+            menuInflater.inflate(R.menu.weather_menu, menu)
         }
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            R.id.edit_cancel -> {
-                setResult(AppCompatActivity.RESULT_OK)
-                finish()
-            }
-        }
+        //when(item.itemId){
+         //   R.id.edit_cancel -> {
+         //       setResult(AppCompatActivity.RESULT_OK)
+               // finish()
+         ///   }
+      //  }
 
         when(item.itemId){
             R.id.edit_delete -> {
