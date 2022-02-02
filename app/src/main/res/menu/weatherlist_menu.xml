@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/weather_add"
+        android:id="@+id/weatherFragment"
         android:icon="@android:drawable/ic_menu_add"
         android:title="@string/add_weather"
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/weather_home"
+        android:id="@+id/menuFragment"
         android:icon="@drawable/ic_menu_home"
         android:title="@string/Home"
         app:showAsAction="ifRoom" />

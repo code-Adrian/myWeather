@@ -4,7 +4,6 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import org.wit.myweather.activities.WeatherActivity
 import kotlin.concurrent.thread
 var Id = 0L
 val uniqueFirebaseID: String = (android.os.Build.MODEL.toString() + " " + android.os.Build.ID+ " " + android.os.Build.USER + " --WeatherModel").replace(".","")
@@ -16,6 +15,7 @@ class FireBase_Store: WeatherStore  {
 
     val weather = ArrayList<WeatherModel>()
     override fun getAll(): MutableList<WeatherModel> {
+
             return cloudPull()
     }
 
@@ -40,13 +40,13 @@ class FireBase_Store: WeatherStore  {
             foundWeather.County = weathers.County
             foundWeather.City = weathers.City
         }
-        println(weather)
+        println(weathers.id)
         cloudSave()
     }
 
 private fun cloudSave(){
-    var ref = FirebaseDatabase.getInstance("https://myweather-95318-default-rtdb.firebaseio.com/").getReference().child(uniqueFirebaseID)
-ref.setValue(weather)
+    var ref = FirebaseDatabase.getInstance("https://myweather-95318-default-rtdb.firebaseio.com/").getReference().child(uniqueFirebaseID).
+    ref.setValue(weather)
 }
 
 private fun cloudPull() : ArrayList<WeatherModel> {
