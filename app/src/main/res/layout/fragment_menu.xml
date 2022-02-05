@@ -17,120 +17,114 @@
         android:background="@drawable/gradient_main"
         android:visibility="visible"
         tools:layout_conversion_absoluteHeight="731dp"
-        tools:layout_editor_absoluteY="0dp"
+        tools:layout_conversion_absoluteWidth="411dp"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_conversion_absoluteWidth="411dp">
-        <LinearLayout
-            android:id="@+id/city_name"
+        tools:layout_editor_absoluteY="0dp">
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/city_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="40dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_anchor="@+id/rootRL"
+        app:layout_anchorGravity="bottom"
+        tools:ignore="UselessParent">
+
+
+        <TextView
+            android:id="@+id/menu_county"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_marginTop="30dp"
-            tools:ignore="UselessParent">
+            android:text="@string/loading"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="45sp" />
+
+        <TextView
+            android:id="@+id/menu_dayofweek"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="4dp"
+            android:text="@string/please_wait"
+            android:textAlignment="center"
+            android:textSize="19.5sp" />
 
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginLeft="100dp"
+            android:layout_marginRight="100dp">
 
             <TextView
-                android:id="@+id/menu_county"
-                android:layout_width="400dp"
-                android:layout_height="wrap_content"
-                android:text="@string/loading"
+                android:id="@+id/menu_temp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text=""
                 android:textAlignment="center"
                 android:textColor="@color/white"
-                android:textSize="45sp" />
+                android:textSize="40sp">
 
-            <TextView
-                android:id="@+id/menu_dayofweek"
+            </TextView>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="80dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginRight="80dp">
+
+            <ImageView
+                android:id="@+id/weatherIcon"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="4dp"
-                android:text="@string/please_wait"
-                android:textAlignment="center"
-                android:textSize="19.5sp"
-                />
+                android:layout_height="200dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="35dp"
+                android:layout_marginBottom="35dp" />
+
+        </LinearLayout>
 
 
-            <LinearLayout
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="60dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginRight="60dp">
+
+            <Button
+                android:id="@+id/menu_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/round"
+                android:text="@string/view_weather"
 
-                android:layout_marginLeft="100dp"
-                android:layout_marginRight="100dp">
-                <TextView
-                    android:id="@+id/menu_temp"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text=""
-                    android:textAlignment="center"
-                    android:textSize="40sp"
-                    android:textColor="@color/white"
-                    >
-
-                </TextView>
-
-            </LinearLayout>
-
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="80dp"
-                android:layout_marginRight="80dp"
-                android:layout_marginTop="0dp"
-                >
-                <ImageView
-                    android:layout_marginTop="35dp"
-                    android:layout_marginBottom="35dp"
-                    android:id="@+id/weatherIcon"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_gravity="center_vertical"
-                    />
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="60dp"
-                android:layout_marginRight="60dp"
-                android:layout_marginTop="0dp"
-                >
-                <Button
-                    android:id="@+id/menu_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/view_weather"
-                    android:background="@drawable/round"
-
-                    />
-
-            </LinearLayout>
-
-
-            <ProgressBar
-                android:id="@+id/progressBar"
-                style="?android:attr/progressBarStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:indeterminate="true"
-                android:indeterminateTintMode="src_atop"
-                android:indeterminateTint="@color/white"
                 />
 
         </LinearLayout>
 
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/white"
+            android:indeterminateTintMode="src_atop" />
 
-
-    </RelativeLayout>
-
-
-
+    </LinearLayout>
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

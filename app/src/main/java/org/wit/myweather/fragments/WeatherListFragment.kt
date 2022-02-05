@@ -51,9 +51,9 @@ class WeatherListFragment : Fragment(),WeatherListener,EditListener {
 
 
         val root = fragBinding.root
-        val toolbar = root.findViewById<Toolbar>(R.id.toolbar)
-        (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar)
+
         activity?.title = getString(R.string.action_weathList)
+        //fragBinding.toolbar.setBackgroundResource(R.drawable.weather_card_gradient)
         loadWeather()
 
         return root

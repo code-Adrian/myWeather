@@ -28,7 +28,7 @@ class WeatherTemperatureFragment : Fragment() {
 
         app = activity?.application as Main
         setHasOptionsMenu(true)
-
+        activity?.title = "dfsf"
         //Receiving arguments from WeatherListFragment
         val bundle = arguments
         val getModel = bundle?.get("model") as WeatherModel
@@ -44,8 +44,6 @@ class WeatherTemperatureFragment : Fragment() {
         _fragBinding = FragmentWeatherTemperatureBinding.inflate(inflater, container, false)
         val root = fragBinding.root
 
-        val toolbar = root.findViewById<Toolbar>(R.id.toolbarTemperature)
-        (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar)
         setDetails()
         return root
     }

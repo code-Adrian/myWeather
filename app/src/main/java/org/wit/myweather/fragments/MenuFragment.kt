@@ -46,10 +46,10 @@ class MenuFragment : Fragment(){
         fragBinding.progressBar.visibility = View.INVISIBLE
 
         fragBinding.menuButton.setOnClickListener{
-            thread {
+
                 val action = MenuFragmentDirections.actionMenuFragmentToWeatherList()
                 findNavController().navigate((action))
-            }
+
             fragBinding.progressBar.visibility = View.VISIBLE
 
         }

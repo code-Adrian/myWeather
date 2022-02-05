@@ -40,8 +40,6 @@ class WeatherFragment : Fragment() {
         _fragBinding = FragmentWeatherBinding.inflate(inflater, container, false)
         val root = fragBinding.root
 
-        val toolbar = root.findViewById<Toolbar>(R.id.toolbarAdd)
-        (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar)
         activity?.title = getString(R.string.action_menu)
 
         activateListeners()

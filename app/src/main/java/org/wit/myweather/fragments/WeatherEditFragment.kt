@@ -42,8 +42,6 @@ class WeatherEditFragment : Fragment() {
         val root = fragBinding.root
 
 
-        val toolbar = root.findViewById<Toolbar>(R.id.toolbarEdit)
-        (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar)
         activity?.title = getString(R.string.action_menu)
        // Toast.makeText(context,"Work?",Toast.LENGTH_SHORT).show()
 
@@ -52,10 +50,10 @@ class WeatherEditFragment : Fragment() {
 
             setModel()
             app.weather.update(model.copy())
-            thread {
+
                 val action = WeatherEditFragmentDirections.actionWeatherEditToWeatherList()
                 findNavController().navigate((action))
-            }
+
         }
     return root
     }
@@ -98,6 +96,8 @@ class WeatherEditFragment : Fragment() {
         when(item.itemId) {
             R.id.edit_delete -> {
                 app.weather.delete(model)
+                val action = WeatherEditFragmentDirections.actionWeatherEditToWeatherList()
+                findNavController().navigate((action))
             }
         }
         return NavigationUI.onNavDestinationSelected(item,
