@@ -11,4 +11,5 @@ import kotlinx.android.parcel.Parcelize
                             var City: String = "",
                             var Temperature: String = "0",
                             var TemperatureLow: String = "0",
-                            var WebLink: String = "") : Parcelable
+                            var WebLink: String = "",
+                            var Image: Int = 0)           : Parcelable

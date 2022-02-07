@@ -20,6 +20,10 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="Theme.MyWeather.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.MyWeather.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
     <style name="MyToolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:background">@color/toolbarColor</item>
         <item name="android:textColorPrimary">@color/white</item>

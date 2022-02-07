@@ -65,10 +65,12 @@ private fun cloudPull() : ArrayList<WeatherModel> {
                         val county = (p0.child("county").getValue().toString())
                         val city = (p0.child("city").getValue().toString())
                         val temperature = (p0.child("temperature").getValue().toString())
+                        val temperaturelow = (p0.child("temperatureLow").getValue().toString())
                         val weblink = (p0.child("webLink").getValue().toString())
                         val id = (p0.child("id").getValue().toString().toLong())
+                        val image = (p0.child("image").getValue().toString().toInt())
 
-                        val weatherModel = WeatherModel(id, country, county, city, temperature, weblink)
+                        val weatherModel = WeatherModel(id, country, county, city, temperature,temperaturelow, weblink,image)
                         Id+=id
                         weather.add(weatherModel)
                     }

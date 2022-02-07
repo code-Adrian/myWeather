@@ -12,6 +12,9 @@ import org.wit.myweather.R
 import org.wit.myweather.databinding.FragmentWeatherEditBinding
 import org.wit.myweather.main.Main
 import org.wit.myweather.models.WeatherModel
+import org.wit.myweather.webscraper.getLowestTemp
+import org.wit.myweather.webscraper.getPeakTemp
+import org.wit.myweather.webscraper.setImage
 import kotlin.concurrent.thread
 
 
@@ -42,8 +45,6 @@ class WeatherEditFragment : Fragment() {
         val root = fragBinding.root
 
 
-        val toolbar = root.findViewById<Toolbar>(R.id.toolbarEdit)
-        (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar)
         activity?.title = getString(R.string.action_menu)
        // Toast.makeText(context,"Work?",Toast.LENGTH_SHORT).show()
 
@@ -51,11 +52,12 @@ class WeatherEditFragment : Fragment() {
         fragBinding.EditWeather.setOnClickListener {
 
             setModel()
+
             app.weather.update(model.copy())
-            thread {
+            app.localWeather.serialize(app.weather.getAll())
                 val action = WeatherEditFragmentDirections.actionWeatherEditToWeatherList()
                 findNavController().navigate((action))
-            }
+
         }
     return root
     }
@@ -74,6 +76,11 @@ class WeatherEditFragment : Fragment() {
         model.City = fragBinding.EditCity.text.toString()
         model.WebLink = fragBinding.EditLink.text.toString()
 
+        model.Image = setImage(model.Country, model.County, model.City, model.WebLink)
+        //Scrapes relevant info and sets respective Peak temperature.
+        model.Temperature = getPeakTemp(model.Country, model.County, model.City)
+        //Scrapes relevant info and sets respective Low temperature.
+        model.TemperatureLow = getLowestTemp(model.Country, model.County, model.City)
     }
 
 
@@ -97,7 +104,10 @@ class WeatherEditFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
             R.id.edit_delete -> {
-                app.weather.delete(model)
+                app.weather.delete(model.copy())
+                app.localWeather.serialize(app.weather.getAll())
+                val action = WeatherEditFragmentDirections.actionWeatherEditToWeatherList()
+                findNavController().navigate((action))
             }
         }
         return NavigationUI.onNavDestinationSelected(item,

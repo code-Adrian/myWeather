@@ -121,6 +121,7 @@ try {
     return weatherStatus
 }
 
+
 fun setImage(country: String, county: String,city:String,weblink: String) : Int{
     var image : Int = 0
 

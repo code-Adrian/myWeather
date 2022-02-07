@@ -37,7 +37,6 @@ class WeatherListFragment : Fragment(),WeatherListener,EditListener {
         super.onCreate(savedInstanceState)
         app = activity?.application as Main
         setHasOptionsMenu(true)
-        getWeatherAsync()
 
     }
 
@@ -48,12 +47,13 @@ class WeatherListFragment : Fragment(),WeatherListener,EditListener {
 
         _fragBinding = FragmentWeatherListBinding.inflate(inflater, container, false)
 
-
+        //app.localWeather.getAll()
+        app.localWeather.serialize(app.weather.getAll())
 
         val root = fragBinding.root
-        val toolbar = root.findViewById<Toolbar>(R.id.toolbar)
-        (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar)
+
         activity?.title = getString(R.string.action_weathList)
+        //fragBinding.toolbar.setBackgroundResource(R.drawable.weather_card_gradient)
         loadWeather()
 
         return root
@@ -66,7 +66,7 @@ class WeatherListFragment : Fragment(),WeatherListener,EditListener {
 
     override fun onResume() {
         super.onResume()
-        //loadWeather()
+        //app.localWeather.serialize(app.weather.getAll())
 
     }
 
@@ -82,20 +82,14 @@ class WeatherListFragment : Fragment(),WeatherListener,EditListener {
         findNavController().navigate((action))
     }
 
-    val queue = LinkedBlockingQueue<MutableList<WeatherModel>>()
-    private fun getWeatherAsync(){
-        Thread {
-            queue.add(app.weather.getAll())
-        }.start()
 
-    }
 private fun loadWeather(){
 
    thread {
        fragBinding.recyclerView.setLayoutManager(LinearLayoutManager(activity))
    }
 
-    fragBinding.recyclerView.adapter = WeatherAdapter(queue.take(),this,this)
+    fragBinding.recyclerView.adapter = WeatherAdapter(app.localWeather.getAll(),this,this)
     //fragBinding.recyclerView.adapter?.notifyDataSetChanged()
 }
 

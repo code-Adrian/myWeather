@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.weather_card.view.*
 import org.jetbrains.anko.doAsync
@@ -47,9 +48,10 @@ class WeatherAdapter constructor(private val weather: MutableList<WeatherModel>,
                 }
 doAsync { uiThread {
 
-                weathermodel.Temperature = getPeakTemp(weathermodel.Country, weathermodel.County, weathermodel.City)
-                weathermodel.TemperatureLow = getLowestTemp(weathermodel.Country, weathermodel.County, weathermodel.City)
-
+               // weathermodel.Temperature = getPeakTemp(weathermodel.Country, weathermodel.County, weathermodel.City)
+                //weathermodel.TemperatureLow = getLowestTemp(weathermodel.Country, weathermodel.County, weathermodel.City)
+                  weathermodel.Temperature = weathermodel.Temperature
+                weathermodel.TemperatureLow = weathermodel.TemperatureLow
                 if (weathermodel.TemperatureLow.equals("1000")) {
                     itemView.temperaturelowDetail.text = "null"
                 } else {
@@ -64,7 +66,8 @@ doAsync { uiThread {
 
                 itemView.setOnClickListener { listener.onWeatherClick(weathermodel) }
                 itemView.editImage.setOnClickListener{listener2.onEditClick(weathermodel)}
-                itemView.imageIcon.setImageResource(setImage(weathermodel.Country, weathermodel.County, weathermodel.City, weathermodel.WebLink))
+                //itemView.imageIcon.setImageResource(setImage(weathermodel.Country, weathermodel.County, weathermodel.City, weathermodel.WebLink))
+                itemView.imageIcon.setImageResource(weathermodel.Image)
 } }
         }
     }

@@ -1,7 +1,9 @@
 package org.wit.myweather.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.*
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -17,6 +19,9 @@ import org.wit.myweather.databinding.FragmentWeatherListBinding
 import org.wit.myweather.main.Main
 import org.wit.myweather.models.WeatherModel
 import org.wit.myweather.webscraper.getLocationByWebLink
+import org.wit.myweather.webscraper.getLowestTemp
+import org.wit.myweather.webscraper.getPeakTemp
+import org.wit.myweather.webscraper.setImage
 import kotlin.concurrent.thread
 
 
@@ -40,8 +45,6 @@ class WeatherFragment : Fragment() {
         _fragBinding = FragmentWeatherBinding.inflate(inflater, container, false)
         val root = fragBinding.root
 
-        val toolbar = root.findViewById<Toolbar>(R.id.toolbarAdd)
-        (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar)
         activity?.title = getString(R.string.action_menu)
 
         activateListeners()
@@ -64,11 +67,21 @@ class WeatherFragment : Fragment() {
             model.Country = list[1]
             model.City = list[0]
             model.WebLink = fragBinding.AddLink.text.toString()
+
+            model.Image = setImage(model.Country, model.County, model.City, model.WebLink)
+            //Scrapes relevant info and sets respective Peak temperature.
+            model.Temperature = getPeakTemp(model.Country, model.County, model.City)
+            //Scrapes relevant info and sets respective Low temperature.
+            model.TemperatureLow = getLowestTemp(model.Country, model.County, model.City)
+            //Uploads Model to Firebase
             app.weather.create(model.copy())
-            thread {
+            //Receives info from Firebase and saves locally
+
+            app.weather.create(model.copy())
+            app.localWeather.serialize(app.weather.getAll())
                 val action = WeatherFragmentDirections.actionWeatherFragmentToWeatherList()
                 findNavController().navigate((action))
-            }
+
         }
     }
 
@@ -80,18 +93,30 @@ class WeatherFragment : Fragment() {
 
             if (fragBinding.AddCountry.text.isNotEmpty()) {
                 if (fragBinding.AddCity.text.isNotEmpty()) {
+                    //Scrapes relevant info and sets respective image.
+                    model.Image = setImage(model.Country, model.County, model.City, model.WebLink)
+                    //Scrapes relevant info and sets respective Peak temperature.
+                    model.Temperature = getPeakTemp(model.Country, model.County, model.City)
+                    //Scrapes relevant info and sets respective Low temperature.
+                    model.TemperatureLow = getLowestTemp(model.Country, model.County, model.City)
+                    //Uploads Model to Firebase
                     app.weather.create(model.copy())
+                    //Receives info from Firebase and saves locally
+                    app.localWeather.serialize(app.weather.getAll())
 
+
+                    val key = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    key.hideSoftInputFromWindow(view?.getWindowToken(),0)
                 } else {
                     Toast.makeText(context, "Please fill in the city field.", Toast.LENGTH_SHORT)
                 }
             } else {
                 Toast.makeText(context, "Please fill in the country field.", Toast.LENGTH_LONG)
             }
-            thread {
+
                 val action = WeatherFragmentDirections.actionWeatherFragmentToWeatherList()
                 findNavController().navigate((action))
-            }
+
         }
     }
 

@@ -6,12 +6,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import org.wit.myweather.R
 import org.wit.myweather.databinding.FragmentMenuBinding
 import org.wit.myweather.main.Main
+import org.wit.myweather.models.Json_Store
+import org.wit.myweather.models.WeatherModel
 import org.wit.myweather.webscraper.getDateDay
 import org.wit.myweather.webscraper.getLocation
 import org.wit.myweather.webscraper.getPeakTemp
@@ -29,7 +32,6 @@ class MenuFragment : Fragment(){
         super.onCreate(savedInstanceState)
         app = activity?.application as Main
 
-
     }
 
     override fun onCreateView(
@@ -46,10 +48,10 @@ class MenuFragment : Fragment(){
         fragBinding.progressBar.visibility = View.INVISIBLE
 
         fragBinding.menuButton.setOnClickListener{
-            thread {
+
                 val action = MenuFragmentDirections.actionMenuFragmentToWeatherList()
                 findNavController().navigate((action))
-            }
+
             fragBinding.progressBar.visibility = View.VISIBLE
 
         }
@@ -60,7 +62,10 @@ class MenuFragment : Fragment(){
 
 
     private fun preloadWeather(){
-        app.weather.getAll()
+        app.localWeather.serialize(app.weather.getAll())
+       // app.localWeather.getAll()
+
+        //Toast.makeText(context,app.weather.getAll().size.toString(),Toast.LENGTH_LONG).show()
 
     }
 
