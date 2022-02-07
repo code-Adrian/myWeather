@@ -19,6 +19,10 @@ class FireBase_Store: WeatherStore  {
             return cloudPull()
     }
 
+    override fun localgetAll(): MutableList<WeatherModel> {
+        return weather
+    }
+
     override fun create(weathers: WeatherModel) {
         weathers.id = ID()+rand(500,1000000000)
         weather.add(weathers)

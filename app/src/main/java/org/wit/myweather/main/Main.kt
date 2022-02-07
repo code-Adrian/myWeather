@@ -9,6 +9,7 @@ import org.wit.myweather.models.*
 import org.wit.myweather.webscraper.getLowestTemp
 import org.wit.myweather.webscraper.getPeakTemp
 import org.wit.myweather.webscraper.setImage
+import java.lang.Exception
 
 class Main : Application() {
 
@@ -37,30 +38,49 @@ class  thread():Thread(){
     }
     override fun run() {
         val infinite : String = "infiniteloop"
-        while(infinite.equals(infinite)){
+    //    while(infinite.equals(infinite)){
             var list = mutableListOf<WeatherModel>()
             var model = WeatherModel()
-            //Wait 4 seconds before loading
-            Thread.sleep(4000)
-            list = weather2.getAll()
-            Thread.sleep(8000)
+            //Wait 5 seconds before loading
+            Thread.sleep(5000)
 
-            for (i in list){
-                 i.Temperature = getPeakTemp(i.Country, i.County, i.City)
-                 i.TemperatureLow = getLowestTemp(i.Country, i.County,i.City)
-                 i.Image = setImage(i.Country, i.County, i.City, i.WebLink)
-                 i.id = i.id
-                 i.Country = i.Country
-                 i.City = i.City
-                 i.WebLink = i.WebLink
 
-                model = WeatherModel(i.id,i.Country,i.County,i.City,i.Temperature,i.TemperatureLow,i.WebLink,i.Image)
-                weather2.update(model.copy())
-
+            if(weather2.localgetAll().size > 0){
+                list = weather2.localgetAll()
             }
-              localWeather2.serialize(weather2.getAll())
-            //Wait 2 minutes before updating again
-            Thread.sleep(120000)
-        }
+            println(list.size)
+            try {
+                if (list.size > 0) {
+                    for (i in list) {
+                        i.Temperature = getPeakTemp(i.Country, i.County, i.City)
+                        i.TemperatureLow = getLowestTemp(i.Country, i.County, i.City)
+                        i.Image = setImage(i.Country, i.County, i.City, i.WebLink)
+                        i.id = i.id
+                        i.Country = i.Country
+                        i.City = i.City
+                        i.WebLink = i.WebLink
+
+                        model = WeatherModel(
+                            i.id,
+                            i.Country,
+                            i.County,
+                            i.City,
+                            i.Temperature,
+                            i.TemperatureLow,
+                            i.WebLink,
+                            i.Image
+                        )
+                        //Sleep for 1.5 seconds to avoid Concurrent Modification Exception
+                        Thread.sleep(1500)
+                        weather2.update(model.copy())
+
+                    }
+                    localWeather2.serialize(weather2.getAll())
+                }
+            }catch (e: Exception){
+                print("===================== Concurrent Modification Exception =====================")
+            }
+            //Thread.sleep(60000)
+     //   }
     }
 }

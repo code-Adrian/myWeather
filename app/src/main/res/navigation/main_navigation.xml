@@ -13,8 +13,10 @@
         <action
             android:id="@+id/action_menuFragment_to_weatherList"
             app:destination="@id/weatherListFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim" />
+            app:enterAnim="@anim/enter_animation"
+            app:exitAnim="@anim/exit_animation"
+            app:popUpTo="@id/weatherListFragment"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/weatherFragment"
@@ -24,8 +26,8 @@
         <action
             android:id="@+id/action_weatherFragment_to_weatherList"
             app:destination="@id/weatherListFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim" />
+            app:enterAnim="@anim/enter_animation"
+            app:exitAnim="@anim/exit_animation" />
     </fragment>
     <fragment
         android:id="@+id/weatherEditFragment"
@@ -36,8 +38,8 @@
         <action
             android:id="@+id/action_weatherEdit_to_weatherList"
             app:destination="@id/weatherListFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim" />
+            app:enterAnim="@anim/enter_animation"
+            app:exitAnim="@anim/exit_animation" />
         <argument
             android:name="Model"
             app:argType="org.wit.myweather.models.WeatherModel" />
@@ -50,22 +52,23 @@
         <action
             android:id="@+id/action_weatherList_to_menuFragment"
             app:destination="@id/menuFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim" />
+            app:enterAnim="@anim/enter_animation"
+            app:exitAnim="@anim/exit_animation" />
         <action
             android:id="@+id/action_weatherList_to_weatherEdit"
             app:destination="@id/weatherEditFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim" />
+            app:enterAnim="@anim/enter_animation"
+            app:exitAnim="@anim/exit_animation" />
         <action
             android:id="@+id/action_weatherList_to_weatherFragment"
             app:destination="@id/weatherFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim" />
+            app:enterAnim="@anim/enter_animation"
+            app:exitAnim="@anim/exit_animation" />
 
         <action
             android:id="@+id/action_weatherListFragment_to_weatherTemperatureFragment"
-            app:destination="@id/weatherTemperatureFragment" />
+            app:destination="@id/weatherTemperatureFragment"
+            app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/weatherTemperatureFragment"
@@ -74,7 +77,9 @@
         tools:layout="@layout/fragment_weather_temperature" >
         <action
             android:id="@+id/action_weatherTemperatureFragment_to_weatherListFragment"
-            app:destination="@id/weatherListFragment" />
+            app:destination="@id/weatherListFragment"
+            app:enterAnim="@anim/enter_animation2"
+            app:exitAnim="@anim/exit_animation2" />
         <argument
             android:name="model"
             app:argType="org.wit.myweather.models.WeatherModel" />
