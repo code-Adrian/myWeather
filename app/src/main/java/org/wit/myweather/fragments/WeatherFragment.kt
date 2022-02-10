@@ -12,6 +12,9 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import org.jetbrains.anko.toast
+import org.wit.myweather.API.getLow
+import org.wit.myweather.API.getPeak
+import org.wit.myweather.API.setIcon
 import org.wit.myweather.R
 import org.wit.myweather.databinding.FragmentWeatherBinding
 import org.wit.myweather.databinding.FragmentWeatherEditBinding
@@ -31,6 +34,7 @@ class WeatherFragment : Fragment() {
     private var _fragBinding: FragmentWeatherBinding? = null
     private val fragBinding get() = _fragBinding!!
     var model = WeatherModel()
+    var API = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,21 +49,45 @@ class WeatherFragment : Fragment() {
         _fragBinding = FragmentWeatherBinding.inflate(inflater, container, false)
         val root = fragBinding.root
 
-        activity?.title = getString(R.string.action_menu)
+        activity?.title = getString(R.string.action_addweather)
 
         activateListeners()
-
-
 
         return root
     }
 
-
     private fun activateListeners(){
         addWeatherByText()
         addWeatherByURL()
+        webscrape()
     }
 
+    private fun webscrape(){
+        //Web scraping disabled by Default
+        fragBinding.AddWeatherURL.isEnabled = false
+        fragBinding.AddWeatherURL.isClickable = false
+        fragBinding.AddLink.isEnabled = false
+        fragBinding.AddLink.isClickable = false
+
+        //Toggling between API or Web Scraper
+        fragBinding.checkBox.setOnClickListener{
+            if(fragBinding.checkBox.isChecked == true){
+                fragBinding.AddWeatherURL.isEnabled = true
+                fragBinding.AddWeatherURL.isClickable = true
+                fragBinding.AddLink.isEnabled = true
+                fragBinding.AddLink.isClickable = true
+                API = false
+            }else{
+                fragBinding.AddWeatherURL.isEnabled = false
+                fragBinding.AddWeatherURL.isClickable = false
+                fragBinding.AddLink.isEnabled = false
+                fragBinding.AddLink.isClickable = false
+                API = true
+            }
+        }
+    }
+
+    //Web Scraper function; Paste google link of weather choice.
     private fun addWeatherByURL(){
         fragBinding.AddWeatherURL.setOnClickListener {
             var location = getLocationByWebLink(fragBinding.AddLink.text.toString())
@@ -84,43 +112,84 @@ class WeatherFragment : Fragment() {
 
         }
     }
-
+    //Add weather by API or Web Scraping.
     private fun addWeatherByText(){
         fragBinding.AddWeather.setOnClickListener {
-            model.Country = fragBinding.AddCountry.text.toString()
-            model.County = fragBinding.AddCounty.text.toString()
-            model.City = fragBinding.AddCity.text.toString()
 
-            if (fragBinding.AddCountry.text.isNotEmpty()) {
-                if (fragBinding.AddCity.text.isNotEmpty()) {
-                    //Scrapes relevant info and sets respective image.
-                    model.Image = setImage(model.Country, model.County, model.City, model.WebLink)
-                    //Scrapes relevant info and sets respective Peak temperature.
-                    model.Temperature = getPeakTemp(model.Country, model.County, model.City)
-                    //Scrapes relevant info and sets respective Low temperature.
-                    model.TemperatureLow = getLowestTemp(model.Country, model.County, model.City)
-                    //Uploads Model to Firebase
-                    app.weather.create(model.copy())
-                    //Receives info from Firebase and saves locally
-                    app.localWeather.serialize(app.weather.getAll())
+            if(API == false) {
+                if (fragBinding.AddCountry.text.isNotEmpty()) {
+                    if (fragBinding.AddCity.text.isNotEmpty()) {
+
+                        model.Country = fragBinding.AddCountry.text.toString()
+                        model.County = fragBinding.AddCounty.text.toString()
+                        model.City = fragBinding.AddCity.text.toString()
+                        //Setting to type Scrape to enable web scraping
+                        model.Type = "Scrape"
+                        //Scrapes relevant info and sets respective image.
+                        model.Image =
+                            setImage(model.Country, model.County, model.City, model.WebLink)
+                        //Scrapes relevant info and sets respective Peak temperature.
+                        model.Temperature = getPeakTemp(model.Country, model.County, model.City)
+                        //Scrapes relevant info and sets respective Low temperature.
+                        model.TemperatureLow =
+                            getLowestTemp(model.Country, model.County, model.City)
+                        //Uploads Model to Firebase
+                        app.weather.create(model.copy())
+                        //Receives info from Firebase and saves locally
+                        app.localWeather.serialize(app.weather.getAll())
 
 
-                    val key = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                    key.hideSoftInputFromWindow(view?.getWindowToken(),0)
+                        val key =
+                            activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                        key.hideSoftInputFromWindow(view?.getWindowToken(), 0)
+                    } else {
+                        Toast.makeText(
+                            context, "Please fill in the city field.", Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 } else {
-                    Toast.makeText(context, "Please fill in the city field.", Toast.LENGTH_SHORT)
+                    Toast.makeText(context, "Please fill in the country field.", Toast.LENGTH_LONG).show()
                 }
-            } else {
-                Toast.makeText(context, "Please fill in the country field.", Toast.LENGTH_LONG)
             }
+            if(API == true){
 
+                if (fragBinding.AddCountry.text.isNotEmpty()) {
+                    if (fragBinding.AddCity.text.isNotEmpty()) {
+
+                        model.Country = fragBinding.AddCountry.text.toString()
+                        model.County = fragBinding.AddCounty.text.toString()
+                        model.City = fragBinding.AddCity.text.toString()
+
+                        //API call to relevant info and sets respective image.
+                        model.Image =
+                            setIcon(model.Country, model.County, model.City).get(0)
+                        //API call to relevant info and sets respective Peak temperature.
+                        model.Temperature = getPeak(model.Country, model.County, model.City)
+                        //API call to relevant info and sets respective Low temperature.
+                        model.TemperatureLow =
+                            getLow(model.Country, model.County, model.City)
+                        //Uploads Model to Firebase
+                        app.weather.create(model.copy())
+                        //Receives info from Firebase and saves locally
+                        app.localWeather.serialize(app.weather.getAll())
+
+
+
+                    }else {
+                        Toast.makeText(
+                            context, "Please fill in the city field.", Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    }else {
+                    Toast.makeText(context, "Please fill in the country field.", Toast.LENGTH_LONG).show()
+                }
+
+            }
                 val action = WeatherFragmentDirections.actionWeatherFragmentToWeatherList()
                 findNavController().navigate((action))
 
         }
     }
-
-
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
 
@@ -133,11 +202,6 @@ class WeatherFragment : Fragment() {
             requireView().findNavController()) || super.onOptionsItemSelected(item)
 
     }
-
-
-
-
-
 
     companion object {
         @JvmStatic

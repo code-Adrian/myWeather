@@ -51,9 +51,8 @@ class WeatherListFragment : Fragment(),WeatherListener,EditListener {
         app.localWeather.serialize(app.weather.getAll())
 
         val root = fragBinding.root
-
         activity?.title = getString(R.string.action_weathList)
-        //fragBinding.toolbar.setBackgroundResource(R.drawable.weather_card_gradient)
+
         loadWeather()
 
         return root
@@ -66,14 +65,11 @@ class WeatherListFragment : Fragment(),WeatherListener,EditListener {
 
     override fun onResume() {
         super.onResume()
-        //app.localWeather.serialize(app.weather.getAll())
-
     }
 
     override fun onWeatherClick(weather: WeatherModel) {
         val action = WeatherListFragmentDirections.actionWeatherListFragmentToWeatherTemperatureFragment(weather)
         findNavController().navigate((action))
-       // Toast.makeText(context,weather.City,Toast.LENGTH_SHORT).show()
     }
 
 
@@ -95,7 +91,6 @@ private fun loadWeather(){
 
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-
         inflater.inflate(R.menu.weatherlist_menu,menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
@@ -113,10 +108,7 @@ private fun loadWeather(){
         fun newInstance() =
             WeatherListFragment().apply {
                 arguments = Bundle().apply {
-
                 }
             }
     }
-
-
 }

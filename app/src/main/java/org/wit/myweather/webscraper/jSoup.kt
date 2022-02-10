@@ -167,6 +167,7 @@ if(weblink.equals("")){
 
 
 fun getLocation() : String{
+    allowNetwork()
     var Location = ""
 
     val getWeather = Jsoup.connect("https://www.google.com/search?q=weather+forecast").ignoreContentType(true).get()

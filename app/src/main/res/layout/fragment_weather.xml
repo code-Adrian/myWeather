@@ -41,6 +41,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+
                 <EditText
                     android:id="@+id/Add_Country"
                     android:layout_width="match_parent"
@@ -56,7 +57,9 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.47"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+
+                    />
 
 
                 <EditText
@@ -93,20 +96,37 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
 
-                <Button
-                    android:id="@+id/Add_Weather"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:layout_marginLeft="25dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginRight="25dp"
-                    android:background="@color/button"
-                    android:text="@string/add_weather"
-                    android:textColor="@color/white"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    <CheckBox
+                        android:id="@+id/checkBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:layout_toEndOf="@+id/Add_Weather"
+                        android:scaleX="1"
+                        android:scaleY="1"
+                        android:text="@string/web_scrape"
+                        android:textSize="15sp" />
+
+                    <Button
+                        android:id="@+id/Add_Weather"
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@color/button"
+                        android:text="@string/add_weather"
+                        android:textColor="@color/white"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </RelativeLayout>
+
 
                 <EditText
                     android:id="@+id/Add_Link"
@@ -115,6 +135,7 @@
                     android:layout_marginLeft="18dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginRight="18dp"
+
                     android:autofillHints="www.google.com"
                     android:ems="10"
                     android:hint="@string/link"
@@ -140,18 +161,18 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
 
-
                 <ImageView
                     android:id="@+id/imageView"
-                    android:layout_width="250dp"
-                    android:layout_height="250dp"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_gravity="center|bottom"
+                    android:contentDescription="@string/editimage"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/Add_Weather_URL"
-                    android:layout_gravity="center|bottom"
-                    app:srcCompat="@drawable/location"
-                    android:contentDescription="@string/editimage" />
+                    app:srcCompat="@drawable/location" />
+
 
             </LinearLayout>
         </ScrollView>

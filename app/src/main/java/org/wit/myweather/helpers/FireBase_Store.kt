@@ -1,9 +1,11 @@
-package org.wit.myweather.models
+package org.wit.myweather.helpers
 
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import org.wit.myweather.models.WeatherModel
+import org.wit.myweather.models.WeatherStore
 import kotlin.concurrent.thread
 var Id = 0L
 val uniqueFirebaseID: String = (android.os.Build.MODEL.toString() + " " + android.os.Build.ID+ " " + android.os.Build.USER + " --WeatherModel").replace(".","")
@@ -11,7 +13,7 @@ internal fun ID():Long{
     return Id++;
 }
 
-class FireBase_Store: WeatherStore  {
+class FireBase_Store: WeatherStore {
 
     val weather = ArrayList<WeatherModel>()
     override fun getAll(): MutableList<WeatherModel> {
