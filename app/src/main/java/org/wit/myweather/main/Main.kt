@@ -2,8 +2,11 @@ package org.wit.myweather.main
 
 import android.app.Application
 import android.widget.TextView
+import org.wit.myweather.API.getLow
+import org.wit.myweather.API.getPeak
+import org.wit.myweather.API.setIcon
 import org.wit.myweather.R
-import org.wit.myweather.models.FireBase_Store
+import org.wit.myweather.helpers.FireBase_Store
 import org.wit.myweather.models.WeatherStore
 import org.wit.myweather.models.*
 import org.wit.myweather.webscraper.getLowestTemp
@@ -27,6 +30,7 @@ lateinit var localWeather: Json_Store
         updaterThread.start()
     }
 }
+
 
 class  thread():Thread(){
     lateinit var weather2: WeatherStore
@@ -52,28 +56,51 @@ class  thread():Thread(){
             try {
                 if (list.size > 0) {
                     for (i in list) {
-                        i.Temperature = getPeakTemp(i.Country, i.County, i.City)
-                        i.TemperatureLow = getLowestTemp(i.Country, i.County, i.City)
-                        i.Image = setImage(i.Country, i.County, i.City, i.WebLink)
-                        i.id = i.id
-                        i.Country = i.Country
-                        i.City = i.City
-                        i.WebLink = i.WebLink
+                        if(i.Type.equals("Scrape")) {
+                            i.Temperature = getPeakTemp(i.Country, i.County, i.City)
+                            i.TemperatureLow = getLowestTemp(i.Country, i.County, i.City)
+                            i.Image = setImage(i.Country, i.County, i.City, i.WebLink)
+                            i.id = i.id
+                            i.Country = i.Country
+                            i.City = i.City
+                            i.WebLink = i.WebLink
 
-                        model = WeatherModel(
-                            i.id,
-                            i.Country,
-                            i.County,
-                            i.City,
-                            i.Temperature,
-                            i.TemperatureLow,
-                            i.WebLink,
-                            i.Image
-                        )
-                        //Sleep for 1.5 seconds to avoid Concurrent Modification Exception
-                        Thread.sleep(1500)
-                        weather2.update(model.copy())
+                            model = WeatherModel(
+                                i.id,
+                                i.Country,
+                                i.County,
+                                i.City,
+                                i.Temperature,
+                                i.TemperatureLow,
+                                i.WebLink,
+                                i.Image
+                            )
+                            //Sleep for 1.5 seconds to avoid Concurrent Modification Exception
+                            Thread.sleep(1500)
+                            weather2.update(model.copy())
+                        }else{
+                            i.Temperature = getPeak(i.Country, i.County, i.City)
+                            i.TemperatureLow = getLow(i.Country, i.County, i.City)
+                            i.Image = setIcon(i.Country, i.County, i.City).get(0)
+                            i.id = i.id
+                            i.Country = i.Country
+                            i.City = i.City
+                            i.WebLink = i.WebLink
 
+                            model = WeatherModel(
+                                i.id,
+                                i.Country,
+                                i.County,
+                                i.City,
+                                i.Temperature,
+                                i.TemperatureLow,
+                                i.WebLink,
+                                i.Image
+                            )
+                            //Sleep for 1.5 seconds to avoid Concurrent Modification Exception
+                            Thread.sleep(1500)
+                            weather2.update(model.copy())
+                        }
                     }
                     localWeather2.serialize(weather2.getAll())
                 }

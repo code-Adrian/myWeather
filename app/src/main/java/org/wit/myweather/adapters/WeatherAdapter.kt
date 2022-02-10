@@ -48,26 +48,39 @@ class WeatherAdapter constructor(private val weather: MutableList<WeatherModel>,
                 }
 doAsync { uiThread {
 
+    itemView.setOnClickListener { listener.onWeatherClick(weathermodel) }
+    itemView.editImage.setOnClickListener { listener2.onEditClick(weathermodel) }
+
                // weathermodel.Temperature = getPeakTemp(weathermodel.Country, weathermodel.County, weathermodel.City)
                 //weathermodel.TemperatureLow = getLowestTemp(weathermodel.Country, weathermodel.County, weathermodel.City)
-                  weathermodel.Temperature = weathermodel.Temperature
-                weathermodel.TemperatureLow = weathermodel.TemperatureLow
-                if (weathermodel.TemperatureLow.equals("1000")) {
-                    itemView.temperaturelowDetail.text = "null"
-                } else {
-                    itemView.temperaturelowDetail.text = weathermodel.TemperatureLow + "°C"
-                }
+                  if(weathermodel.Type.equals( "Scrape")) {
+                      weathermodel.Temperature = weathermodel.Temperature
+                      weathermodel.TemperatureLow = weathermodel.TemperatureLow
+                      if (weathermodel.TemperatureLow.equals("1000")) {
+                          itemView.temperaturelowDetail.text = "null"
+                      } else {
+                          itemView.temperaturelowDetail.text = weathermodel.TemperatureLow + "°C"
+                      }
 
-                if (weathermodel.Temperature.equals("1000")) {
-                    itemView.temperatureDetail.text = "null"
-                } else {
-                    itemView.temperatureDetail.text = weathermodel.Temperature + "°C"
-                }
+                      if (weathermodel.Temperature.equals("1000")) {
+                          itemView.temperatureDetail.text = "null"
+                      } else {
+                          itemView.temperatureDetail.text = weathermodel.Temperature + "°C"
+                      }
 
-                itemView.setOnClickListener { listener.onWeatherClick(weathermodel) }
-                itemView.editImage.setOnClickListener{listener2.onEditClick(weathermodel)}
-                //itemView.imageIcon.setImageResource(setImage(weathermodel.Country, weathermodel.County, weathermodel.City, weathermodel.WebLink))
-                itemView.imageIcon.setImageResource(weathermodel.Image)
+
+                      //itemView.imageIcon.setImageResource(setImage(weathermodel.Country, weathermodel.County, weathermodel.City, weathermodel.WebLink))
+                      itemView.imageIcon.setImageResource(weathermodel.Image)
+                  }
+
+                  if(weathermodel.Type.equals("API")){
+                      weathermodel.Temperature = weathermodel.Temperature
+                      weathermodel.TemperatureLow = weathermodel.TemperatureLow
+                      itemView.temperaturelowDetail.text = weathermodel.TemperatureLow + "°C"
+                      itemView.temperatureDetail.text = weathermodel.Temperature + "°C"
+
+                      itemView.imageIcon.setImageResource(weathermodel.Image)
+                  }
 } }
         }
     }

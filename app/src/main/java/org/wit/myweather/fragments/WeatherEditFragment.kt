@@ -43,23 +43,26 @@ class WeatherEditFragment : Fragment() {
     ): View? {
         _fragBinding = FragmentWeatherEditBinding.inflate(inflater, container, false)
         val root = fragBinding.root
-
-
         activity?.title = getString(R.string.action_menu)
-       // Toast.makeText(context,"Work?",Toast.LENGTH_SHORT).show()
+
 
         fillText()
-        fragBinding.EditWeather.setOnClickListener {
+        updateListener()
 
+
+    return root
+    }
+
+    private fun updateListener(){
+        fragBinding.EditWeather.setOnClickListener {
             setModel()
 
             app.weather.update(model.copy())
             app.localWeather.serialize(app.weather.getAll())
-                val action = WeatherEditFragmentDirections.actionWeatherEditToWeatherList()
-                findNavController().navigate((action))
+            val action = WeatherEditFragmentDirections.actionWeatherEditToWeatherList()
+            findNavController().navigate((action))
 
         }
-    return root
     }
 
     private fun fillText(){
@@ -92,7 +95,6 @@ class WeatherEditFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

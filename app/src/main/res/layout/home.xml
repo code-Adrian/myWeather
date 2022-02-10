@@ -12,7 +12,9 @@
     <include
         layout="@layout/app_bar_home"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+
+        />
 
 
     <com.google.android.material.navigation.NavigationView
@@ -21,7 +23,9 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
+        app:itemTextColor="@color/white"
         android:background="@drawable/side_nav_bar_reversed"
         app:headerLayout="@layout/nav_header"
+        app:itemIconTint="@color/button"
         app:menu="@menu/nav_drawer_menu" />
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -29,8 +29,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@+id/imageIcon"
-        android:textSize="22sp"
-        android:text="@string/ireland_tipperary_cahir" />
+        android:text="@string/ireland_tipperary_cahir"
+        android:textSize="22sp" />
 
     <TextView
         android:id="@+id/temperatureDetail"
@@ -47,12 +47,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/locationDescription"
-        android:layout_toEndOf="@+id/temperatureDetail"
-        android:layout_marginTop="1dp"
-        android:textSize="17sp"
-        android:text="@string/card_loading"
         android:layout_marginLeft="6dp"
-        />
+        android:layout_marginTop="1dp"
+        android:layout_toEndOf="@+id/temperatureDetail"
+        android:text="@string/card_loading"
+        android:textSize="17sp" />
 
     <ImageView
         android:id="@+id/editImage"
