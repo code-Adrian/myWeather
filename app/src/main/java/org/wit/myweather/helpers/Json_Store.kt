@@ -46,6 +46,25 @@ class Json_Store(private val context: Context) : LocalWeatherStore {
 
     }
 
+    override fun update(weather: WeatherModel) {
+        deserialize()
+        val foundWeather: WeatherModel? = weathers.find {id -> id.id == weather.id  }
+        if(foundWeather != null){
+
+            foundWeather.id = weather.id
+            foundWeather.Country = weather.Country
+            foundWeather.County = weather.County
+            foundWeather.City = weather.City
+            foundWeather.Temperature = weather.Temperature
+            foundWeather.TemperatureLow = weather.TemperatureLow
+            foundWeather.WebLink = weather.WebLink
+            foundWeather.Image = weather.Image
+            foundWeather.Type = weather.Type
+
+        }
+        serialize(weathers)
+    }
+
 }
 
 class Parse : JsonDeserializer<Uri>,JsonSerializer<Uri> {

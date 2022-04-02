@@ -14,3 +14,6 @@ import kotlinx.android.parcel.Parcelize
                             var WebLink: String = "",
                             var Image: Int = 0,
                             var Type: String = "API")           : Parcelable
+
+
+

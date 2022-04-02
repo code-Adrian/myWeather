@@ -2,51 +2,35 @@ package org.wit.myweather.fragments
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.pm.PackageManager
 import android.location.Geocoder
-import android.location.Location
-import android.location.LocationManager
-import android.location.LocationRequest
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.os.StrictMode
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.tasks.Task
 import com.vmadalin.easypermissions.EasyPermissions
 import com.vmadalin.easypermissions.dialogs.SettingsDialog
-import kotlinx.android.synthetic.main.fragment_menu.*
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
 import org.wit.myweather.API.getPeakCoordinated
-import org.wit.myweather.API.setIcon
 import org.wit.myweather.API.setIconCoordinated
 import org.wit.myweather.R
 import org.wit.myweather.databinding.FragmentMenuBinding
-import org.wit.myweather.livedata.ViewModel
+import org.wit.myweather.mvvm.MenuViewModel
 import org.wit.myweather.main.Main
-import org.wit.myweather.models.Json_Store
 import org.wit.myweather.models.MainMenuDetailsModel
 import org.wit.myweather.models.WeatherModel
+import org.wit.myweather.mvvm.WeatherListViewModel
 import org.wit.myweather.webscraper.getDateDay
 import org.wit.myweather.webscraper.getLocation
 import org.wit.myweather.webscraper.getPeakTemp
 import org.wit.myweather.webscraper.getWeatherStatus
 import kotlin.concurrent.thread
-import kotlin.random.Random
 
 
 class MenuFragment : Fragment(), EasyPermissions.PermissionCallbacks{
@@ -55,7 +39,8 @@ class MenuFragment : Fragment(), EasyPermissions.PermissionCallbacks{
     private var _fragBinding: FragmentMenuBinding? = null
     private val fragBinding get() = _fragBinding!!
     //Live data
-    private val viewModel: ViewModel by viewModels()
+    private val menuViewModel: MenuViewModel by viewModels()
+    private lateinit var weatherListViewModel : WeatherListViewModel
     //Location
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
@@ -76,7 +61,7 @@ class MenuFragment : Fragment(), EasyPermissions.PermissionCallbacks{
         val root = fragBinding.root
         activity?.title = getString(R.string.action_menu)
         fragBinding.progressBar.visibility = View.INVISIBLE
-
+        weatherListViewModel = ViewModelProvider(this).get(WeatherListViewModel::class.java)
         setDetails()
 
         fragBinding.menuButton.setOnClickListener{
@@ -84,7 +69,6 @@ class MenuFragment : Fragment(), EasyPermissions.PermissionCallbacks{
                 findNavController().navigate((action))
             fragBinding.progressBar.visibility = View.VISIBLE
         }
-
 
         return root
     }
@@ -106,7 +90,7 @@ fun setDetails(){
                                 geoCoder.getFromLocation(latitude, longitude, 1).first().locality
 
 
-                            val view = viewModel
+                            val view = menuViewModel
                             val setter = MainMenuDetailsModel(
                                 currentLocation,
                                 getPeakCoordinated(
@@ -125,7 +109,7 @@ fun setDetails(){
                         }catch (e: Exception){
                             //If lacality can not be found, print error and use web scraping.
                             println(e.printStackTrace())
-                            val view = viewModel
+                            val view = menuViewModel
                             val setter = MainMenuDetailsModel(
                                 getLocation(),
                                 getPeakTemp(),
@@ -138,7 +122,7 @@ fun setDetails(){
                     //If in emulator
                 } else {
                     thread {
-                        val view = viewModel
+                        val view = menuViewModel
                         val setter = MainMenuDetailsModel(
                             getLocation(),
                             getPeakTemp(),
@@ -156,7 +140,9 @@ fun setDetails(){
 }
 
     private fun preloadWeather(){
-        app.localWeather.serialize(app.weather.getAll())
+        weatherListViewModel.observableWeatherList.observe(viewLifecycleOwner, Observer {weather ->
+            app.localWeather.serialize(weather)
+        })
     }
 
 
@@ -175,7 +161,7 @@ fun setDetails(){
 
 
     private fun observer(){
-        viewModel.getMainMenuDetails().observe(viewLifecycleOwner,{mainmenu ->
+        menuViewModel.getMainMenuDetails().observe(viewLifecycleOwner,{ mainmenu ->
             fragBinding.menuTemp.text = mainmenu.temperature
             fragBinding.menuCounty.text = mainmenu.location
             fragBinding.menuDayofweek.text = mainmenu.weekDay

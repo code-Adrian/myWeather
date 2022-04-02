@@ -39,6 +39,8 @@
     <string name="weather_List">View Weather</string>
     <string name="group_Manage">Manage Weather</string>
 
+    <string name="edit_fail">Failed to edit</string>
+    <string name="add_fail">Failed to create</string>
 
     <string name="nav_header_title">myWeather</string>
     <string name="nav_header_subtitle"></string>

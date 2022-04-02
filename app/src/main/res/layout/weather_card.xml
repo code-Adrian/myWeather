@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <androidx.cardview.widget.CardView
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="weather"
+            type="org.wit.myweather.models.WeatherModel" />
+    </data>
+
+
+    <androidx.cardview.widget.CardView
+        xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp"
     android:elevation="24dp"
     >
-
 
 <RelativeLayout
     android:layout_width="match_parent"
@@ -29,7 +39,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@+id/imageIcon"
-        android:text="@string/ireland_tipperary_cahir"
+        android:text='@{weather.country + ","+ weather.county +" "+ weather.city}'
+        tools:text="@string/ireland_tipperary_cahir"
         android:textSize="22sp" />
 
     <TextView
@@ -40,7 +51,7 @@
         android:layout_below="@+id/locationDescription"
         android:layout_marginTop="2dp"
         android:textSize="20sp"
-        android:text="" />
+        android:text='@{weather.temperature+"°C"}' />
 
     <TextView
         android:id="@+id/temperaturelowDetail"
@@ -50,7 +61,8 @@
         android:layout_marginLeft="6dp"
         android:layout_marginTop="1dp"
         android:layout_toEndOf="@+id/temperatureDetail"
-        android:text="@string/card_loading"
+        android:text='@{weather.temperatureLow+"°C"}'
+        tools:text="@string/card_loading"
         android:textSize="17sp" />
 
     <ImageView
@@ -64,3 +76,4 @@
 </RelativeLayout>
 
 </androidx.cardview.widget.CardView>
+</layout>

@@ -8,6 +8,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
@@ -21,6 +23,8 @@ import org.wit.myweather.databinding.FragmentWeatherEditBinding
 import org.wit.myweather.databinding.FragmentWeatherListBinding
 import org.wit.myweather.main.Main
 import org.wit.myweather.models.WeatherModel
+import org.wit.myweather.mvvm.WeatherEditViewModel
+import org.wit.myweather.mvvm.WeatherViewModel
 import org.wit.myweather.webscraper.getLocationByWebLink
 import org.wit.myweather.webscraper.getLowestTemp
 import org.wit.myweather.webscraper.getPeakTemp
@@ -35,6 +39,7 @@ class WeatherFragment : Fragment() {
     private val fragBinding get() = _fragBinding!!
     var model = WeatherModel()
     var API = true
+    private lateinit var weatherViewModel : WeatherViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +55,7 @@ class WeatherFragment : Fragment() {
         val root = fragBinding.root
 
         activity?.title = getString(R.string.action_addweather)
-
+        weatherViewModel = ViewModelProvider(this).get(WeatherViewModel::class.java)
         activateListeners()
 
         return root
@@ -95,20 +100,19 @@ class WeatherFragment : Fragment() {
             model.Country = list[1]
             model.City = list[0]
             model.WebLink = fragBinding.AddLink.text.toString()
-
+            model.Type = "Scrape"
             model.Image = setImage(model.Country, model.County, model.City, model.WebLink)
             //Scrapes relevant info and sets respective Peak temperature.
             model.Temperature = getPeakTemp(model.Country, model.County, model.City)
             //Scrapes relevant info and sets respective Low temperature.
             model.TemperatureLow = getLowestTemp(model.Country, model.County, model.City)
             //Uploads Model to Firebase
-            app.weather.create(model.copy())
             //Receives info from Firebase and saves locally
-
-            app.weather.create(model.copy())
-            app.localWeather.serialize(app.weather.getAll())
-                val action = WeatherFragmentDirections.actionWeatherFragmentToWeatherList()
-                findNavController().navigate((action))
+            create()
+            //Navigate back
+            weatherViewModel.observableStatus.observe(viewLifecycleOwner, Observer { status ->
+                status?.let { render(status) }
+            })
 
         }
     }
@@ -134,10 +138,8 @@ class WeatherFragment : Fragment() {
                         model.TemperatureLow =
                             getLowestTemp(model.Country, model.County, model.City)
                         //Uploads Model to Firebase
-                        app.weather.create(model.copy())
                         //Receives info from Firebase and saves locally
-                        app.localWeather.serialize(app.weather.getAll())
-
+                        create()
 
                         val key =
                             activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -169,11 +171,8 @@ class WeatherFragment : Fragment() {
                         model.TemperatureLow =
                             getLow(model.Country, model.County, model.City)
                         //Uploads Model to Firebase
-                        app.weather.create(model.copy())
                         //Receives info from Firebase and saves locally
-                        app.localWeather.serialize(app.weather.getAll())
-
-
+                        create()
 
                     }else {
                         Toast.makeText(
@@ -185,9 +184,10 @@ class WeatherFragment : Fragment() {
                 }
 
             }
-                val action = WeatherFragmentDirections.actionWeatherFragmentToWeatherList()
-                findNavController().navigate((action))
-
+            //Navigate back
+            weatherViewModel.observableStatus.observe(viewLifecycleOwner, Observer { status ->
+                status?.let { render(status) }
+            })
         }
     }
 
@@ -201,6 +201,22 @@ class WeatherFragment : Fragment() {
         return NavigationUI.onNavDestinationSelected(item,
             requireView().findNavController()) || super.onOptionsItemSelected(item)
 
+    }
+
+    private fun create(){
+        weatherViewModel.create(model.copy())
+    }
+
+    private fun render(status:Boolean){
+        when (status) {
+            true -> {
+                    val action = WeatherFragmentDirections.actionWeatherFragmentToWeatherList()
+                    findNavController().navigate((action))
+            }
+            false ->{
+                Toast.makeText(context,getString(R.string.add_fail),Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     companion object {

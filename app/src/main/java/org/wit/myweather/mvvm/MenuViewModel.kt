@@ -1,19 +1,13 @@
-package org.wit.myweather.livedata
+package org.wit.myweather.mvvm
 
 import android.os.Handler
 import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import org.wit.myweather.fragments.MenuFragment
-import org.wit.myweather.main.Main
 import org.wit.myweather.models.MainMenuDetailsModel
-import org.wit.myweather.webscraper.getDateDay
-import org.wit.myweather.webscraper.getLocation
-import java.time.LocalDate
-import kotlin.random.Random
 
-class ViewModel : ViewModel(){
+class MenuViewModel : ViewModel(){
 
     private val mainmenu = MutableLiveData<MainMenuDetailsModel>()
     private val delay = 3000L
@@ -39,17 +33,11 @@ class ViewModel : ViewModel(){
         },100L)
     }
 
-    private fun updateLiveData(set: MainMenuDetailsModel){
-      //  var temp = ""
-       // var day = getDateDay()
-     //   var loc = getLocation()
-     //  var image = ""
-
-       // val lo = MainMenuDetailsModel(loc,temp,day,image)
+    private fun updateLiveData(set: MainMenuDetailsModel) {
         setMainMenuDetails(set)
-        //Repeat
-       // loop()
     }
+
+
 
 
 

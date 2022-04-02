@@ -2,16 +2,24 @@ package org.wit.myweather.fragments
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
+import org.wit.myweather.API.getLow
+import org.wit.myweather.API.getPeak
+import org.wit.myweather.API.setIcon
 import org.wit.myweather.R
 import org.wit.myweather.databinding.FragmentWeatherEditBinding
 import org.wit.myweather.main.Main
 import org.wit.myweather.models.WeatherModel
+import org.wit.myweather.mvvm.WeatherEditViewModel
+import org.wit.myweather.mvvm.WeatherListViewModel
 import org.wit.myweather.webscraper.getLowestTemp
 import org.wit.myweather.webscraper.getPeakTemp
 import org.wit.myweather.webscraper.setImage
@@ -23,6 +31,7 @@ class WeatherEditFragment : Fragment() {
     private var _fragBinding: FragmentWeatherEditBinding? = null
     private val fragBinding get() = _fragBinding!!
     private lateinit var model: WeatherModel
+    private lateinit var weatherEditViewModel : WeatherEditViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +50,7 @@ class WeatherEditFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        weatherEditViewModel = ViewModelProvider(this).get(WeatherEditViewModel::class.java)
         _fragBinding = FragmentWeatherEditBinding.inflate(inflater, container, false)
         val root = fragBinding.root
         activity?.title = getString(R.string.action_menu)
@@ -55,13 +65,43 @@ class WeatherEditFragment : Fragment() {
 
     private fun updateListener(){
         fragBinding.EditWeather.setOnClickListener {
-            setModel()
+            //Data Validation
+            if(fragBinding.EditCountry.length() > 2) {
+                if(fragBinding.EditCity.length() > 2) {
 
-            app.weather.update(model.copy())
-            app.localWeather.serialize(app.weather.getAll())
-            val action = WeatherEditFragmentDirections.actionWeatherEditToWeatherList()
-            findNavController().navigate((action))
+                    setModel()
 
+                    //Update cloud
+                    weatherEditViewModel.update(model.copy())
+                    //Serialize locally by retrieving data from now updated cloud.
+                    weatherEditViewModel.load()
+                    //Navigate backl
+                    weatherEditViewModel.observableStatus.observe(viewLifecycleOwner, Observer {
+                        status -> status?.let { render(status) }
+                    })
+
+                }else
+                {
+                    Toast.makeText(context,"City field must not be less than 2 in length",Toast.LENGTH_LONG).show()
+                }
+            }else
+            {
+                Toast.makeText(context,"Country field must not be less than 3 in length",Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    private fun render(status:Boolean){
+        when (status) {
+            true -> {
+            view?.let {
+                val action = WeatherEditFragmentDirections.actionWeatherEditToWeatherList()
+                findNavController().navigate((action))
+            }
+            }
+            false ->{
+                Toast.makeText(context,getString(R.string.edit_fail),Toast.LENGTH_LONG).show()
+            }
         }
     }
 
@@ -74,19 +114,33 @@ class WeatherEditFragment : Fragment() {
     }
 
     private fun setModel(){
-        model.Country = fragBinding.EditCountry.text.toString()
-        model.County = fragBinding.EditCounty.text.toString()
-        model.City = fragBinding.EditCity.text.toString()
-        model.WebLink = fragBinding.EditLink.text.toString()
+        //If the model is API, update data by API usage.
+        if(model.Type.equals("API")){
+            model.Country = fragBinding.EditCountry.text.toString()
+            model.County = fragBinding.EditCounty.text.toString()
+            model.City = fragBinding.EditCity.text.toString()
+            model.WebLink = fragBinding.EditLink.text.toString()
 
-        model.Image = setImage(model.Country, model.County, model.City, model.WebLink)
-        //Scrapes relevant info and sets respective Peak temperature.
-        model.Temperature = getPeakTemp(model.Country, model.County, model.City)
-        //Scrapes relevant info and sets respective Low temperature.
-        model.TemperatureLow = getLowestTemp(model.Country, model.County, model.City)
+            model.Image = setIcon(model.Country, model.County, model.City).get(0)
+            //API relevant info and sets respective Peak temperature.
+            model.Temperature = getPeak(model.Country, model.County, model.City)
+            //API relevant info and sets respective Low temperature.
+            model.TemperatureLow = getLow(model.Country, model.County, model.City)
+        }
+        //If the model is using Web scraping, update data by jSoup usage.
+        if (model.Type.equals("Scrape")) {
+            model.Country = fragBinding.EditCountry.text.toString()
+            model.County = fragBinding.EditCounty.text.toString()
+            model.City = fragBinding.EditCity.text.toString()
+            model.WebLink = fragBinding.EditLink.text.toString()
+
+            model.Image = setImage(model.Country, model.County, model.City, model.WebLink)
+            //Scrapes relevant info and sets respective Peak temperature.
+            model.Temperature = getPeakTemp(model.Country, model.County, model.City)
+            //Scrapes relevant info and sets respective Low temperature.
+            model.TemperatureLow = getLowestTemp(model.Country, model.County, model.City)
+        }
     }
-
-
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -106,17 +160,20 @@ class WeatherEditFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
             R.id.edit_delete -> {
-                app.weather.delete(model.copy())
-                app.localWeather.serialize(app.weather.getAll())
-                val action = WeatherEditFragmentDirections.actionWeatherEditToWeatherList()
-                findNavController().navigate((action))
+                weatherEditViewModel.delete(model.copy())
+                weatherEditViewModel.load()
+                weatherEditViewModel.observableWeatherEdit.observe(viewLifecycleOwner, Observer {weather ->
+                    weather.remove(model.copy())
+                })
+                weatherEditViewModel.observableStatus.observe(viewLifecycleOwner, Observer {
+                        status -> status?.let { render(status) }
+                })
             }
         }
         return NavigationUI.onNavDestinationSelected(item,
             requireView().findNavController()) || super.onOptionsItemSelected(item)
 
     }
-
 
     companion object {
 
