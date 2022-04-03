@@ -1,4 +1,4 @@
-package org.wit.myweather.fragments
+package org.wit.myweather.ui.menu
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -21,11 +21,9 @@ import org.wit.myweather.API.getPeakCoordinated
 import org.wit.myweather.API.setIconCoordinated
 import org.wit.myweather.R
 import org.wit.myweather.databinding.FragmentMenuBinding
-import org.wit.myweather.mvvm.MenuViewModel
 import org.wit.myweather.main.Main
 import org.wit.myweather.models.MainMenuDetailsModel
-import org.wit.myweather.models.WeatherModel
-import org.wit.myweather.mvvm.WeatherListViewModel
+import org.wit.myweather.ui.weatherlist.WeatherListViewModel
 import org.wit.myweather.webscraper.getDateDay
 import org.wit.myweather.webscraper.getLocation
 import org.wit.myweather.webscraper.getPeakTemp
@@ -65,7 +63,8 @@ class MenuFragment : Fragment(), EasyPermissions.PermissionCallbacks{
         setDetails()
 
         fragBinding.menuButton.setOnClickListener{
-                val action = MenuFragmentDirections.actionMenuFragmentToWeatherList()
+                val action =
+                    org.wit.myweather.ui.menu.MenuFragmentDirections.actionMenuFragmentToWeatherList()
                 findNavController().navigate((action))
             fragBinding.progressBar.visibility = View.VISIBLE
         }

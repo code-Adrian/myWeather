@@ -1,4 +1,4 @@
-package org.wit.myweather.mvvm
+package org.wit.myweather.ui.weatherlist
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

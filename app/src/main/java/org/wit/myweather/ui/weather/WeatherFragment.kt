@@ -1,35 +1,27 @@
-package org.wit.myweather.fragments
+package org.wit.myweather.ui.weather
 
 import android.content.Context
 import android.os.Bundle
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
-import org.jetbrains.anko.toast
 import org.wit.myweather.API.getLow
 import org.wit.myweather.API.getPeak
 import org.wit.myweather.API.setIcon
 import org.wit.myweather.R
 import org.wit.myweather.databinding.FragmentWeatherBinding
-import org.wit.myweather.databinding.FragmentWeatherEditBinding
-import org.wit.myweather.databinding.FragmentWeatherListBinding
 import org.wit.myweather.main.Main
 import org.wit.myweather.models.WeatherModel
-import org.wit.myweather.mvvm.WeatherEditViewModel
-import org.wit.myweather.mvvm.WeatherViewModel
 import org.wit.myweather.webscraper.getLocationByWebLink
 import org.wit.myweather.webscraper.getLowestTemp
 import org.wit.myweather.webscraper.getPeakTemp
 import org.wit.myweather.webscraper.setImage
-import kotlin.concurrent.thread
 
 
 class WeatherFragment : Fragment() {
@@ -210,7 +202,8 @@ class WeatherFragment : Fragment() {
     private fun render(status:Boolean){
         when (status) {
             true -> {
-                    val action = WeatherFragmentDirections.actionWeatherFragmentToWeatherList()
+                    val action =
+                        org.wit.myweather.ui.weather.WeatherFragmentDirections.actionWeatherFragmentToWeatherList()
                     findNavController().navigate((action))
             }
             false ->{

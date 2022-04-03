@@ -1,11 +1,9 @@
-package org.wit.myweather.fragments
+package org.wit.myweather.ui.weatheredit
 
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -18,12 +16,9 @@ import org.wit.myweather.R
 import org.wit.myweather.databinding.FragmentWeatherEditBinding
 import org.wit.myweather.main.Main
 import org.wit.myweather.models.WeatherModel
-import org.wit.myweather.mvvm.WeatherEditViewModel
-import org.wit.myweather.mvvm.WeatherListViewModel
 import org.wit.myweather.webscraper.getLowestTemp
 import org.wit.myweather.webscraper.getPeakTemp
 import org.wit.myweather.webscraper.setImage
-import kotlin.concurrent.thread
 
 
 class WeatherEditFragment : Fragment() {
@@ -95,7 +90,8 @@ class WeatherEditFragment : Fragment() {
         when (status) {
             true -> {
             view?.let {
-                val action = WeatherEditFragmentDirections.actionWeatherEditToWeatherList()
+                val action =
+                    org.wit.myweather.ui.weatheredit.WeatherEditFragmentDirections.actionWeatherEditToWeatherList()
                 findNavController().navigate((action))
             }
             }

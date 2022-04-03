@@ -1,34 +1,42 @@
 {
   "project_info": {
-    "project_number": "179916443312",
-    "firebase_url": "https://myweather-a5330-default-rtdb.firebaseio.com",
-    "project_id": "myweather-a5330",
-    "storage_bucket": "myweather-a5330.appspot.com"
+    "project_number": "153497975044",
+    "firebase_url": "https://myweather-95318-default-rtdb.firebaseio.com",
+    "project_id": "myweather-95318",
+    "storage_bucket": "myweather-95318.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:179916443312:android:de13a8c6d09d8e5012b575",
+        "mobilesdk_app_id": "1:153497975044:android:ef1a91c0a8a59b3575f851",
         "android_client_info": {
           "package_name": "org.wit.myweather"
         }
       },
       "oauth_client": [
         {
-          "client_id": "179916443312-9q6069a98olq1nfa974r1uk88chk2ckg.apps.googleusercontent.com",
+          "client_id": "153497975044-fbu03son828vvncvv0n40eqgqvq2lesm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.wit.myweather",
+            "certificate_hash": "37ce8ea721c6b9f0cb76765abcbe077799ffe349"
+          }
+        },
+        {
+          "client_id": "153497975044-d5e3pst8ih9g4trieq5r5elr5pqmfal3.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBTZToifHCfbLb00scCKfPo9YhteK5imi0"
+          "current_key": "AIzaSyBJj90UaJQi-elqiUIZnafOpGWruf27p9U"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "179916443312-9q6069a98olq1nfa974r1uk88chk2ckg.apps.googleusercontent.com",
+              "client_id": "153497975044-d5e3pst8ih9g4trieq5r5elr5pqmfal3.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -1,10 +1,8 @@
-package org.wit.myweather.fragments
+package org.wit.myweather.ui.weathertemperature
 
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import org.jetbrains.anko.doAsync
@@ -13,7 +11,6 @@ import org.wit.myweather.API.getWeeklyLow
 import org.wit.myweather.API.getWeeklyPeak
 import org.wit.myweather.API.setIcon
 import org.wit.myweather.R
-import org.wit.myweather.databinding.FragmentMenuBinding
 import org.wit.myweather.databinding.FragmentWeatherTemperatureBinding
 import org.wit.myweather.main.Main
 import org.wit.myweather.models.WeatherModel

@@ -1,14 +1,14 @@
-package org.wit.myweather.mvvm
+package org.wit.myweather.ui.weatheredit
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import org.wit.myweather.helpers.FireBase_Store
 import org.wit.myweather.models.WeatherModel
 
-class WeatherViewModel : ViewModel() {
+class WeatherEditViewModel : ViewModel() {
     private val weatherList = MutableLiveData<MutableList<WeatherModel>>()
 
-    val observableWeather: LiveData<MutableList<WeatherModel>>
+    val observableWeatherEdit: LiveData<MutableList<WeatherModel>>
         get() = weatherList
 
     private val status = MutableLiveData<Boolean>()
@@ -21,12 +21,20 @@ class WeatherViewModel : ViewModel() {
     }
 
     fun load(){
-        FireBase_Store.getAll(weatherList)
+            FireBase_Store.getAll(weatherList)
+    }
+    fun update(weather: WeatherModel){
+        status.value = try {
+            FireBase_Store.update(weather)
+            true
+        }catch (e: IllegalArgumentException){
+            false
+        }
     }
 
-    fun create(weather: WeatherModel){
+    fun delete(weather: WeatherModel){
         status.value = try {
-            FireBase_Store.create(weather)
+            FireBase_Store.delete(weather)
             true
         }catch (e: IllegalArgumentException){
             false

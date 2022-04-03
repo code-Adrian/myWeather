@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/menuFragment"
-        android:name="org.wit.myweather.fragments.MenuFragment"
+        android:name="org.wit.myweather.ui.menu.MenuFragment"
         android:label="Welcome Back!"
         tools:layout="@layout/fragment_menu" >
         <action
@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/weatherFragment"
-        android:name="org.wit.myweather.fragments.WeatherFragment"
+        android:name="org.wit.myweather.ui.weather.WeatherFragment"
         android:label="Add weather"
         tools:layout="@layout/fragment_weather" >
         <action
@@ -31,7 +31,7 @@
     </fragment>
     <fragment
         android:id="@+id/weatherEditFragment"
-        android:name="org.wit.myweather.fragments.WeatherEditFragment"
+        android:name="org.wit.myweather.ui.weatheredit.WeatherEditFragment"
         android:label="Edit Weather"
         tools:layout="@layout/fragment_weather_edit"
         >
@@ -46,7 +46,7 @@
     </fragment>
     <fragment
         android:id="@+id/weatherListFragment"
-        android:name="org.wit.myweather.fragments.WeatherListFragment"
+        android:name="org.wit.myweather.ui.weatherlist.WeatherListFragment"
         android:label="Current Weather"
         tools:layout="@layout/fragment_weather_list" >
         <action
@@ -72,7 +72,7 @@
     </fragment>
     <fragment
         android:id="@+id/weatherTemperatureFragment"
-        android:name="org.wit.myweather.fragments.WeatherTemperatureFragment"
+        android:name="org.wit.myweather.ui.weathertemperature.WeatherTemperatureFragment"
         android:label="Week statistics"
         tools:layout="@layout/fragment_weather_temperature" >
         <action

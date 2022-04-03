@@ -1,9 +1,7 @@
-package org.wit.myweather.fragments
+package org.wit.myweather.ui.weatherlist
 
 import android.os.Bundle
-import android.os.StrictMode
 import android.view.*
-import android.widget.Toast
 
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -18,9 +16,7 @@ import org.wit.myweather.activities.*
 import org.wit.myweather.databinding.FragmentWeatherListBinding
 import org.wit.myweather.main.Main
 import org.wit.myweather.models.WeatherModel
-import org.wit.myweather.mvvm.WeatherListViewModel
-import org.wit.myweather.mvvm.WeatherViewModel
-import kotlin.concurrent.thread
+import org.wit.myweather.ui.weather.WeatherViewModel
 
 
 class WeatherListFragment : Fragment(),WeatherListener,EditListener {
@@ -63,13 +59,19 @@ class WeatherListFragment : Fragment(),WeatherListener,EditListener {
     }
 
     override fun onWeatherClick(weather: WeatherModel) {
-        val action = WeatherListFragmentDirections.actionWeatherListFragmentToWeatherTemperatureFragment(weather)
+        val action =
+            WeatherListFragmentDirections.actionWeatherListFragmentToWeatherTemperatureFragment(
+                weather
+            )
         findNavController().navigate((action))
     }
 
 
     override fun onEditClick(weather: WeatherModel) {
-        val action = WeatherListFragmentDirections.actionWeatherListToWeatherEdit(weather)
+        val action =
+            WeatherListFragmentDirections.actionWeatherListToWeatherEdit(
+                weather
+            )
         findNavController().navigate((action))
     }
 

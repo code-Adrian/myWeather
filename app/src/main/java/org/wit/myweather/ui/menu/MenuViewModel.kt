@@ -1,4 +1,4 @@
-package org.wit.myweather.mvvm
+package org.wit.myweather.ui.menu
 
 import android.os.Handler
 import android.os.Looper
