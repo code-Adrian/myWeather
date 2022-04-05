@@ -69,10 +69,10 @@
         android:id="@+id/editImage"
         android:layout_width="35dp"
         android:layout_height="35dp"
-        android:layout_alignParentEnd="true"
         android:layout_below="@+id/locationDescription"
-        android:src="@drawable/edit"
-        android:contentDescription="@string/card_edit" />
+        android:layout_alignParentEnd="true"
+        android:contentDescription="@string/card_edit"
+        android:src="@drawable/edit" />
 </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

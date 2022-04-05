@@ -2,13 +2,10 @@ package org.wit.myweather.ui.auth
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.firebase.ui.auth.AuthUI
-import com.google.firebase.auth.FirebaseAuth
-import org.wit.myweather.R
+import androidx.lifecycle.Observer
 import org.wit.myweather.databinding.LoginBinding
 
 class Login: AppCompatActivity() {
@@ -24,8 +21,18 @@ class Login: AppCompatActivity() {
 
     public override fun onStart() {
         super.onStart()
+
         loginViewModel = ViewModelProvider(this,viewModelFactory { LoginViewModel(this.application,this) }).get(LoginViewModel::class.java)
         listeners()
+
+        loginViewModel.liveFirebaseUser.observe(this, Observer
+        { firebaseUser ->
+            if (firebaseUser != null){
+
+            }
+
+            //do work
+        })
     }
 
     private fun listeners(){

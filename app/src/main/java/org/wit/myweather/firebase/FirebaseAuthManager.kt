@@ -20,6 +20,7 @@ class FirebaseAuthManager(application: Application, login: Login?) {
     private var loginInstance: Login? = null
 
     var firebaseAuth: FirebaseAuth? = null
+    var firebaseUI: AuthUI? = null
     var liveFirebaseUser = MutableLiveData<FirebaseUser>()
     var loggedOut = MutableLiveData<Boolean>()
 
@@ -27,15 +28,13 @@ class FirebaseAuthManager(application: Application, login: Login?) {
         providers()
         this.application = application
         this.loginInstance = login
+        firebaseUI = AuthUI.getInstance()
         firebaseAuth = FirebaseAuth.getInstance()
-
         if (firebaseAuth!!.currentUser != null) {
             liveFirebaseUser.postValue(firebaseAuth!!.currentUser)
             loggedOut.postValue(false)
+
         }
-
-
-
     }
 
     fun providers(){
@@ -54,6 +53,7 @@ class FirebaseAuthManager(application: Application, login: Login?) {
                     loginInstance?.startActivity(Intent(application, home::class.java))
                 }else{ //Not authenticated
                     try {
+                        loginInstance!!.finish()
                         loginInstance?.startActivityForResult(
                             AuthUI.getInstance().createSignInIntentBuilder()
                                 .setAvailableProviders(providers).build(),
@@ -71,6 +71,7 @@ class FirebaseAuthManager(application: Application, login: Login?) {
 
     fun logOut() {
         firebaseAuth!!.signOut()
+        firebaseUI!!.signOut(application!!.applicationContext)
         loggedOut.postValue(true)
     }
 }
