@@ -1,10 +1,14 @@
 package org.wit.myweather.activities
 
+import android.app.Application
 import android.content.Intent
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.app.AppCompatDelegate.*
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
@@ -16,6 +20,7 @@ import com.google.firebase.auth.FirebaseUser
 import org.wit.myweather.R
 import org.wit.myweather.databinding.HomeBinding
 import org.wit.myweather.databinding.NavHeaderBinding
+import org.wit.myweather.main.Main
 import org.wit.myweather.ui.auth.LoggedInViewModel
 import org.wit.myweather.ui.auth.Login
 import kotlin.math.sign
@@ -29,7 +34,6 @@ class home : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         homeBinding = HomeBinding.inflate(layoutInflater)
         setContentView(homeBinding.root)
         drawerLayout = homeBinding.drawerLayout
@@ -48,6 +52,7 @@ class home : AppCompatActivity() {
             setupActionBarWithNavController(navController, appBarConfiguration)
 
         signOut(navView)
+        changeTheme(navView)
     }
 
     override fun onStart() {
@@ -62,10 +67,12 @@ class home : AppCompatActivity() {
             }
         })
 
+
+
+
         loggedInViewModel.loggedOut.observe(this, Observer { loggedout ->
             if (loggedout) {
                 //startActivity(Intent(this, Login::class.java))
-                println(loggedout)
             }
         })
     }
@@ -112,6 +119,23 @@ class home : AppCompatActivity() {
             true
         }
     }
+
+    fun changeTheme(navView: NavigationView){
+        val menu: Menu = navView.getMenu()
+        val menuItem = menu.findItem(R.id.weatherTheme)
+        menuItem.setOnMenuItemClickListener {
+            if(getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES){
+                AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_NO)
+                println("NIGHT MODE OFF")
+            }else{
+                AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES)
+                println("NIGHT MODE ON")
+            }
+            true
+        }
+
+    }
+
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)

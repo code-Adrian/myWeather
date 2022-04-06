@@ -6,6 +6,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
@@ -59,6 +60,7 @@ class WeatherListFragment : Fragment(),WeatherListener,EditListener {
     }
 
     override fun onWeatherClick(weather: WeatherModel) {
+
         val action =
             WeatherListFragmentDirections.actionWeatherListFragmentToWeatherTemperatureFragment(
                 weather

@@ -16,7 +16,7 @@
             app:enterAnim="@anim/enter_animation"
             app:exitAnim="@anim/exit_animation"
             app:popUpTo="@id/weatherListFragment"
-            app:popUpToInclusive="false" />
+             />
     </fragment>
     <fragment
         android:id="@+id/weatherFragment"

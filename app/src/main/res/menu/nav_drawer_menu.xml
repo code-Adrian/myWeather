@@ -24,6 +24,16 @@
         </menu>
     </item>
 
+    <item android:title="@string/theme_control">
+        <menu>
+            <item
+                android:id="@+id/weatherTheme"
+                android:icon="@drawable/ic_add_weather"
+                android:title="@string/change_theme" />
+
+        </menu>
+    </item>
+
     <item android:title="@string/account_control">
         <menu>
             <item
