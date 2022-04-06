@@ -29,7 +29,12 @@
         <item name="android:textColor" >@color/white</item>
     </style>
 
-
+    <style name="UItheme" parent="FirebaseUI">
+        <item name="android:windowBackground">@drawable/gradient_main</item>
+    </style>
+    <style name="UILogo" parent="FirebaseUI">
+        <item name="android:windowBackground">@drawable/user</item>
+    </style>
 
     <style name="MyToolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:background">@color/toolbarColor</item>

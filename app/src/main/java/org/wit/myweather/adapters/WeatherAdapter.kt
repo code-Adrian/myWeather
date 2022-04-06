@@ -1,23 +1,14 @@
 package org.wit.myweather.activities
 
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.weather_card.view.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
-import org.wit.myweather.R
 import org.wit.myweather.databinding.WeatherCardBinding
-import org.wit.myweather.helpers.FireBase_Store
-import org.wit.myweather.models.Json_Store
 import org.wit.myweather.models.WeatherModel
-import org.wit.myweather.webscraper.getLowestTemp
-import org.wit.myweather.webscraper.getPeakTemp
-import org.wit.myweather.webscraper.setImage
+
 
 interface WeatherListener{
     fun onWeatherClick(weather: WeatherModel)

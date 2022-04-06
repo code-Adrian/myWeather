@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -16,6 +17,7 @@ import org.wit.myweather.R
 import org.wit.myweather.databinding.FragmentWeatherEditBinding
 import org.wit.myweather.main.Main
 import org.wit.myweather.models.WeatherModel
+import org.wit.myweather.ui.auth.LoggedInViewModel
 import org.wit.myweather.webscraper.getLowestTemp
 import org.wit.myweather.webscraper.getPeakTemp
 import org.wit.myweather.webscraper.setImage
@@ -27,6 +29,7 @@ class WeatherEditFragment : Fragment() {
     private val fragBinding get() = _fragBinding!!
     private lateinit var model: WeatherModel
     private lateinit var weatherEditViewModel : WeatherEditViewModel
+    private val loggedInViewModel : LoggedInViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,7 +70,7 @@ class WeatherEditFragment : Fragment() {
                     setModel()
 
                     //Update cloud
-                    weatherEditViewModel.update(model.copy())
+                    weatherEditViewModel.update(model.copy(),loggedInViewModel.liveFirebaseUser)
                     //Serialize locally by retrieving data from now updated cloud.
                     weatherEditViewModel.load()
                     //Navigate backl
@@ -156,7 +159,7 @@ class WeatherEditFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
             R.id.edit_delete -> {
-                weatherEditViewModel.delete(model.copy())
+                weatherEditViewModel.delete(model.copy(),loggedInViewModel.liveFirebaseUser)
                 weatherEditViewModel.load()
                 weatherEditViewModel.observableWeatherEdit.observe(viewLifecycleOwner, Observer {weather ->
                     weather.remove(model.copy())

@@ -152,7 +152,7 @@ fun setDetails(){
 
     override fun onResume() {
         super.onResume()
-        preloadWeather()
+        //preloadWeather()
         setDetails()
 
         fragBinding.progressBar.visibility = View.INVISIBLE

@@ -6,6 +6,7 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -18,6 +19,7 @@ import org.wit.myweather.R
 import org.wit.myweather.databinding.FragmentWeatherBinding
 import org.wit.myweather.main.Main
 import org.wit.myweather.models.WeatherModel
+import org.wit.myweather.ui.auth.LoggedInViewModel
 import org.wit.myweather.webscraper.getLocationByWebLink
 import org.wit.myweather.webscraper.getLowestTemp
 import org.wit.myweather.webscraper.getPeakTemp
@@ -32,6 +34,7 @@ class WeatherFragment : Fragment() {
     var model = WeatherModel()
     var API = true
     private lateinit var weatherViewModel : WeatherViewModel
+    private val loggedInViewModel : LoggedInViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -196,7 +199,7 @@ class WeatherFragment : Fragment() {
     }
 
     private fun create(){
-        weatherViewModel.create(model.copy())
+        weatherViewModel.create(model.copy(),loggedInViewModel.liveFirebaseUser)
     }
 
     private fun render(status:Boolean){

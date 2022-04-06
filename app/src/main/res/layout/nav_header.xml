@@ -6,7 +6,6 @@
     android:background="@drawable/side_nav_bar"
     android:gravity="top"
     android:orientation="horizontal"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -16,21 +15,22 @@
 
     <ImageView
         android:id="@+id/imageViewLoggedIn"
-        android:layout_width="90dp"
+        android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_gravity="start"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_horizontal_margin_Image"
+        android:layout_marginLeft="@dimen/activity_horizontal_marginLeft_Image"
         android:contentDescription="@string/nav_header_desc"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        app:srcCompat="@drawable/rainycloudysunny" />
+        app:srcCompat="@drawable/user" />
 
     <ImageView
         android:id="@+id/imageViewWeatherIcon"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:layout_width="60dp"
+        android:layout_height="75dp"
         android:layout_alignParentRight="true"
         android:layout_gravity="end"
+        android:layout_marginTop="@dimen/activity_horizontal_margin_Image2"
         android:contentDescription="@string/nav_header_desc"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         app:srcCompat="@drawable/rainycloudysunny" />
@@ -44,6 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_alignTop="@id/emailText"
             android:paddingBottom="@dimen/activity_vertical_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_marginLeft_Text"
             android:text="@string/nav_header_subtitle" />
 
     <TextView
@@ -54,6 +55,7 @@
         android:layout_gravity="start"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:text="@string/nav_email_title"
+        android:layout_marginLeft="@dimen/activity_horizontal_marginLeft_Text"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
 </RelativeLayout>

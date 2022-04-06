@@ -43,7 +43,7 @@ class WeatherListFragment : Fragment(),WeatherListener,EditListener {
 
 
         weatherListViewModel = ViewModelProvider(this).get(WeatherListViewModel::class.java)
-        weatherViewModel = ViewModelProvider(this).get(WeatherViewModel::class.java)
+        //weatherViewModel = ViewModelProvider(this).get(WeatherViewModel::class.java)
 
         loadWeather()
         return root

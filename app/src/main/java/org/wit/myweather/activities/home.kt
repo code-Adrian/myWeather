@@ -77,10 +77,23 @@ class home : AppCompatActivity() {
         if(currentUser.isAnonymous){
             navHeaderBinding.emailText.text = "Anonymous"
         }
-        if(currentUser.isEmailVerified){
+        if
+        (currentUser.isEmailVerified){
             navHeaderBinding.emailText.text = currentUser.email
         }
+        if(!currentUser.phoneNumber.isNullOrEmpty()){
+            navHeaderBinding.emailText.text = currentUser.phoneNumber
+        }
+        if(!currentUser.email.isNullOrEmpty()){
+            navHeaderBinding.emailText.text = currentUser.email
+        }
+        if(!currentUser.displayName.isNullOrEmpty()){
+            navHeaderBinding.emailText.text = currentUser.displayName
+        }
 
+
+
+            println(currentUser.photoUrl)
 
     }
 

@@ -1,28 +1,30 @@
-package org.wit.myweather.helpers
+package org.wit.myweather.firebase
 
 import androidx.lifecycle.MutableLiveData
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.*
 import org.wit.myweather.models.WeatherModel
 import org.wit.myweather.models.WeatherStore
-import kotlin.concurrent.thread
+
 var Id = 0L
 val uniqueFirebaseID: String = (android.os.Build.MODEL.toString() + " " + android.os.Build.ID+ " " + android.os.Build.USER + " --WeatherModel").replace(".","")
 internal fun ID():Long{
     return Id++;
 }
 
-object FireBase_Store: WeatherStore {
+object FirebaseDBManager: WeatherStore {
 
     val weather = ArrayList<WeatherModel>()
 
 
-    override fun getAll( weathers : MutableLiveData<MutableList<WeatherModel>>) {
+    override fun getAll(weathers: MutableLiveData<MutableList<WeatherModel>>,
+                        firebaseUser: FirebaseUser?
+    ) {
         val localweather = ArrayList<WeatherModel>()
-        var ref = FirebaseDatabase.getInstance("https://myweather-95318-default-rtdb.firebaseio.com/").getReference().child(uniqueFirebaseID)
-        ref.addListenerForSingleValueEvent(object : ValueEventListener {
+        //var ref = FirebaseDatabase.getInstance("https://myweather-95318-default-rtdb.firebaseio.com/").getReference().child(uniqueFirebaseID)
+        var database: DatabaseReference = FirebaseDatabase.getInstance().reference.child(firebaseUser!!.uid)
+
+        database.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {}
 
             override fun onDataChange(p0: DataSnapshot) {
@@ -30,8 +32,6 @@ object FireBase_Store: WeatherStore {
                 for (p0: DataSnapshot in p0.children) {
 
                     if (p0 != null) {
-
-
 
                         val country = (p0.child("country").getValue().toString())
 
@@ -56,7 +56,7 @@ object FireBase_Store: WeatherStore {
 
     }
 
-    var ref = FirebaseDatabase.getInstance("https://myweather-95318-default-rtdb.firebaseio.com/").getReference().child(uniqueFirebaseID)
+    //var ref = FirebaseDatabase.getInstance("https://myweather-95318-default-rtdb.firebaseio.com/").getReference().child(uniqueFirebaseID)
 
     override fun localgetAll(): MutableList<WeatherModel> {
         return weather
@@ -77,23 +77,24 @@ object FireBase_Store: WeatherStore {
         return map
     }
 
-    override fun create(weather: WeatherModel) {
-        val localweather = ArrayList<WeatherModel>()
+    override fun create(weather: WeatherModel,firebaseUser: MutableLiveData<FirebaseUser>) {
+        var database: DatabaseReference = FirebaseDatabase.getInstance().reference.child(firebaseUser.value!!.uid)
         weather.id = ID()+rand(500,1000000000)
-        ref.child(weather.id.toString()).setValue(weather)
-        //cloudSave(localweather)
+        database.child(weather.id.toString()).setValue(weather)
     }
 
-    override fun delete(weather: WeatherModel) {
-        ref.child(weather.id.toString()).removeValue().addOnSuccessListener {
+    override fun delete(weather: WeatherModel,firebaseUser: MutableLiveData<FirebaseUser>) {
+        var database: DatabaseReference = FirebaseDatabase.getInstance().reference.child(firebaseUser.value!!.uid)
+        database.child(weather.id.toString()).removeValue().addOnSuccessListener {
             println(weather.id.toString() + " removed successfuly!")
         }.addOnFailureListener{
             println(weather.id.toString() + " failed to remove...?")
         }
     }
 
-    override fun update(weather: WeatherModel) {
-       ref.child(weather.id.toString()).updateChildren(map(weather)).addOnSuccessListener {
+    override fun update(weather: WeatherModel,firebaseUser: MutableLiveData<FirebaseUser>) {
+        var database: DatabaseReference = FirebaseDatabase.getInstance().reference.child(firebaseUser.value!!.uid)
+       database.child(weather.id.toString()).updateChildren(map(weather)).addOnSuccessListener {
            println(weather.id.toString() + " updated successfuly!")
        }.addOnFailureListener{
            println(weather.id.toString() + " failed to update...?")
@@ -101,6 +102,7 @@ object FireBase_Store: WeatherStore {
     }
 
 private fun cloudSave(localweather: ArrayList<WeatherModel>){
+
     var ref = FirebaseDatabase.getInstance("https://myweather-95318-default-rtdb.firebaseio.com/").getReference().child(uniqueFirebaseID).
     ref.setValue(localweather)
 }

@@ -1,11 +1,13 @@
 package org.wit.myweather.firebase
 
 import android.app.Application
+import android.app.PendingIntent
 import android.content.Intent
 import androidx.lifecycle.MutableLiveData
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import org.wit.myweather.R
 import org.wit.myweather.activities.home
 import org.wit.myweather.ui.auth.Login
 import java.lang.Exception
@@ -40,7 +42,9 @@ class FirebaseAuthManager(application: Application, login: Login?) {
     fun providers(){
         providers = arrayListOf(
             AuthUI.IdpConfig.GoogleBuilder().build(),
-            AuthUI.IdpConfig.AnonymousBuilder().build()
+            AuthUI.IdpConfig.AnonymousBuilder().build(),
+            AuthUI.IdpConfig.PhoneBuilder().build(),
+            AuthUI.IdpConfig.EmailBuilder().build()
         )
     }
 
@@ -53,14 +57,13 @@ class FirebaseAuthManager(application: Application, login: Login?) {
                     loginInstance?.startActivity(Intent(application, home::class.java))
                 }else{ //Not authenticated
                     try {
-                        loginInstance!!.finish()
                         loginInstance?.startActivityForResult(
-                            AuthUI.getInstance().createSignInIntentBuilder()
+                            AuthUI.getInstance().createSignInIntentBuilder().setTheme(R.style.UItheme).setLogo(R.drawable.user)
                                 .setAvailableProviders(providers).build(),
                             AUTH_CODE
                         )
                     }catch (e: Exception){
-                        println("Error occurred")
+                        println("Error occurred " +e.toString())
                     }
                     }
             }

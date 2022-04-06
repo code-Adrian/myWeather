@@ -1,8 +1,12 @@
 package org.wit.myweather.ui.weather
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import org.wit.myweather.helpers.FireBase_Store
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import org.wit.myweather.firebase.FirebaseAuthManager
+import org.wit.myweather.firebase.FirebaseDBManager
 import org.wit.myweather.models.WeatherModel
 
 class WeatherViewModel : ViewModel() {
@@ -21,12 +25,12 @@ class WeatherViewModel : ViewModel() {
     }
 
     fun load(){
-        FireBase_Store.getAll(weatherList)
+        FirebaseDBManager.getAll(weatherList, FirebaseAuth.getInstance().currentUser)
     }
 
-    fun create(weather: WeatherModel){
+    fun create(weather: WeatherModel,liveFirebaseUser: MutableLiveData<FirebaseUser>){
         status.value = try {
-            FireBase_Store.create(weather)
+            FirebaseDBManager.create(weather,liveFirebaseUser)
             true
         }catch (e: IllegalArgumentException){
             false
