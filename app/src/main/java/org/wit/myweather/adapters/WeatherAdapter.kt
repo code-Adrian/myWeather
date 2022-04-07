@@ -29,6 +29,11 @@ class WeatherAdapter constructor(private val weather: MutableList<WeatherModel>,
     override fun getItemCount(): Int = weather.size
 
 
+    fun removeAt(position: Int) {
+        weather.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
     override fun onBindViewHolder(holder: WeatherAdapter.MainHolder, position: Int) {
         val weathers = weather[holder.adapterPosition]
         holder.bind(weathers,listener,listener2)
@@ -38,13 +43,14 @@ class WeatherAdapter constructor(private val weather: MutableList<WeatherModel>,
 
         fun bind(weathermodel: WeatherModel, listener: WeatherListener, listener2: EditListener){
 
-            binding.weather = weathermodel
+                    binding.root.tag = weathermodel
+                    binding.weather = weathermodel
 doAsync {
     uiThread {
 
-    binding.root.setOnClickListener { listener.onWeatherClick(weathermodel) }
-    binding.root.editImage.setOnClickListener { listener2.onEditClick(weathermodel) }
-                      binding.imageIcon.setImageResource(weathermodel.Image)
+                    binding.root.setOnClickListener { listener.onWeatherClick(weathermodel) }
+                    binding.root.editImage.setOnClickListener { listener2.onEditClick(weathermodel) }
+                    binding.imageIcon.setImageResource(weathermodel.Image)
                 }
             }
         }

@@ -13,4 +13,10 @@
         android:icon="@drawable/ic_menu_home"
         android:title="@string/Home"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/toggleDonations"
+        android:title=""
+        app:actionLayout="@layout/togglebutton_layout"
+        app:showAsAction="always" />
 </menu>
