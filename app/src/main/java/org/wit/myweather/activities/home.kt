@@ -72,7 +72,7 @@ class home : AppCompatActivity() {
 
         loggedInViewModel.loggedOut.observe(this, Observer { loggedout ->
             if (loggedout) {
-                //startActivity(Intent(this, Login::class.java))
+                startActivity(Intent(this, Login::class.java))
             }
         })
     }
@@ -97,10 +97,6 @@ class home : AppCompatActivity() {
         if(!currentUser.displayName.isNullOrEmpty()){
             navHeaderBinding.emailText.text = currentUser.displayName
         }
-
-
-
-            println(currentUser.photoUrl)
 
     }
 

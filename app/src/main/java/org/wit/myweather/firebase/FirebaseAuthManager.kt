@@ -35,7 +35,6 @@ class FirebaseAuthManager(application: Application, login: Login?) {
         if (firebaseAuth!!.currentUser != null) {
             liveFirebaseUser.postValue(firebaseAuth!!.currentUser)
             loggedOut.postValue(false)
-
         }
     }
 
