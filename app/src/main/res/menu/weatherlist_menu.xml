@@ -2,6 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
+    <item
+        android:id="@+id/search_action"
+        android:title=""
+        android:icon="@drawable/ic_search_black_24dp"
+        app:showAsAction="always"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        />
+
     <item
         android:id="@+id/weatherFragment"
         android:icon="@android:drawable/ic_menu_add"
@@ -15,7 +24,7 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/toggleDonations"
+        android:id="@+id/toggleFavourites"
         android:title=""
         app:actionLayout="@layout/togglebutton_layout"
         app:showAsAction="always" />

@@ -101,6 +101,7 @@ class WeatherFragment : Fragment() {
             model.Temperature = getPeakTemp(model.Country, model.County, model.City)
             //Scrapes relevant info and sets respective Low temperature.
             model.TemperatureLow = getLowestTemp(model.Country, model.County, model.City)
+            model.Favourite = false
             //Uploads Model to Firebase
             //Receives info from Firebase and saves locally
             create()
@@ -132,6 +133,7 @@ class WeatherFragment : Fragment() {
                         //Scrapes relevant info and sets respective Low temperature.
                         model.TemperatureLow =
                             getLowestTemp(model.Country, model.County, model.City)
+                        model.Favourite = false
                         //Uploads Model to Firebase
                         //Receives info from Firebase and saves locally
                         create()

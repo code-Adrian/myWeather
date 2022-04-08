@@ -26,6 +26,10 @@ class WeatherListViewModel: ViewModel() {
         FirebaseDBManager.getAll(weatherList,FirebaseAuth.getInstance().currentUser)
     }
 
+    fun loadFavs(){
+        FirebaseDBManager.getAllFavourite(weatherList,FirebaseAuth.getInstance().currentUser)
+    }
+
     fun delete(weather: WeatherModel,firebaseUser: MutableLiveData<FirebaseUser>){
         status.value = try {
             FirebaseDBManager.delete(weather,firebaseUser)

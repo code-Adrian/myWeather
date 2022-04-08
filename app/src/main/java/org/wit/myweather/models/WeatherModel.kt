@@ -13,7 +13,8 @@ import kotlinx.android.parcel.Parcelize
                             var TemperatureLow: String = "0",
                             var WebLink: String = "",
                             var Image: Int = 0,
-                            var Type: String = "API")           : Parcelable
+                            var Type: String = "API",
+                            var Favourite: Boolean = false)           : Parcelable
 
 
 

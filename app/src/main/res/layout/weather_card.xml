@@ -66,13 +66,13 @@
         android:textSize="17sp" />
 
     <ImageView
-        android:id="@+id/editImage"
+        android:id="@+id/favImage"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_below="@+id/locationDescription"
         android:layout_alignParentEnd="true"
         android:contentDescription="@string/card_edit"
-        android:src="@drawable/edit" />
+        android:src="@drawable/notfavourite" />
 </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

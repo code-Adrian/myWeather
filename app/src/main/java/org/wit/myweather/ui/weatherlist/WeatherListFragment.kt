@@ -1,20 +1,23 @@
 package org.wit.myweather.ui.weatherlist
 
+import android.app.SearchManager
+import android.content.Context
 import android.os.Bundle
 import android.view.*
+import android.widget.ImageView
+import androidx.appcompat.widget.SearchView
+import androidx.appcompat.widget.SwitchCompat
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_weather_list.*
 
 import org.wit.myweather.R
 import org.wit.myweather.activities.*
@@ -24,15 +27,21 @@ import org.wit.myweather.helpers.SwipeToEditCallback
 import org.wit.myweather.main.Main
 import org.wit.myweather.models.WeatherModel
 import org.wit.myweather.ui.auth.LoggedInViewModel
-import org.wit.myweather.ui.weather.WeatherViewModel
+import org.wit.myweather.ui.weatheredit.WeatherEditViewModel
+import kotlin.concurrent.thread
 
 
-class WeatherListFragment : Fragment(),WeatherListener,EditListener {
+class WeatherListFragment : Fragment(),WeatherListener,FavListener {
     lateinit var app: Main
     private var _fragBinding: FragmentWeatherListBinding? = null
     private val fragBinding get() = _fragBinding!!
     private lateinit var weatherListViewModel : WeatherListViewModel
     private val loggedInViewModel : LoggedInViewModel by activityViewModels()
+    lateinit var adapter : WeatherAdapter
+    private lateinit var weatherEditViewModel : WeatherEditViewModel
+
+    var searchView: SearchView?=null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         app = activity?.application as Main
@@ -51,6 +60,7 @@ class WeatherListFragment : Fragment(),WeatherListener,EditListener {
 
 
         weatherListViewModel = ViewModelProvider(this).get(WeatherListViewModel::class.java)
+        weatherEditViewModel = ViewModelProvider(this).get(WeatherEditViewModel::class.java)
         //weatherViewModel = ViewModelProvider(this).get(WeatherViewModel::class.java)
 
         loadWeather()
@@ -59,6 +69,30 @@ class WeatherListFragment : Fragment(),WeatherListener,EditListener {
         return root
     }
 
+    fun filter(menu: Menu) {
+
+        val menuItem = menu.findItem(R.id.search_action).actionView as SearchView
+        val searchManager: SearchManager = requireActivity().getSystemService(Context.SEARCH_SERVICE) as SearchManager
+
+        searchView = menuItem
+        searchView!!.setSearchableInfo(searchManager.getSearchableInfo(requireActivity().componentName))
+        searchView!!.maxWidth = Int.MAX_VALUE
+
+        searchView!!.setOnQueryTextListener(object:SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+
+                adapter.filter.filter(query)
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+
+                adapter.filter.filter(newText)
+                return false
+            }
+
+        })
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _fragBinding = null
@@ -78,12 +112,21 @@ class WeatherListFragment : Fragment(),WeatherListener,EditListener {
     }
 
 
-    override fun onEditClick(weather: WeatherModel) {
-        val action =
-            WeatherListFragmentDirections.actionWeatherListToWeatherEdit(
-                weather
-            )
-        findNavController().navigate((action))
+    override fun onFavClick(imageView: ImageView, weathermodel: WeatherModel) {
+
+
+        if(imageView.drawable.constantState == resources.getDrawable(R.drawable.favourite).constantState) {
+                imageView.setImageResource(R.drawable.notfavourite)
+                weatherEditViewModel.update(weathermodel.copy(Favourite = false), loggedInViewModel.liveFirebaseUser
+                )
+        }else{
+            imageView.setImageResource(R.drawable.favourite)
+            weatherEditViewModel.update(weathermodel.copy(Favourite = true), loggedInViewModel.liveFirebaseUser)
+        }
+
+
+
+
     }
 
 
@@ -98,13 +141,30 @@ private fun loadWeather(){
 
 }
 
+    private fun filterFavourites(menu: Menu){
+        val item = menu.findItem(R.id.toggleFavourites) as MenuItem
+        item.setActionView(R.layout.togglebutton_layout)
+        val toggleFavourites: SwitchCompat = item.actionView.findViewById(R.id.toggleButton)
+        toggleFavourites.isChecked = false
+        toggleFavourites.setOnCheckedChangeListener{_, isChecked ->
+          if(isChecked){
+              weatherListViewModel.loadFavs()
+          }else{
+              weatherListViewModel.load()
+          }
+        }
+    }
+
     private fun render(weather: ArrayList<WeatherModel>){
         fragBinding.recyclerView.setLayoutManager(LinearLayoutManager(activity))
         fragBinding.recyclerView.adapter = WeatherAdapter(weather as ArrayList<WeatherModel>,this,this)
+        adapter = fragBinding.recyclerView.adapter as WeatherAdapter
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.weatherlist_menu,menu)
+        filter(menu)
+        filterFavourites(menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
