@@ -13,16 +13,16 @@
     android:layout_gravity="fill_horizontal"
     >
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageViewLoggedIn"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_gravity="start"
-        android:layout_marginTop="@dimen/activity_horizontal_margin_Image"
         android:layout_marginLeft="@dimen/activity_horizontal_marginLeft_Image"
+        android:layout_marginTop="@dimen/activity_horizontal_margin_Image"
         android:contentDescription="@string/nav_header_desc"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        app:srcCompat="@drawable/user" />
+        android:src="@drawable/user" />
 
     <ImageView
         android:id="@+id/imageViewWeatherIcon"

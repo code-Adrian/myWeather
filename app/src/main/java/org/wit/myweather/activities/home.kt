@@ -15,8 +15,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.*
+import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseUser
+import kotlinx.android.synthetic.main.nav_header.view.*
 import org.wit.myweather.R
 import org.wit.myweather.databinding.HomeBinding
 import org.wit.myweather.databinding.NavHeaderBinding
@@ -31,7 +33,7 @@ class home : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var loggedInViewModel : LoggedInViewModel
     private lateinit var navHeaderBinding : NavHeaderBinding
-
+    lateinit var navView : NavigationView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         homeBinding = HomeBinding.inflate(layoutInflater)
@@ -43,16 +45,16 @@ class home : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment)
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
 
+        navView = homeBinding.navView
 
-        val navView = homeBinding.navView
         navView.setupWithNavController(navController)
 
         appBarConfiguration = AppBarConfiguration(setOf(
             R.id.menuFragment, R.id.weatherListFragment,R.id.weatherFragment,R.id.weatherTemperatureFragment,R.id.weatherEditFragment), drawerLayout)
             setupActionBarWithNavController(navController, appBarConfiguration)
 
-        signOut(navView)
-        changeTheme(navView)
+        signOut()
+        changeTheme()
     }
 
     override fun onStart() {
@@ -66,10 +68,6 @@ class home : AppCompatActivity() {
 
             }
         })
-
-
-
-
         loggedInViewModel.loggedOut.observe(this, Observer { loggedout ->
             if (loggedout) {
                 startActivity(Intent(this, Login::class.java))
@@ -78,7 +76,7 @@ class home : AppCompatActivity() {
     }
 
     private fun updateNavHeader(currentUser: FirebaseUser) {
-        println(loggedInViewModel.liveFirebaseUser.value!!.uid)
+
         var headerView = homeBinding.navView.getHeaderView(0)
         navHeaderBinding = NavHeaderBinding.bind(headerView)
         if(currentUser.isAnonymous){
@@ -87,6 +85,7 @@ class home : AppCompatActivity() {
         if
         (currentUser.isEmailVerified){
             navHeaderBinding.emailText.text = currentUser.email
+            Glide.with(this).load(currentUser.photoUrl).into(navView.imageViewLoggedIn)
         }
         if(!currentUser.phoneNumber.isNullOrEmpty()){
             navHeaderBinding.emailText.text = currentUser.phoneNumber
@@ -100,7 +99,7 @@ class home : AppCompatActivity() {
 
     }
 
-    fun signOut(navView: NavigationView) {
+    fun signOut() {
 
         val menu: Menu = navView.getMenu()
         val menuItem = menu.findItem(R.id.nav_sign_out)
@@ -116,7 +115,7 @@ class home : AppCompatActivity() {
         }
     }
 
-    fun changeTheme(navView: NavigationView){
+    fun changeTheme(){
         val menu: Menu = navView.getMenu()
         val menuItem = menu.findItem(R.id.weatherTheme)
         menuItem.setOnMenuItemClickListener {
