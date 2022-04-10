@@ -7,8 +7,6 @@ import android.widget.Filterable
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.weather_card.view.*
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
 import org.wit.myweather.R
 import org.wit.myweather.databinding.WeatherCardBinding
 import org.wit.myweather.models.WeatherModel
@@ -89,8 +87,7 @@ class WeatherAdapter constructor(private var weather: MutableList<WeatherModel>,
 
                     binding.root.tag = weathermodel
                     binding.weather = weathermodel
-doAsync {
-    uiThread {
+
                     if(weathermodel.Favourite){
                         binding.root.favImage.setImageResource(R.drawable.favourite)
                     }else{
@@ -99,8 +96,7 @@ doAsync {
                     binding.root.setOnClickListener { listener.onWeatherClick(weathermodel) }
                     binding.root.favImage.setOnClickListener {  listener2.onFavClick(binding.root.favImage,weathermodel) }
                     binding.imageIcon.setImageResource(weathermodel.Image)
-                }
-            }
+
         }
     }
 

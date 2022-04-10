@@ -18,6 +18,7 @@ import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import org.wit.myweather.API.getIconNameList
 
 import org.wit.myweather.R
 import org.wit.myweather.activities.*
@@ -26,8 +27,12 @@ import org.wit.myweather.helpers.SwipeToDeleteCallback
 import org.wit.myweather.helpers.SwipeToEditCallback
 import org.wit.myweather.main.Main
 import org.wit.myweather.models.WeatherModel
+import org.wit.myweather.models.WeatherTemperatureModel
 import org.wit.myweather.ui.auth.LoggedInViewModel
 import org.wit.myweather.ui.weatheredit.WeatherEditViewModel
+import org.wit.myweather.webscraper.getWeekDays
+import org.wit.myweather.webscraper.getWeeklyPeakTemp
+import org.wit.myweather.webscraper.getWeeklylowTemp
 import kotlin.concurrent.thread
 
 
@@ -61,7 +66,6 @@ class WeatherListFragment : Fragment(),WeatherListener,FavListener {
 
         weatherListViewModel = ViewModelProvider(this).get(WeatherListViewModel::class.java)
         weatherEditViewModel = ViewModelProvider(this).get(WeatherEditViewModel::class.java)
-        //weatherViewModel = ViewModelProvider(this).get(WeatherViewModel::class.java)
 
         loadWeather()
         swipeHandlers()
@@ -110,11 +114,8 @@ class WeatherListFragment : Fragment(),WeatherListener,FavListener {
             )
         findNavController().navigate((action))
     }
-
-
+    //Toggle favourite
     override fun onFavClick(imageView: ImageView, weathermodel: WeatherModel) {
-
-
         if(imageView.drawable.constantState == resources.getDrawable(R.drawable.favourite).constantState) {
                 imageView.setImageResource(R.drawable.notfavourite)
                 weatherEditViewModel.update(weathermodel.copy(Favourite = false), loggedInViewModel.liveFirebaseUser
@@ -123,13 +124,9 @@ class WeatherListFragment : Fragment(),WeatherListener,FavListener {
             imageView.setImageResource(R.drawable.favourite)
             weatherEditViewModel.update(weathermodel.copy(Favourite = true), loggedInViewModel.liveFirebaseUser)
         }
-
-
-
-
     }
 
-
+//Live adapter
 private fun loadWeather(){
     fragBinding.recyclerView.adapter?.notifyDataSetChanged()
     weatherListViewModel.observableWeatherList.observe(viewLifecycleOwner, Observer { weather ->
@@ -141,6 +138,7 @@ private fun loadWeather(){
 
 }
 
+    //Filtering favourite
     private fun filterFavourites(menu: Menu){
         val item = menu.findItem(R.id.toggleFavourites) as MenuItem
         item.setActionView(R.layout.togglebutton_layout)
@@ -154,7 +152,7 @@ private fun loadWeather(){
           }
         }
     }
-
+    //Recycle view
     private fun render(weather: ArrayList<WeatherModel>){
         fragBinding.recyclerView.setLayoutManager(LinearLayoutManager(activity))
         fragBinding.recyclerView.adapter = WeatherAdapter(weather as ArrayList<WeatherModel>,this,this)
@@ -191,7 +189,7 @@ private fun loadWeather(){
                 val adapter = fragBinding.recyclerView.adapter as WeatherAdapter
                 adapter.removeAt(viewHolder.adapterPosition)
                 weatherListViewModel.delete(viewHolder.itemView.tag as WeatherModel,loggedInViewModel.liveFirebaseUser)
-
+                deleteWeatherTemperature(viewHolder.itemView.tag as WeatherModel)
             }
         }
 
@@ -201,8 +199,7 @@ private fun loadWeather(){
 
         val swipeEditHandler = object : SwipeToEditCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val action =
-                    WeatherListFragmentDirections.actionWeatherListToWeatherEdit(
+                val action = WeatherListFragmentDirections.actionWeatherListToWeatherEdit(
                         viewHolder.itemView.tag as WeatherModel
                     )
                 findNavController().navigate((action))
@@ -212,7 +209,27 @@ private fun loadWeather(){
         itemTouchEditHelper.attachToRecyclerView(fragBinding.recyclerView)
     }
 
-
+    fun deleteWeatherTemperature(weatherModel: WeatherModel){
+        thread {
+            var peakTemplist = ArrayList<String>()
+            var lowTemplist = ArrayList<String>()
+            var weekDaylist = ArrayList<String>()
+            var imagelist = ArrayList<String>()
+            peakTemplist =
+                getWeeklyPeakTemp(weatherModel.Country, weatherModel.County, weatherModel.City)
+            lowTemplist =
+                getWeeklylowTemp(weatherModel.Country, weatherModel.County, weatherModel.City)
+            weekDaylist = getWeekDays(weatherModel.Country, weatherModel.County, weatherModel.City)
+            //Image return from Weatherbit API, Web scraping Unreliable.
+            imagelist =
+                getIconNameList(weatherModel.Country, weatherModel.County, weatherModel.City)
+            //Upload to firebase Weather card weekly
+            loggedInViewModel.deleteWeatherTemperature(
+                WeatherTemperatureModel(weatherModel.id, weekDaylist, peakTemplist, lowTemplist, imagelist
+            )
+            )
+        }
+    }
 
     companion object {
         @JvmStatic

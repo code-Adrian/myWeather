@@ -21,6 +21,10 @@
                 android:icon="@drawable/ic_add_weather"
                 android:title="@string/add_weather" />
 
+            <item
+                android:id="@+id/mapsFragment"
+                android:icon="@drawable/maps_location_icon"
+                android:title="@string/add_weather_via_map" />
         </menu>
     </item>
 
@@ -28,7 +32,7 @@
         <menu>
             <item
                 android:id="@+id/weatherTheme"
-                android:icon="@drawable/ic_add_weather"
+                android:icon="@drawable/theme_icon"
                 android:title="@string/change_theme" />
 
         </menu>

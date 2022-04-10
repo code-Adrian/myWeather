@@ -16,8 +16,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.vmadalin.easypermissions.EasyPermissions
-import com.vmadalin.easypermissions.dialogs.SettingsDialog
 import org.wit.myweather.API.getPeakCoordinated
 import org.wit.myweather.API.setIconCoordinated
 import org.wit.myweather.R
@@ -29,6 +27,8 @@ import org.wit.myweather.webscraper.getDateDay
 import org.wit.myweather.webscraper.getLocation
 import org.wit.myweather.webscraper.getPeakTemp
 import org.wit.myweather.webscraper.getWeatherStatus
+import pub.devrel.easypermissions.AppSettingsDialog
+import pub.devrel.easypermissions.EasyPermissions
 import kotlin.concurrent.thread
 
 
@@ -199,8 +199,10 @@ fun setDetails(){
 
     override fun onPermissionsDenied(requestCode: Int, perms: List<String>) {
         //Give the user an option to choose permissions
-        if(EasyPermissions.somePermissionPermanentlyDenied(this,perms.first())){
-            SettingsDialog.Builder(requireActivity()).build().show()
+
+        if(EasyPermissions.somePermissionPermanentlyDenied(this,perms)){
+            AppSettingsDialog.Builder(requireActivity()).build().show()
+
         }else{
             requestLocationPermission()
         }

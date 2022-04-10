@@ -28,6 +28,9 @@
             app:destination="@id/weatherListFragment"
             app:enterAnim="@anim/enter_animation"
             app:exitAnim="@anim/exit_animation" />
+        <action
+            android:id="@+id/action_weatherFragment_to_mapsFragment2"
+            app:destination="@id/mapsFragment" />
     </fragment>
     <fragment
         android:id="@+id/weatherEditFragment"
@@ -83,6 +86,15 @@
         <argument
             android:name="model"
             app:argType="org.wit.myweather.models.WeatherModel" />
+    </fragment>
+    <fragment
+        android:id="@+id/mapsFragment"
+        android:name="org.wit.myweather.ui.maps.MapsFragment"
+        android:label="fragment_maps"
+        tools:layout="@layout/fragment_maps" >
+        <action
+            android:id="@+id/action_mapsFragment_to_weatherListFragment"
+            app:destination="@id/weatherListFragment" />
     </fragment>
 
 

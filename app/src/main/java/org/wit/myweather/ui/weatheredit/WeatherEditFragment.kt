@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
+import org.wit.myweather.API.getIconNameList
 import org.wit.myweather.API.getLow
 import org.wit.myweather.API.getPeak
 import org.wit.myweather.API.setIcon
@@ -17,10 +18,10 @@ import org.wit.myweather.R
 import org.wit.myweather.databinding.FragmentWeatherEditBinding
 import org.wit.myweather.main.Main
 import org.wit.myweather.models.WeatherModel
+import org.wit.myweather.models.WeatherTemperatureModel
 import org.wit.myweather.ui.auth.LoggedInViewModel
-import org.wit.myweather.webscraper.getLowestTemp
-import org.wit.myweather.webscraper.getPeakTemp
-import org.wit.myweather.webscraper.setImage
+import org.wit.myweather.webscraper.*
+import kotlin.concurrent.thread
 
 
 class WeatherEditFragment : Fragment() {
@@ -71,6 +72,7 @@ class WeatherEditFragment : Fragment() {
 
                     //Update cloud
                     weatherEditViewModel.update(model.copy(),loggedInViewModel.liveFirebaseUser)
+                    updateWeatherTemperature(model.copy())
                     //Serialize locally by retrieving data from now updated cloud.
                     weatherEditViewModel.load()
                     //Navigate backl
@@ -86,6 +88,48 @@ class WeatherEditFragment : Fragment() {
             {
                 Toast.makeText(context,"Country field must not be less than 3 in length",Toast.LENGTH_LONG).show()
             }
+        }
+    }
+
+    fun updateWeatherTemperature(weatherModel: WeatherModel){
+        thread {
+            var peakTemplist = ArrayList<String>()
+            var lowTemplist = ArrayList<String>()
+            var weekDaylist = ArrayList<String>()
+            var imagelist = ArrayList<String>()
+            peakTemplist =
+                getWeeklyPeakTemp(weatherModel.Country, weatherModel.County, weatherModel.City)
+            lowTemplist =
+                getWeeklylowTemp(weatherModel.Country, weatherModel.County, weatherModel.City)
+            weekDaylist = getWeekDays(weatherModel.Country, weatherModel.County, weatherModel.City)
+            //Image return from Weatherbit API, Web scraping Unreliable.
+            imagelist =
+                getIconNameList(weatherModel.Country, weatherModel.County, weatherModel.City)
+            //Upload to firebase Weather card weekly
+            loggedInViewModel.updateWeatherTemperature(WeatherTemperatureModel(weatherModel.id, weekDaylist, peakTemplist, lowTemplist, imagelist
+                )
+            )
+        }
+    }
+
+    fun deleteWeatherTemperature(weatherModel: WeatherModel){
+        thread {
+            var peakTemplist = ArrayList<String>()
+            var lowTemplist = ArrayList<String>()
+            var weekDaylist = ArrayList<String>()
+            var imagelist = ArrayList<String>()
+            peakTemplist =
+                getWeeklyPeakTemp(weatherModel.Country, weatherModel.County, weatherModel.City)
+            lowTemplist =
+                getWeeklylowTemp(weatherModel.Country, weatherModel.County, weatherModel.City)
+            weekDaylist = getWeekDays(weatherModel.Country, weatherModel.County, weatherModel.City)
+            //Image return from Weatherbit API, Web scraping Unreliable.
+            imagelist =
+                getIconNameList(weatherModel.Country, weatherModel.County, weatherModel.City)
+            //Upload to firebase Weather card weekly
+            loggedInViewModel.deleteWeatherTemperature(WeatherTemperatureModel(weatherModel.id, weekDaylist, peakTemplist, lowTemplist, imagelist
+            )
+            )
         }
     }
 
@@ -163,6 +207,7 @@ class WeatherEditFragment : Fragment() {
                 weatherEditViewModel.load()
                 weatherEditViewModel.observableWeatherEdit.observe(viewLifecycleOwner, Observer {weather ->
                     weather.remove(model.copy())
+                    deleteWeatherTemperature(model.copy())
                 })
                 weatherEditViewModel.observableStatus.observe(viewLifecycleOwner, Observer {
                         status -> status?.let { render(status) }

@@ -3,17 +3,23 @@ package org.wit.myweather.ui.weathertemperature
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
+import com.bumptech.glide.Glide
+import com.google.firebase.storage.FirebaseStorage
+import com.squareup.picasso.Picasso
 import org.wit.myweather.API.getWeeklyLow
 import org.wit.myweather.API.getWeeklyPeak
 import org.wit.myweather.API.setIcon
 import org.wit.myweather.R
 import org.wit.myweather.databinding.FragmentWeatherTemperatureBinding
+import org.wit.myweather.firebase.FirebaseStorageManager
 import org.wit.myweather.main.Main
 import org.wit.myweather.models.WeatherModel
+import org.wit.myweather.ui.auth.LoggedInViewModel
+import org.wit.myweather.ui.weather.WeatherViewModel
 import org.wit.myweather.webscraper.*
 
 class WeatherTemperatureFragment : Fragment() {
@@ -22,6 +28,8 @@ class WeatherTemperatureFragment : Fragment() {
     private var _fragBinding: FragmentWeatherTemperatureBinding? = null
     private val fragBinding get() = _fragBinding!!
     private lateinit var model: WeatherModel
+    private val loggedInViewModel : LoggedInViewModel by activityViewModels()
+    private lateinit var weathertempViewModel: WeatherTemperatureViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +42,7 @@ class WeatherTemperatureFragment : Fragment() {
         val getModel = bundle?.get("model") as WeatherModel
         //Model getting added to Global variable model.
         model = getModel
-
+        weathertempViewModel = ViewModelProvider(this).get(WeatherTemperatureViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -48,120 +56,72 @@ class WeatherTemperatureFragment : Fragment() {
         return root
     }
 
-    private fun setDetails(){
+    private fun setDetails() {
+        var peakTempArr = arrayOf(fragBinding.card1PeakTemp, fragBinding.card2PeakTemp, fragBinding.card3PeakTemp, fragBinding.card4PeakTemp, fragBinding.card5PeakTemp, fragBinding.card6PeakTemp, fragBinding.card7PeakTemp, fragBinding.card8PeakTemp)
+        var lowTempArr = arrayOf(fragBinding.card1LowTemp, fragBinding.card2LowTemp, fragBinding.card3LowTemp, fragBinding.card4LowTemp, fragBinding.card5LowTemp, fragBinding.card6LowTemp, fragBinding.card7LowTemp, fragBinding.card8LowTemp)
+        var dayArr = arrayOf(fragBinding.card2Day, fragBinding.card3Day, fragBinding.card4Day, fragBinding.card5Day, fragBinding.card6Day, fragBinding.card7Day, fragBinding.card8Day)
+        var imageArr = arrayOf(fragBinding.card1Image, fragBinding.card2Image, fragBinding.card3Image, fragBinding.card4Image, fragBinding.card5Image, fragBinding.card6Image, fragBinding.card7Image, fragBinding.card8Image)
 
-        doAsync {
-            uiThread {
-                if(model.Type.equals("Scrape") ){
-                        var peakTemplist = ArrayList<String>()
-                        var lowTemplist = ArrayList<String>()
-                        var weekDaylist = ArrayList<String>()
-                        var imagelist = ArrayList<Int>()
-                        peakTemplist = getWeeklyPeakTemp(model.Country, model.County, model.City)
-                        lowTemplist = getWeeklylowTemp(model.Country, model.County, model.City)
-                        weekDaylist = getWeekDays(model.Country, model.County, model.City)
-                        imagelist = getWeeklyWeather(model.Country, model.County, model.City)
-
-
-                        fragBinding.card1PeakTemp.text = peakTemplist.get(0)
-                        fragBinding.card2PeakTemp.text = peakTemplist.get(1)
-                        fragBinding.card3PeakTemp.text = peakTemplist.get(2)
-                        fragBinding.card4PeakTemp.text = peakTemplist.get(3)
-                        fragBinding.card5PeakTemp.text = peakTemplist.get(4)
-                        fragBinding.card6PeakTemp.text = peakTemplist.get(5)
-                        fragBinding.card7PeakTemp.text = peakTemplist.get(6)
-                        fragBinding.card8PeakTemp.text = peakTemplist.get(7)
-
-                        fragBinding.card1LowTemp.text = lowTemplist.get(0)
-                        fragBinding.card2LowTemp.text = lowTemplist.get(1)
-                        fragBinding.card3LowTemp.text = lowTemplist.get(2)
-                        fragBinding.card4LowTemp.text = lowTemplist.get(3)
-                        fragBinding.card5LowTemp.text = lowTemplist.get(4)
-                        fragBinding.card6LowTemp.text = lowTemplist.get(5)
-                        fragBinding.card7LowTemp.text = lowTemplist.get(6)
-                        fragBinding.card8LowTemp.text = lowTemplist.get(7)
-
-
-                        fragBinding.card2Day.text = weekDaylist.get(1)
-                        fragBinding.card3Day.text = weekDaylist.get(2)
-                        fragBinding.card4Day.text = weekDaylist.get(3)
-                        fragBinding.card5Day.text = weekDaylist.get(4)
-                        fragBinding.card6Day.text = weekDaylist.get(5)
-                        fragBinding.card7Day.text = weekDaylist.get(6)
-                        fragBinding.card8Day.text = weekDaylist.get(7)
-
-                        fragBinding.card1Image.setImageResource(
-                            setImage(
-                                model.Country,
-                                model.County,
-                                model.City,
-                                model.WebLink
-                            )
-                        )
-                        fragBinding.card2Image.setImageResource(imagelist.get(1))
-                        fragBinding.card3Image.setImageResource(imagelist.get(2))
-                        fragBinding.card4Image.setImageResource(imagelist.get(3))
-                        fragBinding.card5Image.setImageResource(imagelist.get(4))
-                        fragBinding.card6Image.setImageResource(imagelist.get(5))
-                        fragBinding.card7Image.setImageResource(imagelist.get(6))
-                        fragBinding.card8Image.setImageResource(imagelist.get(7))
-                    }
-
-                if(model.Type.equals("API") ){
-                    var peakTemplist = ArrayList<String>()
-                    var lowTemplist = ArrayList<String>()
-                    var weekDaylist = ArrayList<String>()
-                    var imagelist = ArrayList<Int>()
-                    peakTemplist = getWeeklyPeak(model.Country, model.County, model.City)
-                    lowTemplist = getWeeklyLow(model.Country, model.County, model.City)
-                    weekDaylist = getWeekDays(model.Country, model.County, model.City)
-                    imagelist = setIcon(model.Country, model.County, model.City)
-
-
-
-                    fragBinding.card1PeakTemp.text = peakTemplist.get(0)+"°C"
-                    fragBinding.card2PeakTemp.text = peakTemplist.get(1)+"°C"
-                    fragBinding.card3PeakTemp.text = peakTemplist.get(2)+"°C"
-                    fragBinding.card4PeakTemp.text = peakTemplist.get(3)+"°C"
-                    fragBinding.card5PeakTemp.text = peakTemplist.get(4)+"°C"
-                    fragBinding.card6PeakTemp.text = peakTemplist.get(5)+"°C"
-                    fragBinding.card7PeakTemp.text = peakTemplist.get(6)+"°C"
-                    fragBinding.card8PeakTemp.text = peakTemplist.get(7)+"°C"
-
-                    fragBinding.card1LowTemp.text = lowTemplist.get(0)+"°C"
-                    fragBinding.card2LowTemp.text = lowTemplist.get(1)+"°C"
-                    fragBinding.card3LowTemp.text = lowTemplist.get(2)+"°C"
-                    fragBinding.card4LowTemp.text = lowTemplist.get(3)+"°C"
-                    fragBinding.card5LowTemp.text = lowTemplist.get(4)+"°C"
-                    fragBinding.card6LowTemp.text = lowTemplist.get(5)+"°C"
-                    fragBinding.card7LowTemp.text = lowTemplist.get(6)+"°C"
-                    fragBinding.card8LowTemp.text = lowTemplist.get(7)+"°C"
-
-                    fragBinding.card2Day.text = weekDaylist.get(1)
-                    fragBinding.card3Day.text = weekDaylist.get(2)
-                    fragBinding.card4Day.text = weekDaylist.get(3)
-                    fragBinding.card5Day.text = weekDaylist.get(4)
-                    fragBinding.card6Day.text = weekDaylist.get(5)
-                    fragBinding.card7Day.text = weekDaylist.get(6)
-                    fragBinding.card8Day.text = weekDaylist.get(7)
-
-                    fragBinding.card1Image.setImageResource(imagelist.get(0))
-                    fragBinding.card2Image.setImageResource(imagelist.get(1))
-                    fragBinding.card3Image.setImageResource(imagelist.get(2))
-                    fragBinding.card4Image.setImageResource(imagelist.get(3))
-                    fragBinding.card5Image.setImageResource(imagelist.get(4))
-                    fragBinding.card6Image.setImageResource(imagelist.get(5))
-                    fragBinding.card7Image.setImageResource(imagelist.get(6))
-                    fragBinding.card8Image.setImageResource(imagelist.get(7))
-
-
-
-
-
+        if (model.Type.equals("Scrape")) {
+            weathertempViewModel.getSpecifiedTempModel(model.id.toString())
+            weathertempViewModel.observableWeather.observe(viewLifecycleOwner, { weather ->
+                //Peak Temp
+                for (i in 0..7) {
+                    peakTempArr.get(i).text = weather.get(0).PeakTemperature.get(i) + "°C"
                 }
-            }
+                //Low Temp
+                for (i in 0..7) {
+                    lowTempArr.get(i).text = weather.get(0).MinimumTemperature.get(i) + "°C"
+                }
+                //Day
+                for (i in 0..6) {
+                    dayArr.get(i).text = weather.get(0).WeekDay.get(i)
+                }
+
+                //FirebaseStorageManager.checkforexistingimagetoList(imagelist, "png")
+                for (i in 0..7) {
+
+                    val imageRef =
+                        FirebaseStorageManager.storage.child(weather.get(0).ImageName.get(i) + ".png")
+                    imageRef.downloadUrl.addOnCompleteListener { url ->
+                        Glide.with(fragBinding.root).load(url.result!!.toString())
+                            .into(imageArr.get(i))
+                    }
+                }
+            })
+        }
+
+        if (model.Type.equals("API")) {
+            weathertempViewModel.getSpecifiedTempModel(model.id.toString())
+            weathertempViewModel.observableWeather.observe(viewLifecycleOwner, { weather ->
+                //Peak Temp
+                for (i in 0..7) {
+                    peakTempArr.get(i).text = weather.get(0).PeakTemperature.get(i) + "°C"
+                }
+                //Low Temp
+                for (i in 0..7) {
+                    lowTempArr.get(i).text = weather.get(0).MinimumTemperature.get(i) + "°C"
+                }
+                //Day
+                for (i in 0..6) {
+                    dayArr.get(i).text = weather.get(0).WeekDay.get(i)
+                }
+
+                //FirebaseStorageManager.checkforexistingimagetoList(imagelist, "png")
+                for (i in 0..7) {
+
+                    val imageRef = FirebaseStorageManager.storage.child(weather.get(0).ImageName.get(i)+".png")
+                    imageRef.downloadUrl.addOnCompleteListener{url ->
+                        Glide.with(fragBinding.root).load(url.result!!.toString()).into(imageArr.get(i))
+                    }
+                }
+
+            })
+
         }
     }
+
+
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
 

@@ -12,18 +12,19 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
+import org.wit.myweather.API.getIconNameList
 import org.wit.myweather.API.getLow
 import org.wit.myweather.API.getPeak
 import org.wit.myweather.API.setIcon
 import org.wit.myweather.R
 import org.wit.myweather.databinding.FragmentWeatherBinding
+import org.wit.myweather.firebase.FirebaseDBManager.rand
 import org.wit.myweather.main.Main
 import org.wit.myweather.models.WeatherModel
+import org.wit.myweather.models.WeatherTemperatureModel
 import org.wit.myweather.ui.auth.LoggedInViewModel
-import org.wit.myweather.webscraper.getLocationByWebLink
-import org.wit.myweather.webscraper.getLowestTemp
-import org.wit.myweather.webscraper.getPeakTemp
-import org.wit.myweather.webscraper.setImage
+import org.wit.myweather.webscraper.*
+import kotlin.concurrent.thread
 
 
 class WeatherFragment : Fragment() {
@@ -90,18 +91,20 @@ class WeatherFragment : Fragment() {
     //Web Scraper function; Paste google link of weather choice.
     private fun addWeatherByURL(){
         fragBinding.AddWeatherURL.setOnClickListener {
-            var location = getLocationByWebLink(fragBinding.AddLink.text.toString())
-            var list = location.split(",")
-            model.Country = list[1]
-            model.City = list[0]
-            model.WebLink = fragBinding.AddLink.text.toString()
-            model.Type = "Scrape"
-            model.Image = setImage(model.Country, model.County, model.City, model.WebLink)
-            //Scrapes relevant info and sets respective Peak temperature.
-            model.Temperature = getPeakTemp(model.Country, model.County, model.City)
-            //Scrapes relevant info and sets respective Low temperature.
-            model.TemperatureLow = getLowestTemp(model.Country, model.County, model.City)
-            model.Favourite = false
+
+                var location = getLocationByWebLink(fragBinding.AddLink.text.toString())
+                var list = location.split(",")
+                model.Country = list[1]
+                model.City = list[0]
+                model.WebLink = fragBinding.AddLink.text.toString()
+                model.Type = "Scrape"
+                model.Image = setImage(model.Country, model.County, model.City, model.WebLink)
+                //Scrapes relevant info and sets respective Peak temperature.
+                model.Temperature = getPeakTemp(model.Country, model.County, model.City)
+                //Scrapes relevant info and sets respective Low temperature.
+                model.TemperatureLow = getLowestTemp(model.Country, model.County, model.City)
+                model.Favourite = false
+
             //Uploads Model to Firebase
             //Receives info from Firebase and saves locally
             create()
@@ -120,20 +123,21 @@ class WeatherFragment : Fragment() {
                 if (fragBinding.AddCountry.text.isNotEmpty()) {
                     if (fragBinding.AddCity.text.isNotEmpty()) {
 
-                        model.Country = fragBinding.AddCountry.text.toString()
-                        model.County = fragBinding.AddCounty.text.toString()
-                        model.City = fragBinding.AddCity.text.toString()
-                        //Setting to type Scrape to enable web scraping
-                        model.Type = "Scrape"
-                        //Scrapes relevant info and sets respective image.
-                        model.Image =
-                            setImage(model.Country, model.County, model.City, model.WebLink)
-                        //Scrapes relevant info and sets respective Peak temperature.
-                        model.Temperature = getPeakTemp(model.Country, model.County, model.City)
-                        //Scrapes relevant info and sets respective Low temperature.
-                        model.TemperatureLow =
-                            getLowestTemp(model.Country, model.County, model.City)
-                        model.Favourite = false
+                            model.Country = fragBinding.AddCountry.text.toString()
+                            model.County = fragBinding.AddCounty.text.toString()
+                            model.City = fragBinding.AddCity.text.toString()
+                            //Setting to type Scrape to enable web scraping
+                            model.Type = "Scrape"
+                            //Scrapes relevant info and sets respective image.
+                            model.Image =
+                                setImage(model.Country, model.County, model.City, model.WebLink)
+                            //Scrapes relevant info and sets respective Peak temperature.
+                            model.Temperature = getPeakTemp(model.Country, model.County, model.City)
+                            //Scrapes relevant info and sets respective Low temperature.
+                            model.TemperatureLow =
+                                getLowestTemp(model.Country, model.County, model.City)
+                            model.Favourite = false
+
                         //Uploads Model to Firebase
                         //Receives info from Firebase and saves locally
                         create()
@@ -155,20 +159,21 @@ class WeatherFragment : Fragment() {
                 if (fragBinding.AddCountry.text.isNotEmpty()) {
                     if (fragBinding.AddCity.text.isNotEmpty()) {
 
-                        model.Country = fragBinding.AddCountry.text.toString()
-                        model.County = fragBinding.AddCounty.text.toString()
-                        model.City = fragBinding.AddCity.text.toString()
+                            model.Country = fragBinding.AddCountry.text.toString()
+                            model.County = fragBinding.AddCounty.text.toString()
+                            model.City = fragBinding.AddCity.text.toString()
 
-                        //API call to relevant info and sets respective image.
-                        model.Image =
-                            setIcon(model.Country, model.County, model.City).get(0)
-                        //API call to relevant info and sets respective Peak temperature.
-                        model.Temperature = getPeak(model.Country, model.County, model.City)
-                        //API call to relevant info and sets respective Low temperature.
-                        model.TemperatureLow =
-                            getLow(model.Country, model.County, model.City)
-                        //Uploads Model to Firebase
-                        //Receives info from Firebase and saves locally
+                            //API call to relevant info and sets respective image.
+                            model.Image =
+                                setIcon(model.Country, model.County, model.City).get(0)
+                            //API call to relevant info and sets respective Peak temperature.
+                            model.Temperature = getPeak(model.Country, model.County, model.City)
+                            //API call to relevant info and sets respective Low temperature.
+                            model.TemperatureLow =
+                                getLow(model.Country, model.County, model.City)
+                            //Uploads Model to Firebase
+                            //Receives info from Firebase and saves locally
+
                         create()
 
                     }else {
@@ -188,6 +193,28 @@ class WeatherFragment : Fragment() {
         }
     }
 
+    fun createWeatherTemperature(weatherModel: WeatherModel){
+        thread {
+            var peakTemplist = ArrayList<String>()
+            var lowTemplist = ArrayList<String>()
+            var weekDaylist = ArrayList<String>()
+            var imagelist = ArrayList<String>()
+            peakTemplist =
+                getWeeklyPeakTemp(weatherModel.Country, weatherModel.County, weatherModel.City)
+            lowTemplist =
+                getWeeklylowTemp(weatherModel.Country, weatherModel.County, weatherModel.City)
+            weekDaylist = getWeekDays(weatherModel.Country, weatherModel.County, weatherModel.City)
+            //Image return from Weatherbit API, Web scraping Unreliable.
+            imagelist =
+                getIconNameList(weatherModel.Country, weatherModel.County, weatherModel.City)
+            //Upload to firebase Weather card weekly
+            loggedInViewModel.uploadWeatherTemperature(
+                WeatherTemperatureModel(weatherModel.id, weekDaylist, peakTemplist, lowTemplist, imagelist
+            )
+            )
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
 
         inflater.inflate(R.menu.weather_menu,menu)
@@ -201,7 +228,10 @@ class WeatherFragment : Fragment() {
     }
 
     private fun create(){
-        weatherViewModel.create(model.copy(),loggedInViewModel.liveFirebaseUser)
+        val uid = rand(500,1000000000)
+
+        weatherViewModel.create(model.copy(id=uid.toLong()),loggedInViewModel.liveFirebaseUser)
+        createWeatherTemperature(model.copy(id=uid.toLong()))
     }
 
     private fun render(status:Boolean){

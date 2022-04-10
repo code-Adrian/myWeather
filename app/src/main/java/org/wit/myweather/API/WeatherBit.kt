@@ -14,7 +14,6 @@ fun returnQuery(Country: String,County: String,City: String) : String? {
 allowNetwork()
 
 var query = ("https://api.weatherbit.io/v2.0/forecast/daily?country=" + Country + "&" + "county=" + County+"&" + "city=" + City + "&" + "key="+key)
-println(query)
 var response:String?
 try{
     response = URL(query).readText(Charsets.UTF_8)
@@ -29,7 +28,6 @@ fun returnQueryCoordinated(Latitude: String, Longitude: String) : String? {
     allowNetwork()
 
     var query = ("https://api.weatherbit.io/v2.0/forecast/daily?lat=" + Latitude + "&" + "lon=" + Longitude+"&" + "key="+key)
-    println(query)
     var response:String?
     try{
         response = URL(query).readText(Charsets.UTF_8)
@@ -172,6 +170,25 @@ fun setIcon(Country: String,County: String,City: String) : ArrayList<Int> {
             val icon = main.getString("icon")
             val resId = R.drawable::class.java.getId(icon)
             imagelist.add(resId)
+        }
+    }catch (e:Exception){
+        print(e.toString())
+
+    }
+    return imagelist
+}
+
+fun getIconNameList(Country: String,County: String,City: String) : ArrayList<String> {
+    allowNetwork()
+
+    var imagelist :  ArrayList<String> = ArrayList()
+    try{
+
+        val jsonObject = JSONObject(returnQuery(Country, County, City))
+        for(i in 0..7) {
+            val main = jsonObject.getJSONArray("data").getJSONObject(i).getJSONObject("weather")
+            val icon = main.getString("icon")
+            imagelist.add(icon)
         }
     }catch (e:Exception){
         print(e.toString())

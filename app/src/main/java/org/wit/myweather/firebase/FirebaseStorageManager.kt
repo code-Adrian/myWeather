@@ -3,13 +3,18 @@ package org.wit.myweather.firebase
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.AsyncTask
 import android.widget.ImageView
 import androidx.lifecycle.MutableLiveData
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
+import kotlinx.coroutines.*
 import java.io.ByteArrayOutputStream
 
 object FirebaseStorageManager {
@@ -22,6 +27,7 @@ object FirebaseStorageManager {
 
               imageRef.downloadUrl.addOnCompleteListener { task ->
                 imageUri.value = task.result!!
+
             }
 
             //File Doesn't Exist
@@ -83,7 +89,6 @@ object FirebaseStorageManager {
 
                 override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
 
-                    //uploadImageToFirebase(userid, defaultImageUri.value,updating)
                 }
             })
     }

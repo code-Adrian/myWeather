@@ -19,17 +19,24 @@ import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.nav_header.view.*
+import org.wit.myweather.API.getIconNameList
+import org.wit.myweather.API.getWeeklyLow
+import org.wit.myweather.API.getWeeklyPeak
 import org.wit.myweather.R
 import org.wit.myweather.databinding.HomeBinding
 import org.wit.myweather.databinding.NavHeaderBinding
 import org.wit.myweather.firebase.FirebaseStorageManager
 import org.wit.myweather.firebase.FirebaseStorageManager.checkforexistingimage
-import org.wit.myweather.firebase.FirebaseStorageManager.imageUri
 import org.wit.myweather.helpers.readImageUri
 import org.wit.myweather.helpers.showImagePicker
+import org.wit.myweather.models.WeatherTemperatureModel
 import org.wit.myweather.ui.auth.LoggedInViewModel
 import org.wit.myweather.ui.auth.Login
+import org.wit.myweather.webscraper.getWeekDays
+import org.wit.myweather.webscraper.getWeeklyPeakTemp
+import org.wit.myweather.webscraper.getWeeklylowTemp
 import java.lang.Exception
+import kotlin.concurrent.thread
 
 class home : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
@@ -81,8 +88,51 @@ class home : AppCompatActivity() {
             }
         })
 
+
         registerImagePickerCallback()
 
+                preloadWeatherTemperatureList()
+    }
+
+    private fun preloadWeatherTemperatureList(){
+
+        //Trigger
+        loggedInViewModel.getWeatherModels()
+        //Observe trigger
+        loggedInViewModel.observableWeather.observe(this,{ allweatherlist ->
+            for(i in allweatherlist){
+                //Iterate through all and upload each
+                    thread{
+                if(i.Type.equals("Scrape")) {
+                    var peakTemplist = ArrayList<String>()
+                    var lowTemplist = ArrayList<String>()
+                    var weekDaylist = ArrayList<String>()
+                    var imagelist = ArrayList<String>()
+                    peakTemplist = getWeeklyPeakTemp(i.Country, i.County, i.City)
+                    lowTemplist = getWeeklylowTemp(i.Country, i.County, i.City)
+                    weekDaylist = getWeekDays(i.Country, i.County, i.City)
+                    //Image return from Weatherbit API, Web scraping Unreliable.
+                    imagelist = getIconNameList(i.Country, i.County, i.City)
+                    //Upload to firebase Weather card weekly
+                    loggedInViewModel.uploadWeatherTemperature(WeatherTemperatureModel(i.id, weekDaylist, peakTemplist, lowTemplist, imagelist))
+                }
+                }
+                if(i.Type.equals("API")) {
+                    thread {
+                        var peakTemplist = ArrayList<String>()
+                        var lowTemplist = ArrayList<String>()
+                        var weekDaylist = ArrayList<String>()
+                        var imagelist = ArrayList<String>()
+                        peakTemplist = getWeeklyPeak(i.Country, i.County, i.City)
+                        lowTemplist = getWeeklyLow(i.Country, i.County, i.City)
+                        weekDaylist = getWeekDays(i.Country, i.County, i.City)
+                        imagelist = getIconNameList(i.Country, i.County, i.City)
+                        //Upload to firebase weather card weekly
+                        loggedInViewModel.uploadWeatherTemperature(WeatherTemperatureModel(i.id, weekDaylist, peakTemplist, lowTemplist, imagelist))
+                    }
+                }
+            }
+        })
     }
 
     private fun updateNavHeader(currentUser: FirebaseUser) {
