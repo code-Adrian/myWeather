@@ -12,10 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
-import org.wit.myweather.API.getIconNameList
-import org.wit.myweather.API.getLow
-import org.wit.myweather.API.getPeak
-import org.wit.myweather.API.setIcon
+import org.wit.myweather.API.*
 import org.wit.myweather.R
 import org.wit.myweather.databinding.FragmentWeatherBinding
 import org.wit.myweather.firebase.FirebaseDBManager.rand
@@ -199,14 +196,10 @@ class WeatherFragment : Fragment() {
             var lowTemplist = ArrayList<String>()
             var weekDaylist = ArrayList<String>()
             var imagelist = ArrayList<String>()
-            peakTemplist =
-                getWeeklyPeakTemp(weatherModel.Country, weatherModel.County, weatherModel.City)
-            lowTemplist =
-                getWeeklylowTemp(weatherModel.Country, weatherModel.County, weatherModel.City)
+            peakTemplist = getWeeklyPeak(weatherModel.Country, weatherModel.County, weatherModel.City)
+            lowTemplist = getWeeklyLow(weatherModel.Country, weatherModel.County, weatherModel.City)
             weekDaylist = getWeekDays(weatherModel.Country, weatherModel.County, weatherModel.City)
-            //Image return from Weatherbit API, Web scraping Unreliable.
-            imagelist =
-                getIconNameList(weatherModel.Country, weatherModel.County, weatherModel.City)
+            imagelist = getIconNameList(weatherModel.Country, weatherModel.County, weatherModel.City)
             //Upload to firebase Weather card weekly
             loggedInViewModel.uploadWeatherTemperature(
                 WeatherTemperatureModel(weatherModel.id, weekDaylist, peakTemplist, lowTemplist, imagelist

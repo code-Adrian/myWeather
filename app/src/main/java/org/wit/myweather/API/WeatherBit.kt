@@ -4,17 +4,27 @@ import android.os.StrictMode
 import android.util.Log
 import org.json.JSONObject
 import org.wit.myweather.R
+import org.wit.myweather.models.WeatherModel
 import java.lang.Exception
 import java.net.URL
+val key = "a4195b06c78a4ac0984eace150dd30d5"
 
-const val key = "9d48c9db73324e459ecd0305406ddb15"
+val keylist = arrayListOf<String>(
+    "a4195b06c78a4ac0984eace150dd30d5"
+    ,"302e71680cec4f13b1f8005144371e18",
+    "9d48c9db73324e459ecd0305406ddb15",
+     "7303ce1106774f04b7f0a8ab138c6b98")
+
+fun ranKey():String{
+    return keylist.random().toString()
+}
 
 //Query and response for 16 day weather forcast
 fun returnQuery(Country: String,County: String,City: String) : String? {
 allowNetwork()
-
-var query = ("https://api.weatherbit.io/v2.0/forecast/daily?country=" + Country + "&" + "county=" + County+"&" + "city=" + City + "&" + "key="+key)
+var query = ("https://api.weatherbit.io/v2.0/forecast/daily?country=" + Country + "&" + "county=" + County+"&" + "city=" + City + "&" + "key="+ key)
 var response:String?
+println(query)
 try{
     response = URL(query).readText(Charsets.UTF_8)
 }catch(e: Exception){
@@ -26,8 +36,8 @@ try{
 
 fun returnQueryCoordinated(Latitude: String, Longitude: String) : String? {
     allowNetwork()
-
     var query = ("https://api.weatherbit.io/v2.0/forecast/daily?lat=" + Latitude + "&" + "lon=" + Longitude+"&" + "key="+key)
+
     var response:String?
     try{
         response = URL(query).readText(Charsets.UTF_8)
@@ -83,7 +93,7 @@ fun getPeak(Country: String,County: String,City: String) : String{
     try{
             val jsonObject = JSONObject(returnQuery(Country, County, City))
             val main = jsonObject.getJSONArray("data").getJSONObject(0)
-            tempMax = main.getString("max_temp")
+            tempMax = main.getString("max_temp").replace("°C","")
 
     }catch (e:Exception){
         print(e.toString())
@@ -98,7 +108,7 @@ fun getLow(Country: String,County: String,City: String) : String{
     try{
             val jsonObject = JSONObject(returnQuery(Country, County, City))
             val main = jsonObject.getJSONArray("data").getJSONObject(0)
-            tempMin = main.getString("low_temp")
+            tempMin = main.getString("low_temp").replace("°C","")
 
     }catch (e:Exception){
         print(e.toString())
@@ -118,9 +128,10 @@ fun getWeeklyPeak(Country: String,County: String,City: String) : ArrayList<Strin
     try{
 
             val jsonObject = JSONObject(returnQuery(Country, County, City))
+
         for (i in 0..7) {
             val main = jsonObject.getJSONArray("data").getJSONObject(i)
-            tempMin = main.getString("max_temp")
+            tempMin = main.getString("max_temp").replace("°C","")
             list.add(tempMin)
         }
 
@@ -144,7 +155,7 @@ fun getWeeklyLow(Country: String,County: String,City: String) : ArrayList<String
             val jsonObject = JSONObject(returnQuery(Country, County, City))
         for (i in 0..7) {
             val main = jsonObject.getJSONArray("data").getJSONObject(i)
-            tempMin = main.getString("low_temp")
+            tempMin = main.getString("low_temp").replace("°C","")
             list.add(tempMin)
         }
 
@@ -196,6 +207,27 @@ fun getIconNameList(Country: String,County: String,City: String) : ArrayList<Str
     }
     return imagelist
 }
+
+fun getWeatherByLatLon(lat: String,lon:String) : WeatherModel{
+    var model = WeatherModel()
+    try{
+        val jsonObject = JSONObject(returnQueryCoordinated(lat,lon))
+        val main = jsonObject.getJSONArray("data").getJSONObject(0)
+        val iconmain = jsonObject.getJSONArray("data").getJSONObject(0).getJSONObject("weather")
+        val tempMax = main.getString("max_temp")
+        val tempMin = main.getString("low_temp")
+        val icon = iconmain.getString("icon")
+        val resId = R.drawable::class.java.getId(icon)
+        model.Temperature = tempMax.replace("°C","")
+        model.TemperatureLow = tempMin.replace("°C","")
+        model.Image = resId
+    }catch (e:Exception){
+        print(e.toString())
+
+    }
+    return model
+}
+
 
 inline fun <reified T: Class<*>> T.getId(resourceName: String): Int {
     return try {

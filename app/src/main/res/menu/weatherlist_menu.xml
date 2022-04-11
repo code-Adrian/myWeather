@@ -12,6 +12,13 @@
         />
 
     <item
+        android:id="@+id/toggleFavourites"
+        android:title=""
+        app:actionLayout="@layout/togglebutton_layout"
+        app:showAsAction="always" />
+
+
+    <item
         android:id="@+id/weatherFragment"
         android:icon="@android:drawable/ic_menu_add"
         android:title="@string/add_weather"
@@ -21,11 +28,6 @@
         android:id="@+id/menuFragment"
         android:icon="@drawable/ic_menu_home"
         android:title="@string/Home"
-        app:showAsAction="ifRoom" />
-
-    <item
-        android:id="@+id/toggleFavourites"
-        android:title=""
-        app:actionLayout="@layout/togglebutton_layout"
-        app:showAsAction="always" />
+        app:showAsAction="always"
+        />
 </menu>

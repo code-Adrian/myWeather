@@ -1,12 +1,14 @@
 package org.wit.myweather.activities
 
 import android.content.Intent
+import android.location.Location
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.AppCompatDelegate.*
 import androidx.appcompat.widget.Toolbar
@@ -32,6 +34,7 @@ import org.wit.myweather.helpers.showImagePicker
 import org.wit.myweather.models.WeatherTemperatureModel
 import org.wit.myweather.ui.auth.LoggedInViewModel
 import org.wit.myweather.ui.auth.Login
+import org.wit.myweather.ui.maps.MapsViewModel
 import org.wit.myweather.webscraper.getWeekDays
 import org.wit.myweather.webscraper.getWeeklyPeakTemp
 import org.wit.myweather.webscraper.getWeeklylowTemp
@@ -46,9 +49,12 @@ class home : AppCompatActivity() {
     private lateinit var navHeaderBinding : NavHeaderBinding
     lateinit var navView : NavigationView
     private lateinit var intentLauncher : ActivityResultLauncher<Intent>
+    private val mapsViewModel : MapsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
+
         homeBinding = HomeBinding.inflate(layoutInflater)
         setContentView(homeBinding.root)
         drawerLayout = homeBinding.drawerLayout
@@ -61,12 +67,11 @@ class home : AppCompatActivity() {
         navView = homeBinding.navView
 
         navView.setupWithNavController(navController)
-
+        changeTheme()
         appBarConfiguration = AppBarConfiguration(setOf(
-            R.id.menuFragment, R.id.weatherListFragment,R.id.weatherFragment,R.id.weatherTemperatureFragment,R.id.weatherEditFragment), drawerLayout)
+            R.id.menuFragment, R.id.weatherListFragment,R.id.weatherFragment,R.id.weatherTemperatureFragment,R.id.weatherEditFragment,R.id.mapsFragment), drawerLayout)
             setupActionBarWithNavController(navController, appBarConfiguration)
         signOut()
-        changeTheme()
 
     }
 
@@ -90,55 +95,18 @@ class home : AppCompatActivity() {
 
 
         registerImagePickerCallback()
-
-                preloadWeatherTemperatureList()
+        updateMapLocation()
     }
 
-    private fun preloadWeatherTemperatureList(){
 
-        //Trigger
-        loggedInViewModel.getWeatherModels()
-        //Observe trigger
-        loggedInViewModel.observableWeather.observe(this,{ allweatherlist ->
-            for(i in allweatherlist){
-                //Iterate through all and upload each
-                    thread{
-                if(i.Type.equals("Scrape")) {
-                    var peakTemplist = ArrayList<String>()
-                    var lowTemplist = ArrayList<String>()
-                    var weekDaylist = ArrayList<String>()
-                    var imagelist = ArrayList<String>()
-                    peakTemplist = getWeeklyPeakTemp(i.Country, i.County, i.City)
-                    lowTemplist = getWeeklylowTemp(i.Country, i.County, i.City)
-                    weekDaylist = getWeekDays(i.Country, i.County, i.City)
-                    //Image return from Weatherbit API, Web scraping Unreliable.
-                    imagelist = getIconNameList(i.Country, i.County, i.City)
-                    //Upload to firebase Weather card weekly
-                    loggedInViewModel.uploadWeatherTemperature(WeatherTemperatureModel(i.id, weekDaylist, peakTemplist, lowTemplist, imagelist))
-                }
-                }
-                if(i.Type.equals("API")) {
-                    thread {
-                        var peakTemplist = ArrayList<String>()
-                        var lowTemplist = ArrayList<String>()
-                        var weekDaylist = ArrayList<String>()
-                        var imagelist = ArrayList<String>()
-                        peakTemplist = getWeeklyPeak(i.Country, i.County, i.City)
-                        lowTemplist = getWeeklyLow(i.Country, i.County, i.City)
-                        weekDaylist = getWeekDays(i.Country, i.County, i.City)
-                        imagelist = getIconNameList(i.Country, i.County, i.City)
-                        //Upload to firebase weather card weekly
-                        loggedInViewModel.uploadWeatherTemperature(WeatherTemperatureModel(i.id, weekDaylist, peakTemplist, lowTemplist, imagelist))
-                    }
-                }
-            }
-        })
+    private fun updateMapLocation(){
+        mapsViewModel.updateCurrentLocation()
     }
+
+
 
     private fun updateNavHeader(currentUser: FirebaseUser) {
         //Checking if profile picture is already out there and causing an update/change
-        // to imageURI so it can be observed.
-        checkforexistingimage(loggedInViewModel.liveFirebaseUser.value!!.uid,"jpg")
 
         var headerView = homeBinding.navView.getHeaderView(0)
         navHeaderBinding = NavHeaderBinding.bind(headerView)
@@ -170,6 +138,9 @@ class home : AppCompatActivity() {
 
     //Observes imageURI, if its empty then set default user image, if not set image based on UID
     private fun imageuriobserver(){
+        // to imageURI so it can be observed.
+        checkforexistingimage(loggedInViewModel.liveFirebaseUser.value!!.uid,"jpg")
+
         FirebaseStorageManager.imageUri.observe(this,{result ->
             if(result == Uri.EMPTY){
                 navHeaderBinding.imageViewLoggedIn.setImageResource(R.drawable.user)
@@ -205,11 +176,9 @@ class home : AppCompatActivity() {
         menuItem.setOnMenuItemClickListener {
             if(getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES){
                 AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_NO)
-
                 println("NIGHT MODE OFF")
             }else{
                 AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES)
-
                 println("NIGHT MODE ON")
             }
             true

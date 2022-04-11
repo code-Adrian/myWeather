@@ -50,7 +50,7 @@
     <fragment
         android:id="@+id/weatherListFragment"
         android:name="org.wit.myweather.ui.weatherlist.WeatherListFragment"
-        android:label="Current Weather"
+        android:label="Weather"
         tools:layout="@layout/fragment_weather_list" >
         <action
             android:id="@+id/action_weatherList_to_menuFragment"
@@ -90,7 +90,7 @@
     <fragment
         android:id="@+id/mapsFragment"
         android:name="org.wit.myweather.ui.maps.MapsFragment"
-        android:label="fragment_maps"
+        android:label="Choose Weather"
         tools:layout="@layout/fragment_maps" >
         <action
             android:id="@+id/action_mapsFragment_to_weatherListFragment"
