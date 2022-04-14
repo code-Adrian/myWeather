@@ -13,11 +13,10 @@ import org.wit.myweather.models.*
 class Main : Application() {
 
 
-lateinit var localWeather: Json_Store
+//lateinit var localWeather: Json_Store
     override fun onCreate() {
         super.onCreate()
-
-        localWeather = Json_Store(applicationContext)
+        //localWeather = Json_Store(applicationContext)
 
     }
 

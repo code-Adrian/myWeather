@@ -143,7 +143,7 @@ fun setDetails(){
 
     private fun preloadWeather(){
         weatherListViewModel.observableWeatherList.observe(viewLifecycleOwner, Observer {weather ->
-            app.localWeather.serialize(weather)
+           // app.localWeather.serialize(weather)
         })
     }
 

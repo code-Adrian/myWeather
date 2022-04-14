@@ -4,12 +4,15 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import kotlinx.android.synthetic.main.splash_screen.*
 import org.wit.myweather.API.getIconNameList
 import org.wit.myweather.API.getWeeklyLow
 import org.wit.myweather.API.getWeeklyPeak
+import org.wit.myweather.R
 import org.wit.myweather.databinding.LoginBinding
 import org.wit.myweather.models.WeatherTemperatureModel
 import org.wit.myweather.ui.menu.MenuFragment
@@ -25,8 +28,13 @@ class Login: AppCompatActivity() {
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        loginBinding = LoginBinding.inflate(layoutInflater)
-        setContentView(loginBinding.root)
+            setContentView(R.layout.splash_screen)
+            splash_image.animate().setDuration(2000).alpha(1f).withEndAction {
+                setContentView(loginBinding.root)
+                overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out)
+            }
+            loginBinding = LoginBinding.inflate(layoutInflater)
+
     }
 
     public override fun onStart() {

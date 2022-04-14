@@ -114,6 +114,7 @@ class MapsFragment : Fragment() {
 
     fun geoCoder(loc: LatLng) : String{
         val geoCoder = Geocoder(requireContext(), Locale.getDefault())
+
         val address = geoCoder.getFromLocation(loc.latitude,loc.longitude,1)[0].getAddressLine(0)
         return address
     }
@@ -159,7 +160,6 @@ class MapsFragment : Fragment() {
             }else{
                 return false
             }
-        return true
     }
 
 
