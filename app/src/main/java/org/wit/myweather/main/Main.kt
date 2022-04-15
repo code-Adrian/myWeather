@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import org.wit.myweather.R
-import org.wit.myweather.databinding.HomeBinding
 import org.wit.myweather.models.*
 
 class Main : Application() {

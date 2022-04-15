@@ -53,8 +53,11 @@ class MapsFragment : Fragment() {
 
         mapsViewModel.map = googleMap
         mapsViewModel.map.isMyLocationEnabled = true
-        val loc = LatLng(mapsViewModel.currentLocation.value!!.latitude,
-            mapsViewModel.currentLocation.value!!.longitude)
+
+            val loc = LatLng(
+                mapsViewModel.currentLocation.value!!.latitude,
+                mapsViewModel.currentLocation.value!!.longitude
+            )
 
 
         mapsViewModel.map.uiSettings.setAllGesturesEnabled(true)

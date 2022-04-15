@@ -6,19 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
 
-    <Button
-        android:id="@+id/Add_Weather_MAP"
-        android:layout_width="180dp"
-        android:layout_height="wrap_content"
-        android:text="Add Location"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="18dp"
-        android:background="@drawable/round"
-        />
+
 
     <fragment
         android:id="@+id/map"
@@ -33,6 +21,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         />
 
-
+    <Button
+        android:id="@+id/Add_Weather_MAP"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:text="Add Location"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="18dp"
+        android:background="@drawable/round"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

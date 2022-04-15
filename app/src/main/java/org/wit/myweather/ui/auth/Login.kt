@@ -2,6 +2,8 @@ package org.wit.myweather.ui.auth
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.animation.Animation
+import android.view.animation.RotateAnimation
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -29,11 +31,17 @@ class Login: AppCompatActivity() {
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
             setContentView(R.layout.splash_screen)
-            splash_image.animate().setDuration(2000).alpha(1f).withEndAction {
+            splash_image.animate().setDuration(1750).alpha(1f).withEndAction {
+
                 setContentView(loginBinding.root)
-                overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out)
+                //overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out)
             }
+            var anim = RotateAnimation(0f, 360f, 250f, 250f);
+
+            anim.duration = 900
+            anim.setRepeatCount(0);
             loginBinding = LoginBinding.inflate(layoutInflater)
+            loginBinding.loginImage.startAnimation(anim)
 
     }
 
@@ -58,6 +66,7 @@ class Login: AppCompatActivity() {
 
             }
         })
+
     }
 
     private fun listeners(){
