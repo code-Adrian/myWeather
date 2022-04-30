@@ -165,8 +165,6 @@ class MapsFragment : Fragment() {
             }
     }
 
-
-
     fun geoCoderDetail(loc: LatLng) : WeatherModel{
         var model = WeatherModel()
 

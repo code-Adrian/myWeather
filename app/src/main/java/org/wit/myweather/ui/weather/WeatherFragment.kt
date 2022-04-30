@@ -89,11 +89,11 @@ class WeatherFragment : Fragment() {
     private fun addWeatherByURL(){
         fragBinding.AddWeatherURL.setOnClickListener {
 
-                var location = getLocationByWebLink(fragBinding.AddLink.text.toString())
+                var location = getLocationByWebLink(fragBinding.AddLink.text!!.toString())
                 var list = location.split(",")
                 model.Country = list[1]
                 model.City = list[0]
-                model.WebLink = fragBinding.AddLink.text.toString()
+                model.WebLink = fragBinding.AddLink.text!!.toString()
                 model.Type = "Scrape"
                 model.Image = setImage(model.Country, model.County, model.City, model.WebLink)
                 //Scrapes relevant info and sets respective Peak temperature.
@@ -117,12 +117,12 @@ class WeatherFragment : Fragment() {
         fragBinding.AddWeather.setOnClickListener {
 
             if(API == false) {
-                if (fragBinding.AddCountry.text.isNotEmpty()) {
-                    if (fragBinding.AddCity.text.isNotEmpty()) {
+                if (fragBinding.AddCountry.text!!.isNotEmpty()) {
+                    if (fragBinding.AddCity.text!!.isNotEmpty()) {
 
-                            model.Country = fragBinding.AddCountry.text.toString()
-                            model.County = fragBinding.AddCounty.text.toString()
-                            model.City = fragBinding.AddCity.text.toString()
+                            model.Country = fragBinding.AddCountry.text!!.toString()
+                            model.County = fragBinding.AddCounty.text!!.toString()
+                            model.City = fragBinding.AddCity.text!!.toString()
                             //Setting to type Scrape to enable web scraping
                             model.Type = "Scrape"
                             //Scrapes relevant info and sets respective image.
@@ -153,12 +153,12 @@ class WeatherFragment : Fragment() {
             }
             if(API == true){
 
-                if (fragBinding.AddCountry.text.isNotEmpty()) {
-                    if (fragBinding.AddCity.text.isNotEmpty()) {
+                if (fragBinding.AddCountry.text!!.isNotEmpty()) {
+                    if (fragBinding.AddCity.text!!.isNotEmpty()) {
 
-                            model.Country = fragBinding.AddCountry.text.toString()
-                            model.County = fragBinding.AddCounty.text.toString()
-                            model.City = fragBinding.AddCity.text.toString()
+                            model.Country = fragBinding.AddCountry.text!!.toString()
+                            model.County = fragBinding.AddCounty.text!!.toString()
+                            model.City = fragBinding.AddCity.text!!.toString()
 
                             //API call to relevant info and sets respective image.
                             model.Image =

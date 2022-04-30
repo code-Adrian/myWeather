@@ -32,8 +32,8 @@ class Login: AppCompatActivity() {
         super.onCreate(savedInstanceState)
             setContentView(R.layout.splash_screen)
             splash_image.animate().setDuration(1750).alpha(1f).withEndAction {
-
                 setContentView(loginBinding.root)
+
                 //overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out)
             }
             var anim = RotateAnimation(0f, 360f, 250f, 250f);
