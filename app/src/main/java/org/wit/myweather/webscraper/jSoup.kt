@@ -367,16 +367,6 @@ fun getWeeklyWeather(country: String, county: String,city:String) : ArrayList<In
     return list
 }
 
-
-
-
-
-
-
-
-
-
-
 private fun allowNetwork(){
     val policy = StrictMode.ThreadPolicy.Builder().permitAll().build();
     StrictMode.setThreadPolicy(policy);

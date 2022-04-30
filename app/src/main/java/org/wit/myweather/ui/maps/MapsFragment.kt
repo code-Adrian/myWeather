@@ -20,10 +20,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import org.wit.myweather.API.getIconNameList
-import org.wit.myweather.API.getWeatherByLatLon
-import org.wit.myweather.API.getWeeklyLow
-import org.wit.myweather.API.getWeeklyPeak
+import org.wit.myweather.API.*
 import org.wit.myweather.R
 import org.wit.myweather.databinding.FragmentMapsBinding
 import org.wit.myweather.databinding.FragmentMenuBinding
@@ -95,10 +92,11 @@ class MapsFragment : Fragment() {
                 mainmodel.TemperatureLow = model1.TemperatureLow
                 mainmodel.Image = model1.Image
                 //Model2
-                mainmodel.Country = model2.Country.replace(" ","")
-                mainmodel.County = model2.County.replace("Co.","")
-                mainmodel.County.replace(" ","")
-                mainmodel.City = model2.City.replace(" ","")
+                mainmodel.Country = getCountryQuery(location.longitude.toString(),location.latitude.toString())
+                mainmodel.County = getRegionQuery(location.longitude.toString(),location.latitude.toString())
+                //mainmodel.County.replace(" ","")
+                //mainmodel.City = model2.City.replace(" ","")
+                mainmodel.City = getCityQuery(location.longitude.toString(),location.latitude.toString())
                 println(mainmodel)
                 //Creating Weather Model & Weather Temperature Model on firebase.
                 if(mainmodel.Country.isNotEmpty() && mainmodel.County.isNotEmpty() && mainmodel.City.isNotEmpty()) {
@@ -111,7 +109,7 @@ class MapsFragment : Fragment() {
     fun drawMarker(loc: LatLng,marker: Marker){
         marker.remove()
         mapsViewModel.map.addMarker(
-            MarkerOptions().position(loc).title("Im Here!").snippet(geoCoderDetail(loc).Country+", "+geoCoderDetail(loc).County+", "+geoCoderDetail(loc).City).draggable(true).visible(true)
+            MarkerOptions().position(loc).title("Im Here!").snippet(bigDataLocationCoder(loc)).draggable(true).visible(true)
         )?.showInfoWindow()
     }
 
@@ -120,6 +118,10 @@ class MapsFragment : Fragment() {
 
         val address = geoCoder.getFromLocation(loc.latitude,loc.longitude,1)[0].getAddressLine(0)
         return address
+    }
+
+    fun bigDataLocationCoder(loc: LatLng) : String{
+        return getCountryQuery(loc.longitude.toString(),loc.latitude.toString()) +", "+ getRegionQuery(loc.longitude.toString(),loc.latitude.toString()) +", "+ getCityQuery(loc.longitude.toString(),loc.latitude.toString())
     }
 
     private fun create(model: WeatherModel){
@@ -164,8 +166,6 @@ class MapsFragment : Fragment() {
                 return false
             }
     }
-
-
 
     fun geoCoderDetail(loc: LatLng) : WeatherModel{
         var model = WeatherModel()
